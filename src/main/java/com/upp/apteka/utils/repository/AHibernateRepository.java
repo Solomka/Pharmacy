@@ -89,7 +89,7 @@ public abstract class AHibernateRepository<Type, Key extends Serializable, HSpec
 	 * @return
 	 */
 	@SuppressWarnings("unchecked")
-	List<Type> findByCriteria(Criterion criterion){
+	public List<Type> findByCriteria(Criterion criterion){
 		
 		Criteria criteria = getSession().createCriteria(entityClass);
 		criteria.add(criterion);
