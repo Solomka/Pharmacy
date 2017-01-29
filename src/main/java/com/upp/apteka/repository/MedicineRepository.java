@@ -3,12 +3,14 @@ package com.upp.apteka.repository;
 import java.util.List;
 
 import org.springframework.stereotype.Repository;
+import org.springframework.transaction.annotation.Transactional;
 
 import com.upp.apteka.bo.Medicine;
 import com.upp.apteka.utils.repository.AHibernateRepository;
 import com.upp.apteka.utils.repository.HibernateSpecification;
 
 @Repository("medicineRepository")
+@Transactional
 public class MedicineRepository extends AHibernateRepository<Medicine, Long, HibernateSpecification> {
 
 	public List<Medicine> searchByCriteria(HibernateSpecification specification) {
@@ -34,7 +36,7 @@ public class MedicineRepository extends AHibernateRepository<Medicine, Long, Hib
 
 	public boolean delete(Long key) {
 
-		return delete(key);
+		return deleteEntity(key);
 	}
 
 }

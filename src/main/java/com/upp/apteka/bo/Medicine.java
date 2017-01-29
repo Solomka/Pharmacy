@@ -1,6 +1,7 @@
 package com.upp.apteka.bo;
 
 import java.io.Serializable;
+import java.math.BigDecimal;
 import java.math.BigInteger;
 import java.util.Objects;
 
@@ -32,7 +33,7 @@ public class Medicine implements Serializable {
 	private String producer;
 
 	@Column(name = "box_price", nullable = false)
-	private BigInteger boxPrice;
+	private BigDecimal boxPrice;
 
 	@Column(name = "quantity_per_box", nullable = false)
 	private int quantityPerBox;
@@ -45,7 +46,7 @@ public class Medicine implements Serializable {
 		this.id = Objects.requireNonNull(id, "id can not be null");
 	}
 
-	public Medicine(Long id, String name, String producer, BigInteger boxPrice, int quantityPerBox) {
+	public Medicine(Long id, String name, String producer, BigDecimal boxPrice, int quantityPerBox) {
 		this.id = Objects.requireNonNull(id, "id can not be null");
 		this.name = Objects.requireNonNull(name, "name can not be null");
 		this.producer = Objects.requireNonNull(producer, "producer can not be null");
@@ -53,7 +54,7 @@ public class Medicine implements Serializable {
 		this.quantityPerBox = Objects.requireNonNull(quantityPerBox, "quantity per box can not be null");
 	}
 
-	public Medicine(String name, String producer, BigInteger boxPrice, int quantityPerBox) {
+	public Medicine(String name, String producer, BigDecimal boxPrice, int quantityPerBox) {
 		this.name = Objects.requireNonNull(name, "name can not be null");
 		this.producer = Objects.requireNonNull(producer, "producer can not be null");
 		this.boxPrice = Objects.requireNonNull(boxPrice, "boxPrice can not be null");
@@ -84,11 +85,11 @@ public class Medicine implements Serializable {
 		this.producer = producer;
 	}
 
-	public BigInteger getBoxPrice() {
+	public BigDecimal getBoxPrice() {
 		return boxPrice;
 	}
 
-	public void setBoxPrice(BigInteger boxPrice) {
+	public void setBoxPrice(BigDecimal boxPrice) {
 		this.boxPrice = boxPrice;
 	}
 
