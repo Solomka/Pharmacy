@@ -1,6 +1,6 @@
 package com.upp.apteka;
 
-import static org.junit.Assert.assertEquals;
+
 import static org.junit.Assert.assertNotNull;
 
 import java.util.List;
@@ -9,6 +9,7 @@ import org.apache.log4j.BasicConfigurator;
 import org.apache.log4j.ConsoleAppender;
 import org.apache.log4j.Logger;
 import org.apache.log4j.SimpleLayout;
+import org.junit.Assert;
 import org.junit.Before;
 import org.junit.BeforeClass;
 import org.junit.Test;
@@ -23,6 +24,7 @@ import com.upp.apteka.bo.Pharmacy;
 import com.upp.apteka.config.AppConfig;
 import com.upp.apteka.specifications.PharmacySpecificationUtils;
 import com.upp.apteka.utils.repository.HibernateSpecification;
+import com.upp.apteka.utils.repository.HqlSpecification;
 import com.upp.apteka.utils.repository.Repository;
 
 @RunWith(SpringJUnit4ClassRunner.class)
@@ -33,7 +35,7 @@ public class PharmacyRepositoryTest {
 
 	@Autowired
 	@Qualifier("pharmacyRepository")
-	private Repository<Pharmacy, Long, HibernateSpecification> pharmacyRepository;
+	private Repository<Pharmacy, Long, HqlSpecification> pharmacyRepository;
 
 	private Pharmacy pharmacy;
 
@@ -69,11 +71,13 @@ public class PharmacyRepositoryTest {
 		assertNotNull(pharmacy.getId());
 	}
 */
+	
 	@Test
 	public void getPharmacy() {
 		pharmacy = pharmacyRepository.read(new Long("8"));
 		assertNotNull(pharmacy);
 	}
+	
 	
 	@Test 
 	public void getAllPharmacies(){
@@ -90,7 +94,7 @@ public class PharmacyRepositoryTest {
 		
 		for(Pharmacy pharmacy: pharmacies)
 			System.out.println("Pharmacy by name:" + pharmacy + "\n" );
-		assertNotNull(pharmacies);
+		Assert.assertNotEquals(pharmacies.size(), 0);
 	}
 /*
 	@Test

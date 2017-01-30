@@ -4,6 +4,7 @@ import org.hibernate.criterion.Criterion;
 import org.hibernate.criterion.Restrictions;
 
 import com.upp.apteka.utils.repository.HibernateSpecification;
+import com.upp.apteka.utils.repository.HqlSpecification;
 
 /**
  * Pharmacy specification utils class
@@ -23,6 +24,25 @@ public final class PharmacySpecificationUtils {
 	 * @param name
 	 * @return
 	 */
+	
+	public static HqlSpecification findPharmacyByName(final String name) {
+		return new HqlSpecification() {
+			
+			String pharmacyName;
+
+			{
+				pharmacyName = name;
+			}
+			
+			public String toHql() {
+				
+				String hql = "FROM Pharmacy WHERE name = " + "'"+pharmacyName+"'" ; 
+				
+				return hql;
+			}
+		};
+	}
+	/*
 	public static HibernateSpecification findPharmacyByName(final String name) {
 
 		return new HibernateSpecification() {
@@ -51,10 +71,12 @@ public final class PharmacySpecificationUtils {
 				 * WHERE name = 'Zelena apteka'
 				 * 
 				 */
+	/*
 				String hql = "name = " + " ' " + pharmacyName + " ' ";
 				return Restrictions.sqlRestriction(hql);
 			}
 		};
 	}
+	*/
 
 }

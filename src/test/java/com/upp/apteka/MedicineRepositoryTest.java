@@ -23,6 +23,7 @@ import com.upp.apteka.bo.Medicine;
 import com.upp.apteka.bo.Pharmacy;
 import com.upp.apteka.config.AppConfig;
 import com.upp.apteka.utils.repository.HibernateSpecification;
+import com.upp.apteka.utils.repository.HqlSpecification;
 import com.upp.apteka.utils.repository.Repository;
 
 @RunWith(SpringJUnit4ClassRunner.class)
@@ -31,7 +32,7 @@ public class MedicineRepositoryTest {
 
 	@Autowired
 	@Qualifier("medicineRepository")
-	private Repository<Medicine, Long, HibernateSpecification> medicineRepository;
+	private Repository<Medicine, Long, HqlSpecification> medicineRepository;
 	
 	private Medicine medicine;
 	

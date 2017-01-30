@@ -19,7 +19,7 @@ import com.upp.apteka.bo.Pharmacy;
  * 							specification to use for searching requests
  */
 
-public interface Repository<Type, Key, HSpecification extends HibernateSpecification> {
+public interface Repository<Type, Key, HSpecification extends HqlSpecification> {
 	
 	@NotNull
 	public List<Type> getAll();
