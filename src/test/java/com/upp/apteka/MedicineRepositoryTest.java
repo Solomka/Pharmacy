@@ -57,18 +57,18 @@ public class MedicineRepositoryTest {
 
 	public static Medicine generateMedicineInstance() {
 
-		Medicine medicine = new Medicine("Vocara", "Znahar", new BigDecimal(100), 25);
+		Medicine medicine = new Medicine("Notta", "Znahar", new BigDecimal(100), 30);
 		return medicine;
 	}
 	
-/*	
+	
 	@Test
 	public void createMedicine() {
 		medicine = generateMedicineInstance();
 		medicineRepository.create(medicine);
 		assertNotNull(medicine.getId());
 	}
-	*/
+	
 	
 	
 	@Test

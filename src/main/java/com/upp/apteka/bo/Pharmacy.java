@@ -1,13 +1,17 @@
 package com.upp.apteka.bo;
 
 import java.io.Serializable;
+import java.util.List;
 import java.util.Objects;
 
+import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
+import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
+import javax.persistence.OneToMany;
 import javax.persistence.Table;
 
 @Entity
@@ -39,6 +43,12 @@ public class Pharmacy implements Serializable {
 
 	@Column(name = "extra", nullable = false)
 	private double extra;
+
+	@OneToMany(fetch = FetchType.LAZY, mappedBy = "pharmacyMedicineID.pharmacy")
+	private List<PharmacyMedicine> pharmacyMedicines;
+
+	@OneToMany(mappedBy = "pharmacy", cascade = CascadeType.REFRESH)
+	private List<Delivery> deliveries;
 
 	public Pharmacy() {
 
@@ -93,6 +103,22 @@ public class Pharmacy implements Serializable {
 
 	public void setExtra(double extra) {
 		this.extra = extra;
+	}
+
+	public List<PharmacyMedicine> getPharmacyMedicines() {
+		return pharmacyMedicines;
+	}
+
+	public void setPharmacyMedicines(List<PharmacyMedicine> pharmacyMedicines) {
+		this.pharmacyMedicines = pharmacyMedicines;
+	}	
+	
+	public List<Delivery> getDeliveries() {
+		return deliveries;
+	}
+
+	public void setDeliveries(List<Delivery> deliveries) {
+		this.deliveries = deliveries;
 	}
 
 	/**
