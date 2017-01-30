@@ -4,6 +4,7 @@ import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertNotNull;
 
 import java.math.BigDecimal;
+import java.util.List;
 
 import org.apache.log4j.BasicConfigurator;
 import org.apache.log4j.ConsoleAppender;
@@ -75,6 +76,15 @@ public class MedicineRepositoryTest {
 		medicine = medicineRepository.read(new Long("2"));
 		//System.out.println("Medicine after: " + medicine);
 		assertNotNull(medicine);
+	}
+	
+	@Test 
+	public void getAllMedicines(){
+		List<Medicine> medicines = medicineRepository.getAll();
+		
+		for(Medicine medicine: medicines)
+			System.out.println("Medicine:" + medicine + "\n" );
+		assertNotNull(medicines);
 	}
 	
 	/*

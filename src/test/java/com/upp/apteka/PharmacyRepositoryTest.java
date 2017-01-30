@@ -3,6 +3,8 @@ package com.upp.apteka;
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertNotNull;
 
+import java.util.List;
+
 import org.apache.log4j.BasicConfigurator;
 import org.apache.log4j.ConsoleAppender;
 import org.apache.log4j.Logger;
@@ -19,6 +21,7 @@ import org.springframework.test.context.support.AnnotationConfigContextLoader;
 
 import com.upp.apteka.bo.Pharmacy;
 import com.upp.apteka.config.AppConfig;
+import com.upp.apteka.specifications.PharmacySpecificationUtils;
 import com.upp.apteka.utils.repository.HibernateSpecification;
 import com.upp.apteka.utils.repository.Repository;
 
@@ -70,6 +73,24 @@ public class PharmacyRepositoryTest {
 	public void getPharmacy() {
 		pharmacy = pharmacyRepository.read(new Long("8"));
 		assertNotNull(pharmacy);
+	}
+	
+	@Test 
+	public void getAllPharmacies(){
+		List<Pharmacy> pharmacies = pharmacyRepository.getAll();
+		
+		for(Pharmacy pharmacy: pharmacies)
+			System.out.println("Pharmacy:" + pharmacy + "\n" );
+		assertNotNull(pharmacies);
+	}
+	
+	@Test
+	public void getPharmacyByName(){
+		List<Pharmacy> pharmacies = pharmacyRepository.searchByCriteria(PharmacySpecificationUtils.findPharmacyByName("Green apteka"));
+		
+		for(Pharmacy pharmacy: pharmacies)
+			System.out.println("Pharmacy by name:" + pharmacy + "\n" );
+		assertNotNull(pharmacies);
 	}
 /*
 	@Test

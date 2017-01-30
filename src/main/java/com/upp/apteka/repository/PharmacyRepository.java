@@ -13,6 +13,15 @@ import com.upp.apteka.utils.repository.HibernateSpecification;
 @Transactional
 public class PharmacyRepository extends AHibernateRepository<Pharmacy, Long, HibernateSpecification> {
 
+	@SuppressWarnings("unchecked")
+	public List<Pharmacy> getAll() {
+		/*
+		 * String hql = "FROM Pharmacy"; return (List<Pharmacy>)
+		 * createQuery(hql).list();
+		 */
+		return (List<Pharmacy>) createEntityCriteria().list();
+	}
+
 	public List<Pharmacy> searchByCriteria(HibernateSpecification specification) {
 
 		return findByCriteria(specification.toCriteria());
