@@ -2,15 +2,21 @@ package com.upp.apteka.bo;
 
 import java.io.Serializable;
 import java.math.BigDecimal;
-import java.math.BigInteger;
+import java.util.ArrayList;
+import java.util.List;
 import java.util.Objects;
 
+import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
+import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
+import javax.persistence.OneToMany;
 import javax.persistence.Table;
+
+import org.hibernate.annotations.Cascade;
 
 @Entity
 @Table(name = "medicine")
@@ -37,6 +43,17 @@ public class Medicine implements Serializable {
 
 	@Column(name = "quantity_per_box", nullable = false)
 	private int quantityPerBox;
+
+	@OneToMany(fetch = FetchType.LAZY, mappedBy = "pharmacyMedicineID.medicine", cascade = { CascadeType.PERSIST,
+			CascadeType.MERGE })
+
+	@Cascade({ org.hibernate.annotations.CascadeType.SAVE_UPDATE })
+	private List<PharmacyMedicine> pharmacyMedicines;
+
+	@OneToMany(fetch = FetchType.LAZY, mappedBy = "deliveryMedicineID.medicine", cascade = { CascadeType.PERSIST,
+			CascadeType.MERGE })
+	@Cascade({ org.hibernate.annotations.CascadeType.SAVE_UPDATE })
+	private List<DeliveryMedicine> deliveryMedicines = new ArrayList<DeliveryMedicine>();
 
 	public Medicine() {
 
@@ -99,6 +116,22 @@ public class Medicine implements Serializable {
 
 	public void setQuantityPerBox(int quantityPerBox) {
 		this.quantityPerBox = quantityPerBox;
+	}
+
+	public List<PharmacyMedicine> getPharmacyMedicines() {
+		return pharmacyMedicines;
+	}
+
+	public void setPharmacyMedicines(List<PharmacyMedicine> pharmacyMedicines) {
+		this.pharmacyMedicines = pharmacyMedicines;
+	}
+
+	public List<DeliveryMedicine> getDeliveryMedicines() {
+		return deliveryMedicines;
+	}
+
+	public void setDeliveryMedicines(List<DeliveryMedicine> deliveryMedicines) {
+		this.deliveryMedicines = deliveryMedicines;
 	}
 
 	@Override

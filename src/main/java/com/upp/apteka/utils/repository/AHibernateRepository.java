@@ -45,7 +45,10 @@ public abstract class AHibernateRepository<Type, Key extends Serializable, HSpec
 
 	@SuppressWarnings("unchecked")
 	public Key add(Type obj) {
-		return (Key) getSession().save(obj);
+		// Key key = (Key) getSession().save(obj);
+		// getSession().flush();
+		 return (Key) getSession().save(obj);
+		 
 	}
 
 	/**
