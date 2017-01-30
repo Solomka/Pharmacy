@@ -4,6 +4,8 @@ import java.util.List;
 
 import javax.validation.constraints.NotNull;
 
+import com.upp.apteka.bo.Pharmacy;
+
 /**
  * basic interface for all the repositories
  * 
@@ -17,7 +19,10 @@ import javax.validation.constraints.NotNull;
  * 							specification to use for searching requests
  */
 
-public interface Repository<Type, Key, HSpecification extends HibernateSpecification> {
+public interface Repository<Type, Key, HSpecification extends HqlSpecification> {
+	
+	@NotNull
+	public List<Type> getAll();
 	
 	@NotNull
 	List<Type> searchByCriteria(HSpecification specification);

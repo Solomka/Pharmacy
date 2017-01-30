@@ -24,8 +24,8 @@ import org.springframework.beans.factory.annotation.Autowired;
  * @param <HSpecification>
  *            specification to use for searching requests
  */
-public abstract class AHibernateRepository<Type, Key extends Serializable, HSpecification extends HibernateSpecification>
-		implements Repository<Type, Key, HSpecification> {
+public abstract class AHibernateRepository<Type, Key extends Serializable, HSpecification extends HqlSpecification>
+		implements Repository<Type, Key, HqlSpecification> {
 
 	// ***PO.java
 	private final Class<Type> entityClass;
@@ -88,6 +88,15 @@ public abstract class AHibernateRepository<Type, Key extends Serializable, HSpec
 	 * @param criterion
 	 * @return
 	 */
+	
+	@SuppressWarnings("unchecked")
+	public List<Type> findByCriteria(String hql){		
+				
+		return (List<Type>) createQuery(hql).list();
+		
+	}
+
+	/*
 	@SuppressWarnings("unchecked")
 	public List<Type> findByCriteria(Criterion criterion){
 		
@@ -97,7 +106,9 @@ public abstract class AHibernateRepository<Type, Key extends Serializable, HSpec
 		return (List<Type>) criteria.list();
 		
 	}
-
+*/
+	
+	
 	protected Criteria createEntityCriteria() {
 		return getSession().createCriteria(entityClass);
 	}

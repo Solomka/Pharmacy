@@ -8,14 +8,21 @@ import org.springframework.transaction.annotation.Transactional;
 import com.upp.apteka.bo.Medicine;
 import com.upp.apteka.utils.repository.AHibernateRepository;
 import com.upp.apteka.utils.repository.HibernateSpecification;
+import com.upp.apteka.utils.repository.HqlSpecification;
 
 @Repository("medicineRepository")
 @Transactional
-public class MedicineRepository extends AHibernateRepository<Medicine, Long, HibernateSpecification> {
+public class MedicineRepository extends AHibernateRepository<Medicine, Long, HqlSpecification> {
 
-	public List<Medicine> searchByCriteria(HibernateSpecification specification) {
+	@SuppressWarnings("unchecked")
+	public List<Medicine> getAll() {
 
-		return findByCriteria(specification.toCriteria());
+		return (List<Medicine>) createEntityCriteria().list();
+	}
+
+	public List<Medicine> searchByCriteria(HqlSpecification specification) {
+
+		return findByCriteria(specification.toHql());
 	}
 
 	public Long create(Medicine medicine) {

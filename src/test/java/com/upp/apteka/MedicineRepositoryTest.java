@@ -4,6 +4,7 @@ import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertNotNull;
 
 import java.math.BigDecimal;
+import java.util.List;
 
 import org.apache.log4j.BasicConfigurator;
 import org.apache.log4j.ConsoleAppender;
@@ -22,6 +23,7 @@ import com.upp.apteka.bo.Medicine;
 import com.upp.apteka.bo.Pharmacy;
 import com.upp.apteka.config.AppConfig;
 import com.upp.apteka.utils.repository.HibernateSpecification;
+import com.upp.apteka.utils.repository.HqlSpecification;
 import com.upp.apteka.utils.repository.Repository;
 
 @RunWith(SpringJUnit4ClassRunner.class)
@@ -30,7 +32,7 @@ public class MedicineRepositoryTest {
 
 	@Autowired
 	@Qualifier("medicineRepository")
-	private Repository<Medicine, Long, HibernateSpecification> medicineRepository;
+	private Repository<Medicine, Long, HqlSpecification> medicineRepository;
 	
 	private Medicine medicine;
 	
@@ -75,6 +77,15 @@ public class MedicineRepositoryTest {
 		medicine = medicineRepository.read(new Long("2"));
 		//System.out.println("Medicine after: " + medicine);
 		assertNotNull(medicine);
+	}
+	
+	@Test 
+	public void getAllMedicines(){
+		List<Medicine> medicines = medicineRepository.getAll();
+		
+		for(Medicine medicine: medicines)
+			System.out.println("Medicine:" + medicine + "\n" );
+		assertNotNull(medicines);
 	}
 	
 	/*
