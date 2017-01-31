@@ -6,7 +6,7 @@ import javax.persistence.Embeddable;
 import javax.persistence.ManyToOne;
 
 /**
- * class that represents the Composite Primary Key forPharmacyMedicine
+ * class that represents the Composite Primary Key for PharmacyMedicine
  * 
  * @author Solomka
  *
@@ -19,6 +19,7 @@ public class PharmacyMedicineID implements Serializable {
 	 * 
 	 */
 	private static final long serialVersionUID = 7051257863288751597L;
+	
 	private Pharmacy pharmacy;
 	private Medicine medicine;
 	
@@ -28,7 +29,7 @@ public class PharmacyMedicineID implements Serializable {
 
 	@ManyToOne
 	public Pharmacy getPharmacy() {
-		return pharmacy;
+		return this.pharmacy;
 	}
 
 	public void setPharmacy(Pharmacy pharmacy) {
@@ -37,7 +38,7 @@ public class PharmacyMedicineID implements Serializable {
 
 	@ManyToOne
 	public Medicine getMedicine() {
-		return medicine;
+		return this.medicine;
 	}
 
 	public void setMedicine(Medicine medicine) {

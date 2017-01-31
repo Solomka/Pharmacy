@@ -125,6 +125,12 @@ public class PharmacyMedicine implements Serializable {
 		}
 		return true;
 	}
-	
-	
+
+	@Override
+	public String toString() {
+		return "PharmacyMedicine [pharmacyMedicineID= [pharmId: " + getPharmacyMedicineID().getPharmacy().getId()
+				+ ", medId: " + getPharmacyMedicineID().getMedicine().getId() + " ], " + ", packPrice=" + packPrice
+				+ ", packQuantity=" + packQuantity + "]";
+	}
+
 }

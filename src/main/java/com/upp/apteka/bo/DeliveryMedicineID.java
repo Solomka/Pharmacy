@@ -5,6 +5,13 @@ import java.io.Serializable;
 import javax.persistence.Embeddable;
 import javax.persistence.ManyToOne;
 
+/**
+ * class that represents the Composite Key for DeliveryMedicine
+ *  
+ * @author Solomka
+ *
+ */
+
 @Embeddable
 public class DeliveryMedicineID implements Serializable {
 

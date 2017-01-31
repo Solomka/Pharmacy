@@ -23,6 +23,7 @@ import com.upp.apteka.bo.DeliveryMedicine;
 import com.upp.apteka.bo.Medicine;
 import com.upp.apteka.bo.Pharmacy;
 import com.upp.apteka.config.AppConfig;
+import com.upp.apteka.repository.DeliveryRepository;
 import com.upp.apteka.utils.repository.HqlSpecification;
 import com.upp.apteka.utils.repository.Repository;
 

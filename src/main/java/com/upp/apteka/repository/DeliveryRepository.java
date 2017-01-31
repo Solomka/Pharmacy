@@ -11,7 +11,7 @@ import com.upp.apteka.utils.repository.HqlSpecification;
 
 @Repository("deliveryRepository")
 @Transactional
-public class DeliveryRepository extends AHibernateRepository<Delivery, Long, HqlSpecification> {
+public class DeliveryRepository extends AHibernateRepository<Delivery, Long, HqlSpecification> implements TestRepo{
 
 	@SuppressWarnings("unchecked")
 	public List<Delivery> getAll() {
@@ -42,6 +42,11 @@ public class DeliveryRepository extends AHibernateRepository<Delivery, Long, Hql
 	public boolean delete(Long key) {
 
 		return deleteEntity(key);
+	}
+
+	public void method1() {
+		// TODO Auto-generated method stub
+		
 	}
 
 }
