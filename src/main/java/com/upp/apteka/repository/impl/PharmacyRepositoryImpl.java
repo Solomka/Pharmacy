@@ -9,12 +9,10 @@ import org.springframework.transaction.annotation.Transactional;
 import com.upp.apteka.bo.Pharmacy;
 import com.upp.apteka.repository.PharmacyRepository;
 import com.upp.apteka.utils.repository.AHibernateRepository;
-import com.upp.apteka.utils.repository.HqlSpecification;
 
 @Repository("pharmacyRepository")
 @Transactional
-public class PharmacyRepositoryImpl extends AHibernateRepository<Pharmacy, Long, HqlSpecification>
-		implements PharmacyRepository {
+public class PharmacyRepositoryImpl extends AHibernateRepository<Pharmacy, Long> implements PharmacyRepository {
 
 	@SuppressWarnings("unchecked")
 	public List<Pharmacy> getAll() {
@@ -23,11 +21,6 @@ public class PharmacyRepositoryImpl extends AHibernateRepository<Pharmacy, Long,
 		 * createQuery(hql).list();
 		 */
 		return (List<Pharmacy>) createEntityCriteria().list();
-	}
-
-	public List<Pharmacy> searchByCriteria(HqlSpecification specification) {
-
-		return findByCriteria(specification.toHql());
 	}
 
 	public Long create(Pharmacy pharmacy) {

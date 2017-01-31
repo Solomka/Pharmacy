@@ -3,7 +3,7 @@
 -- http://www.phpmyadmin.net
 --
 -- Хост: localhost
--- Время создания: Янв 31 2017 г., 19:56
+-- Время создания: Янв 31 2017 г., 23:08
 -- Версия сервера: 5.1.41
 -- Версия PHP: 5.3.1
 
@@ -31,14 +31,15 @@ CREATE TABLE IF NOT EXISTS `delivery` (
   `id_pharmacy` int(11) NOT NULL,
   PRIMARY KEY (`id`),
   KEY `id_pharmacy` (`id_pharmacy`)
-) ENGINE=InnoDB  DEFAULT CHARSET=utf8 AUTO_INCREMENT=11 ;
+) ENGINE=InnoDB  DEFAULT CHARSET=utf8 AUTO_INCREMENT=12 ;
 
 --
 -- Дамп данных таблицы `delivery`
 --
 
 INSERT INTO `delivery` (`id`, `date`, `id_pharmacy`) VALUES
-(9, '2017-01-30', 8);
+(9, '2017-01-30', 8),
+(11, '2017-01-31', 8);
 
 -- --------------------------------------------------------
 
@@ -60,7 +61,9 @@ CREATE TABLE IF NOT EXISTS `delivery_medicine` (
 
 INSERT INTO `delivery_medicine` (`id_delivery`, `id_medicine`, `box_quantity`) VALUES
 (9, 2, 1),
-(9, 3, 2);
+(9, 3, 2),
+(11, 2, 1),
+(11, 3, 2);
 
 -- --------------------------------------------------------
 
@@ -116,7 +119,6 @@ CREATE TABLE IF NOT EXISTS `patient` (
   `id` int(11) NOT NULL AUTO_INCREMENT,
   `surname` varchar(50) NOT NULL,
   `name` varchar(50) NOT NULL,
-  `phone` varchar(16) DEFAULT NULL,
   PRIMARY KEY (`id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8 AUTO_INCREMENT=1 ;
 
