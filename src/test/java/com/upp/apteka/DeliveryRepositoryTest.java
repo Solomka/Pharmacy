@@ -12,7 +12,6 @@ import org.junit.BeforeClass;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.test.context.ContextConfiguration;
 import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 import org.springframework.test.context.support.AnnotationConfigContextLoader;
@@ -24,24 +23,36 @@ import com.upp.apteka.bo.Medicine;
 import com.upp.apteka.bo.Pharmacy;
 import com.upp.apteka.config.AppConfig;
 import com.upp.apteka.repository.DeliveryRepository;
-import com.upp.apteka.utils.repository.HqlSpecification;
-import com.upp.apteka.utils.repository.Repository;
+import com.upp.apteka.repository.MedicineRepository;
+import com.upp.apteka.repository.PharmacyRepository;
 
 @RunWith(SpringJUnit4ClassRunner.class)
 @ContextConfiguration(classes = AppConfig.class, loader = AnnotationConfigContextLoader.class)
 public class DeliveryRepositoryTest {
 
+	/*
 	@Autowired
 	@Qualifier("deliveryRepository")
-	private Repository<Delivery, Long, HqlSpecification> deliveryRepository;
+	private IRepository<Delivery, Long, HqlSpecification> deliveryRepository;
 
 	@Autowired
 	@Qualifier("pharmacyRepository")
-	private Repository<Pharmacy, Long, HqlSpecification> pharmacyRepository;
+	private IRepository<Pharmacy, Long, HqlSpecification> pharmacyRepository;
 
 	@Autowired
 	@Qualifier("medicineRepository")
-	private Repository<Medicine, Long, HqlSpecification> medicineRepository;
+	private IRepository<Medicine, Long, HqlSpecification> medicineRepository;
+	
+	*/
+	
+	@Autowired
+	private DeliveryRepository deliveryRepository;
+	
+	@Autowired
+	private PharmacyRepository pharmacyRepository;
+	
+	@Autowired
+	private MedicineRepository medicineRepository;
 
 	private Delivery delivery;
 

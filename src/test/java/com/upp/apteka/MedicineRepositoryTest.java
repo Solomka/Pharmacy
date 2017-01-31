@@ -22,17 +22,23 @@ import org.springframework.test.context.support.AnnotationConfigContextLoader;
 import com.upp.apteka.bo.Medicine;
 import com.upp.apteka.bo.Pharmacy;
 import com.upp.apteka.config.AppConfig;
+import com.upp.apteka.repository.MedicineRepository;
 import com.upp.apteka.utils.repository.HibernateSpecification;
 import com.upp.apteka.utils.repository.HqlSpecification;
-import com.upp.apteka.utils.repository.Repository;
+import com.upp.apteka.utils.repository.IRepository;
 
 @RunWith(SpringJUnit4ClassRunner.class)
 @ContextConfiguration(classes = AppConfig.class, loader = AnnotationConfigContextLoader.class)
 public class MedicineRepositoryTest {
 
+	/*
 	@Autowired
 	@Qualifier("medicineRepository")
-	private Repository<Medicine, Long, HqlSpecification> medicineRepository;
+	private IRepository<Medicine, Long, HqlSpecification> medicineRepository;
+	*/
+	
+	@Autowired
+	private MedicineRepository medicineRepository;
 	
 	private Medicine medicine;
 	

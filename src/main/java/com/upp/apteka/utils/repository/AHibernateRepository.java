@@ -24,8 +24,7 @@ import org.springframework.beans.factory.annotation.Autowired;
  * @param <HSpecification>
  *            specification to use for searching requests
  */
-public abstract class AHibernateRepository<Type, Key extends Serializable, HSpecification extends HqlSpecification>
-		implements Repository<Type, Key, HqlSpecification> {
+public abstract class AHibernateRepository<Type, Key extends Serializable, HSpecification extends HqlSpecification> {
 
 	// ***PO.java
 	private final Class<Type> entityClass;
