@@ -2,11 +2,7 @@ package com.upp.apteka;
 
 
 import java.sql.Date;
-import java.sql.Timestamp;
-import java.text.DateFormat;
 import java.text.ParseException;
-import java.text.SimpleDateFormat;
-
 import java.util.List;
 
 import org.apache.log4j.BasicConfigurator;
@@ -21,7 +17,6 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.test.context.ContextConfiguration;
 import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 import org.springframework.test.context.support.AnnotationConfigContextLoader;
-import org.springframework.transaction.annotation.Transactional;
 
 import com.upp.apteka.bo.Delivery;
 import com.upp.apteka.bo.DeliveryMedicine;
@@ -31,7 +26,6 @@ import com.upp.apteka.config.AppConfig;
 import com.upp.apteka.repository.DeliveryRepository;
 import com.upp.apteka.repository.MedicineRepository;
 import com.upp.apteka.repository.PharmacyRepository;
-import com.upp.apteka.specifications.DeliverySpecificationUtils;
 
 @RunWith(SpringJUnit4ClassRunner.class)
 @ContextConfiguration(classes = AppConfig.class, loader = AnnotationConfigContextLoader.class)
@@ -81,7 +75,7 @@ public class DeliveryRepositoryTest {
 
 		delivery = null;
 	}
-
+/*
 	@Test
 	public void createDelivary() {
 		delivery = generateDeliveryInstance();
@@ -90,7 +84,7 @@ public class DeliveryRepositoryTest {
 		
 		Assert.assertNotNull(delivery.getId());
 	}
-
+*/
 	/*
 	@Test
 	public void getAllDeliveries(){

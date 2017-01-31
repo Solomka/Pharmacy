@@ -15,7 +15,6 @@ import org.junit.BeforeClass;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.test.context.ContextConfiguration;
 import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 import org.springframework.test.context.support.AnnotationConfigContextLoader;
@@ -23,10 +22,6 @@ import org.springframework.test.context.support.AnnotationConfigContextLoader;
 import com.upp.apteka.bo.Pharmacy;
 import com.upp.apteka.config.AppConfig;
 import com.upp.apteka.repository.PharmacyRepository;
-import com.upp.apteka.specifications.PharmacySpecificationUtils;
-import com.upp.apteka.utils.repository.HibernateSpecification;
-import com.upp.apteka.utils.repository.HqlSpecification;
-import com.upp.apteka.utils.repository.IRepository;
 
 @RunWith(SpringJUnit4ClassRunner.class)
 @ContextConfiguration(classes = AppConfig.class, loader = AnnotationConfigContextLoader.class)

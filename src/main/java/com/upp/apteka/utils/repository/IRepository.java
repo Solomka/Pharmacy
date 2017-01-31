@@ -4,39 +4,33 @@ import java.util.List;
 
 import javax.validation.constraints.NotNull;
 
-import com.upp.apteka.bo.Pharmacy;
-
 /**
  * basic interface for all the repositories
  * 
  * @author Solomka
  *
  * @param <Type>
- * 							object to persist
+ *            object to persist
  * @param <Key>
- * 							object key
- * @param <HSpecification>
- * 							specification to use for searching requests
+ *            object key
+ * 
  */
 
-public interface IRepository<Type, Key, HSpecification extends HqlSpecification> {
-	
+public interface IRepository<Type, Key> {
+
 	@NotNull
 	public List<Type> getAll();
-	
-	@NotNull
-	List<Type> searchByCriteria(HSpecification specification);
-	
+
 	@NotNull
 	Key create(@NotNull Type obj);
-	
+
 	@NotNull
 	Type read(@NotNull Key key);
-	
+
 	@NotNull
 	void update(@NotNull Type obj);
-	
+
 	@NotNull
-	boolean delete(@NotNull Key key); 
+	boolean delete(@NotNull Key key);
 
 }
