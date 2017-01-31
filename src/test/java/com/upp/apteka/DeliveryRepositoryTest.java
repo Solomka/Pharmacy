@@ -1,11 +1,12 @@
 package com.upp.apteka;
 
 
+import java.sql.Date;
 import java.sql.Timestamp;
 import java.text.DateFormat;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
-import java.util.Date;
+
 import java.util.List;
 
 import org.apache.log4j.BasicConfigurator;
@@ -116,6 +117,7 @@ public class DeliveryRepositoryTest {
 	
 	@Test
 	public void getDeliveryByPeriod() throws ParseException{
+		/*
 		Timestamp to = new Timestamp(System.currentTimeMillis());
 		System.out.println("ToDate: " + to.toString());
 		
@@ -124,6 +126,15 @@ public class DeliveryRepositoryTest {
 		long time = date.getTime();
 		Timestamp from = new Timestamp(time);
 		System.out.println("FromDate: " + from.toString());
+		*/
+		
+		String strFrom="2017-01-12";  
+	    Date from = Date.valueOf(strFrom);
+	    System.out.println("FromDate: " + from.toString());
+	    
+	    String strTo="2017-01-31";  
+	    Date to = Date.valueOf(strTo);
+	    System.out.println("FromDate: " + to.toString());
 		
 		List<Delivery> deliveries = deliveryRepository.searchByCriteria(DeliverySpecificationUtils.findDeliveryByPeriodAndPharmacy(from, to, new Long("8")));
 		for(Delivery delivery: deliveries)
@@ -141,7 +152,9 @@ public class DeliveryRepositoryTest {
 */	
 	public Delivery generateDeliveryInstance() {
 
-		Timestamp deliveryDate = new Timestamp(System.currentTimeMillis());
+		//Timestamp deliveryDate = new Timestamp(System.currentTimeMillis());
+		String str="2017-01-31";  
+	    Date deliveryDate = Date.valueOf(str);
 		Pharmacy pharmacy = pharmacyRepository.read(new Long("8"));
 
 		Delivery delivery = new Delivery(deliveryDate, pharmacy);

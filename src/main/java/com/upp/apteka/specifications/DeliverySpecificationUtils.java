@@ -1,6 +1,6 @@
 package com.upp.apteka.specifications;
 
-import java.sql.Timestamp;
+import java.sql.Date;
 
 import com.upp.apteka.utils.repository.HqlSpecification;
 
@@ -23,12 +23,12 @@ public final class DeliverySpecificationUtils {
 	 * @param to
 	 * @return
 	 */
-	public static HqlSpecification findDeliveryByPeriodAndPharmacy(final Timestamp from, final Timestamp to,
+	public static HqlSpecification findDeliveryByPeriodAndPharmacy(final Date from, final Date to,
 			final Long pharmacyId) {
 		return new HqlSpecification() {
 
-			Timestamp fromDate;
-			Timestamp toDate;
+			Date fromDate;
+			Date toDate;
 			Long idPharmacy;
 
 			{

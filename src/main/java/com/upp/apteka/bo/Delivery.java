@@ -1,6 +1,7 @@
 package com.upp.apteka.bo;
 
 import java.io.Serializable;
+import java.sql.Date;
 import java.sql.Timestamp;
 import java.util.ArrayList;
 import java.util.List;
@@ -34,7 +35,7 @@ public class Delivery implements Serializable {
 	private Long id;
 
 	@Column(name = "date", updatable = false, nullable = false)
-	private Timestamp date;
+	private Date date;
 
 	@ManyToOne(optional = false)
 	@JoinColumn(name = "id_pharmacy", nullable = false, updatable = false)
@@ -54,14 +55,14 @@ public class Delivery implements Serializable {
 		this.id = id;
 	}
 
-	public Delivery(Long id, Timestamp date, Pharmacy pharmacy) {
+	public Delivery(Long id, Date date, Pharmacy pharmacy) {
 
 		this.id = id;
 		this.date = date;
 		this.pharmacy = pharmacy;
 	}
 
-	public Delivery(Timestamp date, Pharmacy pharmacy) {
+	public Delivery(Date date, Pharmacy pharmacy) {
 
 		this.date = date;
 		this.pharmacy = pharmacy;
@@ -75,11 +76,11 @@ public class Delivery implements Serializable {
 		this.id = id;
 	}
 
-	public Timestamp getDate() {
+	public Date getDate() {
 		return date;
 	}
 
-	public void setDate(Timestamp date) {
+	public void setDate(Date date) {
 		this.date = date;
 	}
 
