@@ -93,8 +93,8 @@ public class PharmacyRepositoryTest {
 	
 	@Test
 	public void getPharmacyByName(){
-		List<Pharmacy> pharmacies = pharmacyRepository.searchByCriteria(PharmacySpecificationUtils.findPharmacyByName("Green apteka"));
-		
+		//List<Pharmacy> pharmacies = pharmacyRepository.searchByCriteria(PharmacySpecificationUtils.findPharmacyByName("Green apteka"));
+		List<Pharmacy> pharmacies = pharmacyRepository.findPharamcyByName("Green apteka");
 		for(Pharmacy pharmacy: pharmacies)
 			System.out.println("Pharmacy by name:" + pharmacy + "\n" );
 		Assert.assertNotEquals(pharmacies.size(), 0);

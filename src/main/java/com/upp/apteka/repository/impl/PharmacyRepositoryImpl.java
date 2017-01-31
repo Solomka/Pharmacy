@@ -2,18 +2,19 @@ package com.upp.apteka.repository.impl;
 
 import java.util.List;
 
+import org.hibernate.Query;
 import org.springframework.stereotype.Repository;
 import org.springframework.transaction.annotation.Transactional;
 
 import com.upp.apteka.bo.Pharmacy;
 import com.upp.apteka.repository.PharmacyRepository;
 import com.upp.apteka.utils.repository.AHibernateRepository;
-import com.upp.apteka.utils.repository.HibernateSpecification;
 import com.upp.apteka.utils.repository.HqlSpecification;
 
 @Repository("pharmacyRepository")
 @Transactional
-public class PharmacyRepositoryImpl extends AHibernateRepository<Pharmacy, Long, HqlSpecification> implements PharmacyRepository{
+public class PharmacyRepositoryImpl extends AHibernateRepository<Pharmacy, Long, HqlSpecification>
+		implements PharmacyRepository {
 
 	@SuppressWarnings("unchecked")
 	public List<Pharmacy> getAll() {
@@ -50,4 +51,11 @@ public class PharmacyRepositoryImpl extends AHibernateRepository<Pharmacy, Long,
 		return deleteEntity(key);
 	}
 
+	@SuppressWarnings("unchecked")
+	public List<Pharmacy> findPharamcyByName(String name) {
+
+		String hql = "FROM Pharmacy WHERE name = :name";
+		Query query = createQuery(hql).setParameter("name", name);
+		return (List<Pharmacy>) query.list();
+	}
 }

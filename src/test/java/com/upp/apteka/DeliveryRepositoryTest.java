@@ -136,7 +136,8 @@ public class DeliveryRepositoryTest {
 	    Date to = Date.valueOf(strTo);
 	    System.out.println("FromDate: " + to.toString());
 		
-		List<Delivery> deliveries = deliveryRepository.searchByCriteria(DeliverySpecificationUtils.findDeliveryByPeriodAndPharmacy(from, to, new Long("8")));
+		//List<Delivery> deliveries = deliveryRepository.searchByCriteria(DeliverySpecificationUtils.findDeliveryByPeriodAndPharmacy(from, to, new Long("8")));
+		List<Delivery> deliveries = deliveryRepository.findDeliveryByPeriodAndPharmacy(from, to, new Long("8"));
 		for(Delivery delivery: deliveries)
 			System.out.println("delivery: " + delivery.toString() + "\n");
 		Assert.assertNotNull(deliveries);
@@ -144,11 +145,12 @@ public class DeliveryRepositoryTest {
 		
 		
 	}
-	
+	/*
 	@Test
 	public void deleteDelivery(){
 		Assert.assertEquals(deliveryRepository.delete(new Long("10")), true);
 	}
+	*/
 
 	public Delivery generateDeliveryInstance() {
 

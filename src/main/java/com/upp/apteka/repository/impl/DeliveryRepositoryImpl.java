@@ -1,7 +1,10 @@
 package com.upp.apteka.repository.impl;
 
+import java.sql.Date;
 import java.util.List;
 
+import org.hibernate.Query;
+import org.hibernate.criterion.Restrictions;
 import org.springframework.stereotype.Repository;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -44,6 +47,14 @@ public class DeliveryRepositoryImpl extends AHibernateRepository<Delivery, Long,
 	public boolean delete(Long key) {
 
 		return deleteEntity(key);
+	}
+
+	@SuppressWarnings("unchecked")
+	public List<Delivery> findDeliveryByPeriodAndPharmacy(Date from, Date to, Long pharmacyId) {
+		String hql = "FROM Delivery WHERE date BETWEEN :from AND :to AND id_pharmacy = :pharmacyId";
+		Query query = createQuery(hql).setParameter("from", from).setParameter("to", to).setParameter("pharmacyId", pharmacyId);
+		return (List<Delivery>) query.list();
+		
 	}
 	
 }
