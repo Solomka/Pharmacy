@@ -1,6 +1,12 @@
 package com.upp.apteka;
 
+
+import java.sql.Date;
 import java.sql.Timestamp;
+import java.text.DateFormat;
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
+
 import java.util.List;
 
 import org.apache.log4j.BasicConfigurator;
@@ -25,6 +31,7 @@ import com.upp.apteka.config.AppConfig;
 import com.upp.apteka.repository.DeliveryRepository;
 import com.upp.apteka.repository.MedicineRepository;
 import com.upp.apteka.repository.PharmacyRepository;
+import com.upp.apteka.specifications.DeliverySpecificationUtils;
 
 @RunWith(SpringJUnit4ClassRunner.class)
 @ContextConfiguration(classes = AppConfig.class, loader = AnnotationConfigContextLoader.class)
@@ -84,6 +91,7 @@ public class DeliveryRepositoryTest {
 		Assert.assertNotNull(delivery.getId());
 	}
 */
+	/*
 	@Test
 	public void getAllDeliveries(){
 		List<Delivery> deliveries = deliveryRepository.getAll();
@@ -105,15 +113,48 @@ public class DeliveryRepositoryTest {
 			System.out.println("medecine: " + med.toString() + "\n");
 		Assert.assertNotNull(delivery.getId());
 	}
-	/*
+	*/
+	
+	@Test
+	public void getDeliveryByPeriod() throws ParseException{
+		/*
+		Timestamp to = new Timestamp(System.currentTimeMillis());
+		System.out.println("ToDate: " + to.toString());
+		
+		DateFormat dateFormat = new SimpleDateFormat("dd/MM/yyyy");
+		Date date = (Date) dateFormat.parse("23/01/2017");
+		long time = date.getTime();
+		Timestamp from = new Timestamp(time);
+		System.out.println("FromDate: " + from.toString());
+		*/
+		
+		String strFrom="2017-01-12";  
+	    Date from = Date.valueOf(strFrom);
+	    System.out.println("FromDate: " + from.toString());
+	    
+	    String strTo="2017-01-31";  
+	    Date to = Date.valueOf(strTo);
+	    System.out.println("FromDate: " + to.toString());
+		
+		List<Delivery> deliveries = deliveryRepository.searchByCriteria(DeliverySpecificationUtils.findDeliveryByPeriodAndPharmacy(from, to, new Long("8")));
+		for(Delivery delivery: deliveries)
+			System.out.println("delivery: " + delivery.toString() + "\n");
+		Assert.assertNotNull(deliveries);
+		
+		
+		
+	}
+	
 	@Test
 	public void deleteDelivery(){
-		Assert.assertEquals(deliveryRepository.delete(new Long("8")), true);
+		Assert.assertEquals(deliveryRepository.delete(new Long("10")), true);
 	}
-*/	
+
 	public Delivery generateDeliveryInstance() {
 
-		Timestamp deliveryDate = new Timestamp(System.currentTimeMillis());
+		//Timestamp deliveryDate = new Timestamp(System.currentTimeMillis());
+		String str="2017-01-31";  
+	    Date deliveryDate = Date.valueOf(str);
 		Pharmacy pharmacy = pharmacyRepository.read(new Long("8"));
 
 		Delivery delivery = new Delivery(deliveryDate, pharmacy);
