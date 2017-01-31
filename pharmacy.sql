@@ -3,7 +3,7 @@
 -- http://www.phpmyadmin.net
 --
 -- Хост: localhost
--- Время создания: Янв 28 2017 г., 23:46
+-- Время создания: Янв 31 2017 г., 19:56
 -- Версия сервера: 5.1.41
 -- Версия PHP: 5.3.1
 
@@ -27,16 +27,18 @@ SET SQL_MODE="NO_AUTO_VALUE_ON_ZERO";
 
 CREATE TABLE IF NOT EXISTS `delivery` (
   `id` int(11) NOT NULL AUTO_INCREMENT,
-  `date` datetime NOT NULL,
+  `date` date NOT NULL,
   `id_pharmacy` int(11) NOT NULL,
   PRIMARY KEY (`id`),
   KEY `id_pharmacy` (`id_pharmacy`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8 AUTO_INCREMENT=1 ;
+) ENGINE=InnoDB  DEFAULT CHARSET=utf8 AUTO_INCREMENT=11 ;
 
 --
 -- Дамп данных таблицы `delivery`
 --
 
+INSERT INTO `delivery` (`id`, `date`, `id_pharmacy`) VALUES
+(9, '2017-01-30', 8);
 
 -- --------------------------------------------------------
 
@@ -56,6 +58,9 @@ CREATE TABLE IF NOT EXISTS `delivery_medicine` (
 -- Дамп данных таблицы `delivery_medicine`
 --
 
+INSERT INTO `delivery_medicine` (`id_delivery`, `id_medicine`, `box_quantity`) VALUES
+(9, 2, 1),
+(9, 3, 2);
 
 -- --------------------------------------------------------
 
@@ -90,12 +95,16 @@ CREATE TABLE IF NOT EXISTS `medicine` (
   `box_price` decimal(13,2) NOT NULL,
   `quantity_per_box` int(11) NOT NULL,
   PRIMARY KEY (`id`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8 AUTO_INCREMENT=1 ;
+) ENGINE=InnoDB  DEFAULT CHARSET=utf8 AUTO_INCREMENT=5 ;
 
 --
 -- Дамп данных таблицы `medicine`
 --
 
+INSERT INTO `medicine` (`id`, `name`, `producer`, `box_price`, `quantity_per_box`) VALUES
+(2, 'Travomel', 'Znahar', '100.00', 25),
+(3, 'Notta', 'Znahar', '100.00', 30),
+(4, 'Notta', 'Znahar', '100.00', 30);
 
 -- --------------------------------------------------------
 
@@ -128,12 +137,14 @@ CREATE TABLE IF NOT EXISTS `pharmacy` (
   `address` varchar(255) NOT NULL,
   `extra` double NOT NULL,
   PRIMARY KEY (`id`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8 AUTO_INCREMENT=1 ;
+) ENGINE=InnoDB  DEFAULT CHARSET=utf8 AUTO_INCREMENT=9 ;
 
 --
 -- Дамп данных таблицы `pharmacy`
 --
 
+INSERT INTO `pharmacy` (`id`, `name`, `address`, `extra`) VALUES
+(8, 'Green apteka', 'Zelena, 12 str.', 30);
 
 -- --------------------------------------------------------
 
@@ -163,7 +174,7 @@ CREATE TABLE IF NOT EXISTS `pharmacy_medicine` (
 
 CREATE TABLE IF NOT EXISTS `prescription` (
   `id` int(11) NOT NULL AUTO_INCREMENT,
-  `date` int(11) NOT NULL,
+  `date` date NOT NULL,
   `id_doctor` int(11) NOT NULL,
   `id_patient` int(11) NOT NULL,
   PRIMARY KEY (`id`),
@@ -204,7 +215,7 @@ CREATE TABLE IF NOT EXISTS `prescr_medicine` (
 
 CREATE TABLE IF NOT EXISTS `purchase` (
   `id` int(11) NOT NULL AUTO_INCREMENT,
-  `date` datetime NOT NULL,
+  `date` date NOT NULL,
   `id_patient` int(11) NOT NULL,
   `id_prescr` int(11) NOT NULL,
   `id_pharmacy` int(11) NOT NULL,
