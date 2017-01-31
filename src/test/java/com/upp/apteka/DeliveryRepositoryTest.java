@@ -144,12 +144,12 @@ public class DeliveryRepositoryTest {
 		
 		
 	}
-	/*
+	
 	@Test
 	public void deleteDelivery(){
-		Assert.assertEquals(deliveryRepository.delete(new Long("8")), true);
+		Assert.assertEquals(deliveryRepository.delete(new Long("10")), true);
 	}
-*/	
+
 	public Delivery generateDeliveryInstance() {
 
 		//Timestamp deliveryDate = new Timestamp(System.currentTimeMillis());
