@@ -81,7 +81,7 @@ public class DeliveryRepositoryTest {
 
 		delivery = null;
 	}
-/*
+
 	@Test
 	public void createDelivary() {
 		delivery = generateDeliveryInstance();
@@ -90,7 +90,7 @@ public class DeliveryRepositoryTest {
 		
 		Assert.assertNotNull(delivery.getId());
 	}
-*/
+
 	/*
 	@Test
 	public void getAllDeliveries(){
