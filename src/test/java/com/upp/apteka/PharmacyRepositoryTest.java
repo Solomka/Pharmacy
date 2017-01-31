@@ -80,8 +80,7 @@ public class PharmacyRepositoryTest {
 	public void getPharmacy() {
 		pharmacy = pharmacyRepository.read(new Long("8"));
 		assertNotNull(pharmacy);
-	}
-	
+	}	
 	
 	@Test 
 	public void getAllPharmacies(){
