@@ -11,7 +11,7 @@ import com.upp.apteka.utils.repository.HqlSpecification;
 
 @Repository("deliveryRepository")
 @Transactional
-public class DeliveryRepository extends AHibernateRepository<Delivery, Long, HqlSpecification> implements TestRepo{
+public class DeliveryRepository extends AHibernateRepository<Delivery, Long, HqlSpecification>{
 
 	@SuppressWarnings("unchecked")
 	public List<Delivery> getAll() {
