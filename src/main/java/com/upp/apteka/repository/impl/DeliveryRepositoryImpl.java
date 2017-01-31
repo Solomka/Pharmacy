@@ -45,10 +45,5 @@ public class DeliveryRepositoryImpl extends AHibernateRepository<Delivery, Long,
 
 		return deleteEntity(key);
 	}
-
-	public void method1() {
-		// TODO Auto-generated method stub
-
-	}
-
+	
 }
