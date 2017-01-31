@@ -22,21 +22,25 @@ import org.springframework.test.context.support.AnnotationConfigContextLoader;
 
 import com.upp.apteka.bo.Pharmacy;
 import com.upp.apteka.config.AppConfig;
+import com.upp.apteka.repository.PharmacyRepository;
 import com.upp.apteka.specifications.PharmacySpecificationUtils;
 import com.upp.apteka.utils.repository.HibernateSpecification;
 import com.upp.apteka.utils.repository.HqlSpecification;
-import com.upp.apteka.utils.repository.Repository;
+import com.upp.apteka.utils.repository.IRepository;
 
 @RunWith(SpringJUnit4ClassRunner.class)
 @ContextConfiguration(classes = AppConfig.class, loader = AnnotationConfigContextLoader.class)
 public class PharmacyRepositoryTest {
 
 	private static final Logger LOGGER = Logger.getLogger(PharmacyRepositoryTest.class.getName());
-
+/*
 	@Autowired
 	@Qualifier("pharmacyRepository")
-	private Repository<Pharmacy, Long, HqlSpecification> pharmacyRepository;
-
+	private IRepository<Pharmacy, Long, HqlSpecification> pharmacyRepository;
+*/
+	@Autowired
+	private PharmacyRepository pharmacyRepository;
+	
 	private Pharmacy pharmacy;
 
 	/**
