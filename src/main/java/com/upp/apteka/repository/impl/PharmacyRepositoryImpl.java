@@ -2,7 +2,9 @@ package com.upp.apteka.repository.impl;
 
 import java.util.List;
 
+import org.hibernate.Criteria;
 import org.hibernate.Query;
+import org.hibernate.criterion.Restrictions;
 import org.springframework.stereotype.Repository;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -46,9 +48,15 @@ public class PharmacyRepositoryImpl extends AHibernateRepository<Pharmacy, Long>
 
 	@SuppressWarnings("unchecked")
 	public List<Pharmacy> findPharamcyByName(String name) {
-
+		/*
 		String hql = "FROM Pharmacy WHERE name = :name";
 		Query query = createQuery(hql).setParameter("name", name);
 		return (List<Pharmacy>) query.list();
+		*/
+		
+		Criteria criteria = createEntityCriteria();
+		criteria.add(Restrictions.eq("name", name));
+		return (List<Pharmacy>) criteria.list();
+		
 	}
 }
