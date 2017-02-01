@@ -46,7 +46,7 @@ public class DeliveryRepositoryImpl extends AHibernateRepository<Delivery, Long>
 	@SuppressWarnings("unchecked")
 	public List<Delivery> findPharmacyDeliveriesByPeriod(Date from, Date to, Long pharmacyId) {
 		/*
-		String hql = "FROM Delivery WHERE date BETWEEN :from AND :to AND id_pharmacy = :pharmacyId";
+		String hql = "FROM Delivery AS d WHERE d.date BETWEEN :from AND :to AND d.pharmacy.id = :pharmacyId";
 		Query query = createQuery(hql).setParameter("from", from).setParameter("to", to).setParameter("pharmacyId",
 				pharmacyId);
 		return (List<Delivery>) query.list();
@@ -56,13 +56,16 @@ public class DeliveryRepositoryImpl extends AHibernateRepository<Delivery, Long>
 		criteria.add(Restrictions.between("date", from, to)).add(Restrictions.eq("pharmacy.id", pharmacyId));
 		
 		return (List<Delivery>)criteria.list();
+		
 	}
 
 	@SuppressWarnings("unchecked")
 	public List<Delivery> findPharmacyMedicineDeliveriesByPeriod(Date from, Date to, Long pharmacyId, Long medicineId) {
+		
 		String hql = "SELECT DISTINCT d"
-				+ " FROM Delivery d INNER JOIN d.deliveryMedicines dm"
+				+ " FROM Delivery AS d INNER JOIN d.deliveryMedicines AS dm"
 				+ " WHERE d.date BETWEEN :from AND :to AND d.pharmacy.id = :pharmacyId AND dm.deliveryMedicineID.medicine.id = :medicineId" ;
+			
 		Query query = createQuery(hql).setParameter("from", from).setParameter("to", to).setParameter("pharmacyId",
 				pharmacyId).setParameter("medicineId", medicineId);
 		return (List<Delivery>) query.list();
