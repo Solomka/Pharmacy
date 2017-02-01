@@ -108,7 +108,7 @@ public class DeliveryRepositoryTest {
 		Assert.assertNotNull(delivery.getId());
 	}
 	*/
-	
+	/*
 	@Test
 	public void getDeliveryByPeriod() throws ParseException{
 		/*
@@ -121,7 +121,7 @@ public class DeliveryRepositoryTest {
 		Timestamp from = new Timestamp(time);
 		System.out.println("FromDate: " + from.toString());
 		*/
-		
+		/*
 		String strFrom="2017-01-12";  
 	    Date from = Date.valueOf(strFrom);
 	    System.out.println("FromDate: " + from.toString());
@@ -135,8 +135,25 @@ public class DeliveryRepositoryTest {
 		for(Delivery delivery: deliveries)
 			System.out.println("delivery: " + delivery.toString() + "\n");
 		Assert.assertNotNull(deliveries);
+	}*/
 		
-		
+		@Test
+		public void getPharmacyMedicineDeliveryByPeriod() throws ParseException{
+					
+			String strFrom="2017-01-12";  
+		    Date from = Date.valueOf(strFrom);
+		    System.out.println("FromDate: " + from.toString());
+		    
+		    String strTo="2017-01-31";  
+		    Date to = Date.valueOf(strTo);
+		    System.out.println("FromDate: " + to.toString());
+			
+			//List<Delivery> deliveries = deliveryRepository.searchByCriteria(DeliverySpecificationUtils.findDeliveryByPeriodAndPharmacy(from, to, new Long("8")));
+			List<Delivery> deliveries = deliveryRepository.findPharmacyMedicineDeliveriesByPeriod(from, to, new Long("8"), new Long("3"));
+			for(Delivery delivery: deliveries)
+				System.out.println("delivery: " + delivery.toString() + "\n");
+			Assert.assertNotEquals(deliveries.size(), 0);
+			
 		
 	}
 	/*
