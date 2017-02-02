@@ -5,6 +5,7 @@ import java.math.BigDecimal;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Objects;
+import java.util.Set;
 
 import javax.persistence.CascadeType;
 import javax.persistence.Column;
@@ -55,6 +56,12 @@ public class Medicine implements Serializable {
 	@Cascade({ org.hibernate.annotations.CascadeType.SAVE_UPDATE })
 	private List<DeliveryMedicine> deliveryMedicines = new ArrayList<DeliveryMedicine>();
 
+	@OneToMany(fetch = FetchType.LAZY, mappedBy = "purchMedicine.medicine")
+	private Set<PurchaseMedicine> purchaseMedicines;
+	
+	@OneToMany(fetch = FetchType.LAZY, mappedBy = "pk.medicine")
+	private Set<PrescriptionMedicine> prescriptionMedicines;
+	
 	public Medicine() {
 
 	}
@@ -132,6 +139,22 @@ public class Medicine implements Serializable {
 
 	public void setDeliveryMedicines(List<DeliveryMedicine> deliveryMedicines) {
 		this.deliveryMedicines = deliveryMedicines;
+	}
+	
+	public Set<PrescriptionMedicine> getPrescriptionMedicines() {
+		return prescriptionMedicines;
+	}
+
+	public void setPrescriptionMedicines(Set<PrescriptionMedicine> prescriptionMedicines) {
+		this.prescriptionMedicines = prescriptionMedicines;
+	}
+
+	public Set<PurchaseMedicine> getPurchaseMedicines() {
+		return purchaseMedicines;
+	}
+
+	public void setPurchaseMedicines(Set<PurchaseMedicine> purchaseMedicines) {
+		this.purchaseMedicines = purchaseMedicines;
 	}
 
 	@Override
