@@ -17,11 +17,13 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.test.context.ContextConfiguration;
 import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 import org.springframework.test.context.support.AnnotationConfigContextLoader;
+import org.springframework.transaction.annotation.Transactional;
 
 import com.upp.apteka.bo.Delivery;
 import com.upp.apteka.bo.DeliveryMedicine;
 import com.upp.apteka.bo.Medicine;
 import com.upp.apteka.bo.Pharmacy;
+import com.upp.apteka.bo.PharmacyMedicine;
 import com.upp.apteka.config.AppConfig;
 import com.upp.apteka.repository.DeliveryRepository;
 import com.upp.apteka.repository.MedicineRepository;
@@ -138,6 +140,7 @@ public class DeliveryRepositoryTest {
 	}*/
 		
 		@Test
+		@Transactional
 		public void getPharmacyMedicineDeliveryByPeriod() throws ParseException{
 					
 			String strFrom="2017-01-12";  
@@ -150,10 +153,15 @@ public class DeliveryRepositoryTest {
 			
 			//List<Delivery> deliveries = deliveryRepository.searchByCriteria(DeliverySpecificationUtils.findDeliveryByPeriodAndPharmacy(from, to, new Long("8")));
 			List<Delivery> deliveries = deliveryRepository.findPharmacyMedicineDeliveriesByPeriod(from, to, new Long("8"), new Long("3"));
-			for(Delivery delivery: deliveries)
+			for(Delivery delivery: deliveries){
 				System.out.println("delivery: " + delivery.toString() + "\n");
-			Assert.assertNotEquals(deliveries.size(), 0);
+			List<DeliveryMedicine> pharmacyMedicines = delivery.getDeliveryMedicines();
 			
+			for(DeliveryMedicine med: pharmacyMedicines){
+			System.out.println("Del med name: " + med.getMedicine().getName() + "\n");
+			}
+			}
+			Assert.assertNotEquals(deliveries.size(), 0);		
 		
 	}
 	
