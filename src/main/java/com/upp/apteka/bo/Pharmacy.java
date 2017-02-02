@@ -3,6 +3,7 @@ package com.upp.apteka.bo;
 import java.io.Serializable;
 import java.util.List;
 import java.util.Objects;
+import java.util.Set;
 
 import javax.persistence.CascadeType;
 import javax.persistence.Column;
@@ -49,6 +50,9 @@ public class Pharmacy implements Serializable {
 
 	@OneToMany(mappedBy = "pharmacy", cascade = CascadeType.REFRESH)
 	private List<Delivery> deliveries;
+	
+	@OneToMany(fetch = FetchType.LAZY, mappedBy = "pharmacy")
+	private Set<Purchase> purchases;
 
 	public Pharmacy() {
 
@@ -119,6 +123,14 @@ public class Pharmacy implements Serializable {
 
 	public void setDeliveries(List<Delivery> deliveries) {
 		this.deliveries = deliveries;
+	}
+	
+	public Set<Purchase> getPurchases() {
+		return purchases;
+	}
+
+	public void setPurchases(Set<Purchase> purchases) {
+		this.purchases = purchases;
 	}
 
 	/**
