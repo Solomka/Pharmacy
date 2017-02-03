@@ -18,9 +18,9 @@ import com.upp.apteka.utils.repository.AHibernateRepository;
 public class DeliveryRepositoryImpl extends AHibernateRepository<Delivery, Long> implements DeliveryRepository {
 
 	@SuppressWarnings("unchecked")
-	public List<Delivery> getAll() {
+	public List<Delivery> getAll(int offset, int limit) {
 
-		return (List<Delivery>) createEntityCriteria().list();
+		return (List<Delivery>) createEntityCriteria().setFirstResult(offset).setMaxResults(limit).list();
 	}
 
 	public Long create(Delivery delivery) {
@@ -44,7 +44,7 @@ public class DeliveryRepositoryImpl extends AHibernateRepository<Delivery, Long>
 	}
 
 	@SuppressWarnings("unchecked")
-	public List<Delivery> findPharmacyDeliveriesByPeriod(Date from, Date to, Long pharmacyId) {
+	public List<Delivery> findPharmacyDeliveriesByPeriod(Date from, Date to, Long pharmacyId, int offset, int limit) {
 		/*
 		String hql = "FROM Delivery AS d WHERE d.date BETWEEN :from AND :to AND d.pharmacy.id = :pharmacyId";
 		Query query = createQuery(hql).setParameter("from", from).setParameter("to", to).setParameter("pharmacyId",
@@ -55,12 +55,12 @@ public class DeliveryRepositoryImpl extends AHibernateRepository<Delivery, Long>
 		Criteria criteria = createEntityCriteria();
 		criteria.add(Restrictions.between("date", from, to)).add(Restrictions.eq("pharmacy.id", pharmacyId));
 		
-		return (List<Delivery>)criteria.list();
+		return (List<Delivery>)criteria.setFirstResult(offset).setMaxResults(limit).list();
 		
 	}
 
 	@SuppressWarnings("unchecked")
-	public List<Delivery> findPharmacyMedicineDeliveriesByPeriod(Date from, Date to, Long pharmacyId, Long medicineId) {
+	public List<Delivery> findPharmacyMedicineDeliveriesByPeriod(Date from, Date to, Long pharmacyId, Long medicineId, int offset, int limit) {
 		
 		String hql = "SELECT DISTINCT d"
 				+ " FROM Delivery AS d INNER JOIN d.deliveryMedicines AS dm"
@@ -68,7 +68,7 @@ public class DeliveryRepositoryImpl extends AHibernateRepository<Delivery, Long>
 			
 		Query query = createQuery(hql).setParameter("from", from).setParameter("to", to).setParameter("pharmacyId",
 				pharmacyId).setParameter("medicineId", medicineId);
-		return (List<Delivery>) query.list();
+		return (List<Delivery>) query.setFirstResult(offset).setMaxResults(limit).list();
 	}
 
 }

@@ -19,7 +19,7 @@ import javax.validation.constraints.NotNull;
 public interface IRepository<Type, Key> {
 
 	@NotNull
-	public List<Type> getAll();
+	public List<Type> getAll(int offset, int limit);
 
 	@NotNull
 	Key create(@NotNull Type obj);

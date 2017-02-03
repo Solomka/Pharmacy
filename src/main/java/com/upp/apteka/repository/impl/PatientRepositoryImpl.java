@@ -13,8 +13,9 @@ import com.upp.apteka.utils.repository.AHibernateRepository;
 @Transactional
 public class PatientRepositoryImpl extends AHibernateRepository<Patient, Long> implements PatientRepository{
 
-	public List<Patient> getAll() {
-		return (List<Patient>) createEntityCriteria().list();
+	@SuppressWarnings("unchecked")
+	public List<Patient> getAll(int offset, int limit) {
+		return (List<Patient>) createEntityCriteria().setFirstResult(offset).setMaxResults(limit).list();
 	}
 
 	public Long create(Patient patient) {

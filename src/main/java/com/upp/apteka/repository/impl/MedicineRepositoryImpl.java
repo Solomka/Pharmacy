@@ -14,9 +14,9 @@ import com.upp.apteka.utils.repository.AHibernateRepository;
 public class MedicineRepositoryImpl extends AHibernateRepository<Medicine, Long> implements MedicineRepository {
 
 	@SuppressWarnings("unchecked")
-	public List<Medicine> getAll() {
+	public List<Medicine> getAll(int offset, int limit) {
 
-		return (List<Medicine>) createEntityCriteria().list();
+		return (List<Medicine>) createEntityCriteria().setFirstResult(offset).setMaxResults(limit).list();
 	}
 
 	public Long create(Medicine medicine) {

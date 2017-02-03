@@ -79,7 +79,7 @@ public class PharmacyRepositoryTest {
 	
 	@Test 
 	public void getAllPharmacies(){
-		List<Pharmacy> pharmacies = pharmacyRepository.getAll();
+		List<Pharmacy> pharmacies = pharmacyRepository.getAll(0, 5);
 		
 		for(Pharmacy pharmacy: pharmacies)
 			System.out.println("Pharmacy:" + pharmacy + "\n" );

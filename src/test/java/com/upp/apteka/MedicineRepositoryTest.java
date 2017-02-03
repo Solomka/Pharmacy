@@ -57,11 +57,11 @@ public class MedicineRepositoryTest {
 
 	public static Medicine generateMedicineInstance() {
 
-		Medicine medicine = new Medicine("Notta", "Znahar", new BigDecimal(100), 30);
+		Medicine medicine = new Medicine("Hilac", "Znahar", new BigDecimal(200), 10);
 		return medicine;
 	}
 	
-	/*
+	
 	@Test
 	public void createMedicine() {
 		medicine = generateMedicineInstance();
@@ -69,7 +69,7 @@ public class MedicineRepositoryTest {
 		assertNotNull(medicine.getId());
 	}
 	
-	*/
+	
 	
 	@Test
 	public void getMedicine(){
@@ -81,7 +81,7 @@ public class MedicineRepositoryTest {
 	
 	@Test 
 	public void getAllMedicines(){
-		List<Medicine> medicines = medicineRepository.getAll();
+		List<Medicine> medicines = medicineRepository.getAll(0, 5);
 		
 		for(Medicine medicine: medicines)
 			System.out.println("Medicine:" + medicine + "\n" );

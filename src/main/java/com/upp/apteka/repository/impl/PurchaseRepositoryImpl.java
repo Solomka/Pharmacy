@@ -13,8 +13,9 @@ import com.upp.apteka.utils.repository.AHibernateRepository;
 @Transactional
 public class PurchaseRepositoryImpl extends AHibernateRepository<Purchase, Long> implements PurchaseRepository{
 
-	public List<Purchase> getAll() {
-		return (List<Purchase>) createEntityCriteria().list();
+	@SuppressWarnings("unchecked")
+	public List<Purchase> getAll(int offset, int limit) {
+		return (List<Purchase>) createEntityCriteria().setFirstResult(offset).setMaxResults(limit).list();
 	}
 
 	public Long create(Purchase purchase) {

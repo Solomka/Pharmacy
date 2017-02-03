@@ -8,8 +8,8 @@ import com.upp.apteka.utils.repository.IRepository;
 
 public interface DeliveryRepository extends IRepository<Delivery, Long> {
 
-	List<Delivery> findPharmacyDeliveriesByPeriod(Date from, Date to, Long pharmacyId);
-	List<Delivery> findPharmacyMedicineDeliveriesByPeriod(Date from, Date to, Long pharmacyId, Long medicineId);
+	List<Delivery> findPharmacyDeliveriesByPeriod(Date from, Date to, Long pharmacyId, int offset, int limit);
+	List<Delivery> findPharmacyMedicineDeliveriesByPeriod(Date from, Date to, Long pharmacyId, Long medicineId, int offset, int limit);
 	
 
 }

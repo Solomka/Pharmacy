@@ -17,12 +17,12 @@ import com.upp.apteka.utils.repository.AHibernateRepository;
 public class PharmacyRepositoryImpl extends AHibernateRepository<Pharmacy, Long> implements PharmacyRepository {
 
 	@SuppressWarnings("unchecked")
-	public List<Pharmacy> getAll() {
+	public List<Pharmacy> getAll(int offset, int limit) {
 		/*
 		 * String hql = "FROM Pharmacy"; return (List<Pharmacy>)
 		 * createQuery(hql).list();
 		 */
-		return (List<Pharmacy>) createEntityCriteria().list();
+		return (List<Pharmacy>) createEntityCriteria().setFirstResult(offset).setMaxResults(limit).list();
 	}
 
 	public Long create(Pharmacy pharmacy) {
