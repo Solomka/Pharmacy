@@ -31,6 +31,7 @@ import com.upp.apteka.repository.PharmacyRepository;
 
 @RunWith(SpringJUnit4ClassRunner.class)
 @ContextConfiguration(classes = AppConfig.class, loader = AnnotationConfigContextLoader.class)
+@Transactional
 public class DeliveryRepositoryTest {
 
 	/*
@@ -96,8 +97,7 @@ public class DeliveryRepositoryTest {
 		Assert.assertNotNull(deliveries);
 	}
 	
-	@Test
-	@Transactional
+	@Test	
 	public void getDelivery(){
 		delivery = deliveryRepository.read(new Long("9"));
 		
@@ -140,7 +140,6 @@ public class DeliveryRepositoryTest {
 	}*/
 		
 		@Test
-		@Transactional
 		public void getPharmacyMedicineDeliveryByPeriod() throws ParseException{
 					
 			String strFrom="2017-01-12";  
