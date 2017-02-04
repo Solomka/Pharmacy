@@ -34,7 +34,6 @@ public class DeliveryServiceImpl implements DeliveryService {
 	}
 
 	public Delivery readDelivery(Long id) {
-
 		return deliveryRepository.read(id);
 	}
 
@@ -78,32 +77,7 @@ public class DeliveryServiceImpl implements DeliveryService {
 		pharmacyRepository.update(pharmacy);
 
 	}
-
-	private int generatePMPackQuantity(DeliveryMedicine delMed) {
-
-		return delMed.getBoxQuantity() * delMed.getMedicine().getQuantityPerBox();
-
-	}
-
-	private BigDecimal generatePMPackPrice(Pharmacy pharmacy, Medicine medicine) {
-
-		BigDecimal hundred = new BigDecimal(100);
-
-		BigDecimal vat = new BigDecimal(Constants.VAT).divide(hundred, MathContext.DECIMAL64);
-		BigDecimal pharmacyExtra = new BigDecimal(pharmacy.getExtra()).divide(hundred, MathContext.DECIMAL64);
-
-		BigDecimal purePricePerPack = medicine.getBoxPrice().divide(new BigDecimal(medicine.getQuantityPerBox()),
-				MathContext.DECIMAL64);
-
-		BigDecimal pricePerPackWithExtra = purePricePerPack
-				.add(purePricePerPack.multiply(pharmacyExtra, MathContext.DECIMAL64));
-
-		BigDecimal pricePerPackWithVAT = pricePerPackWithExtra.add(pricePerPackWithExtra).multiply(vat,
-				MathContext.DECIMAL64);
-
-		return pricePerPackWithVAT;
-	}
-
+	
 	public void updateDelivery(Delivery delivery) {
 		deliveryRepository.update(delivery);
 	}
@@ -146,6 +120,43 @@ public class DeliveryServiceImpl implements DeliveryService {
 
 	}
 
+	// Delivery repo specific requests
+
+		public List<Delivery> findPharmacyDeliveriesByPeriod(Date from, Date to, Long pharmacyId, int offset) {
+			return deliveryRepository.findPharmacyDeliveriesByPeriod(from, to, pharmacyId, offset, Constants.LIMIT);
+		}
+
+		public List<Delivery> findPharmacyMedicineDeliveriesByPeriod(Date from, Date to, Long pharmacyId, Long medicineId,
+				int offset) {
+			return deliveryRepository.findPharmacyMedicineDeliveriesByPeriod(from, to, pharmacyId, medicineId, offset,
+					Constants.LIMIT);
+		}
+		
+	private int generatePMPackQuantity(DeliveryMedicine delMed) {
+
+		return delMed.getBoxQuantity() * delMed.getMedicine().getQuantityPerBox();
+
+	}
+
+	private BigDecimal generatePMPackPrice(Pharmacy pharmacy, Medicine medicine) {
+
+		BigDecimal hundred = new BigDecimal(100);
+
+		BigDecimal vat = new BigDecimal(Constants.VAT).divide(hundred, MathContext.DECIMAL64);
+		BigDecimal pharmacyExtra = new BigDecimal(pharmacy.getExtra()).divide(hundred, MathContext.DECIMAL64);
+
+		BigDecimal purePricePerPack = medicine.getBoxPrice().divide(new BigDecimal(medicine.getQuantityPerBox()),
+				MathContext.DECIMAL64);
+
+		BigDecimal pricePerPackWithExtra = purePricePerPack
+				.add(purePricePerPack.multiply(pharmacyExtra, MathContext.DECIMAL64));
+
+		BigDecimal pricePerPackWithVAT = pricePerPackWithExtra.add(pricePerPackWithExtra).multiply(vat,
+				MathContext.DECIMAL64);
+
+		return pricePerPackWithVAT;
+	}	
+
 	private boolean pharmacyMedicineCheck(List<PharmacyMedicine> pharmMeds, DeliveryMedicine delMed) {
 
 		for (PharmacyMedicine pharmMed : pharmMeds) {
@@ -160,16 +171,6 @@ public class DeliveryServiceImpl implements DeliveryService {
 		return false;
 	}
 
-	// Delivery repo specific requests
-
-	public List<Delivery> findPharmacyDeliveriesByPeriod(Date from, Date to, Long pharmacyId, int offset) {
-		return deliveryRepository.findPharmacyDeliveriesByPeriod(from, to, pharmacyId, offset, Constants.LIMIT);
-	}
-
-	public List<Delivery> findPharmacyMedicineDeliveriesByPeriod(Date from, Date to, Long pharmacyId, Long medicineId,
-			int offset) {
-		return deliveryRepository.findPharmacyMedicineDeliveriesByPeriod(from, to, pharmacyId, medicineId, offset,
-				Constants.LIMIT);
-	}
+	
 
 }

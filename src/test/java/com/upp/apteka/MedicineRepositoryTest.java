@@ -1,6 +1,6 @@
 package com.upp.apteka;
 
-import static org.junit.Assert.assertNotNull;
+import  org.junit.Assert;
 
 import java.math.BigDecimal;
 import java.util.List;
@@ -18,6 +18,7 @@ import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 import org.springframework.test.context.support.AnnotationConfigContextLoader;
 
 import com.upp.apteka.bo.Medicine;
+import com.upp.apteka.bo.PharmacyMedicine;
 import com.upp.apteka.config.AppConfig;
 import com.upp.apteka.repository.MedicineRepository;
 
@@ -61,7 +62,7 @@ public class MedicineRepositoryTest {
 		return medicine;
 	}
 	
-	
+	/*
 	@Test
 	public void createMedicine() {
 		medicine = generateMedicineInstance();
@@ -86,6 +87,32 @@ public class MedicineRepositoryTest {
 		for(Medicine medicine: medicines)
 			System.out.println("Medicine:" + medicine + "\n" );
 		assertNotNull(medicines);
+	}
+	
+	
+	@Test 
+	public void getPharmacyMedicines(){
+		List<PharmacyMedicine> medicines = medicineRepository.getPharmacyMedicines(new Long("8"), 0, 5);
+		
+		for(PharmacyMedicine medicine: medicines)
+			System.out.println("Medicine: name: " + medicine.getMedicine().getName() + ", packPrice= " + medicine.getPackPrice() + ", packQuantity= " + medicine.getPackQuantity()+ "\n" );
+		Assert.assertNotNull(medicines);
+	}
+	
+	@Test 
+	public void getConcretePharmacyMedicine(){
+		PharmacyMedicine medicine = medicineRepository.getPharmacyMedicine(new Long("8"), new Long("4"));		
+		System.out.println("Medicine: name: " + medicine.getMedicine().getName() + ", packPrice= " + medicine.getPackPrice() + ", packQuantity= " + medicine.getPackQuantity()+ "\n" );
+		Assert.assertNotNull(medicine);
+	}
+	*/
+	@Test 
+	public void searchMedicineInPharmacies(){
+		List<PharmacyMedicine> medicines = medicineRepository.searchMedicineInPharmacies(new Long("4"), 0, 5);
+		
+		for(PharmacyMedicine medicine: medicines)
+			System.out.println("Medicine: pharmacyName: " + medicine.getPharmacy().getName()+ ", pharmacyAddress: " + medicine.getPharmacy().getAddress()+ ", medicineName: "+ medicine.getMedicine().getName() + ", packPrice= " + medicine.getPackPrice() + ", packQuantity= " + medicine.getPackQuantity()+ "\n" );
+		Assert.assertNotNull(medicines);
 	}
 	
 	/*

@@ -59,17 +59,17 @@ public class PharmacyRepositoryTest {
 
 	public static Pharmacy generatePharmacyInstance() {
 
-		Pharmacy pharmacy = new Pharmacy("Green pharmacy", "Zelena, 12 str.", 30);
+		Pharmacy pharmacy = new Pharmacy("Znahr", "Levandivka, 12 str.", 30);
 		return pharmacy;
 	}
-/*
+
 	@Test
 	public void createPharmacy() {
 		pharmacy = generatePharmacyInstance();
 		pharmacyRepository.create(pharmacy);
 		assertNotNull(pharmacy.getId());
 	}
-*/
+
 	
 	@Test
 	public void getPharmacy() {

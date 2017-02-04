@@ -3,6 +3,7 @@ package com.upp.apteka;
 import static org.junit.Assert.*;
 
 import java.sql.Date;
+import java.util.List;
 
 import org.apache.log4j.BasicConfigurator;
 import org.apache.log4j.ConsoleAppender;
@@ -15,6 +16,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.test.context.ContextConfiguration;
 import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 import org.springframework.test.context.support.AnnotationConfigContextLoader;
+import org.springframework.transaction.annotation.Transactional;
 import org.junit.Assert;
 
 import com.upp.apteka.bo.Delivery;
@@ -63,6 +65,21 @@ public class DeliveryServiceTest {
 		Assert.assertNotNull(delivery.getId());
 		
 	}
+	
+	@Test
+	@Transactional
+	public void readDelivery(){
+	    delivery = deliveryService.readDelivery(new Long("28"));
+	    
+	    System.out.println("Delivery: id: " + delivery.getId() + ", date: "+ delivery.getDate());
+		List<DeliveryMedicine> delMeds = delivery.getDeliveryMedicines();
+		
+		for(DeliveryMedicine delMed: delMeds){
+			System.out.println("Delivery Medicine: name: "+ delMed.getMedicine().getName() + ", box_quantity: " + delMed.getBoxQuantity() );;
+		}
+		
+		Assert.assertNotNull(delivery);
+	}
 
 	/*
 	@Test
@@ -75,7 +92,7 @@ public class DeliveryServiceTest {
 		//Timestamp deliveryDate = new Timestamp(System.currentTimeMillis());
 		String str="2017-02-03";  
 	    Date deliveryDate = Date.valueOf(str);
-		Pharmacy pharmacy = pharmacyRepository.read(new Long("8"));
+		Pharmacy pharmacy = pharmacyRepository.read(new Long("9"));
 
 		Delivery delivery = new Delivery(deliveryDate, pharmacy);
 
