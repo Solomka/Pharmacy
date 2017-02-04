@@ -67,7 +67,7 @@ public class DeliveryServiceTest {
 	/*
 	@Test
 	public void deleteDelivery(){
-		Assert.assertEquals(deliveryService.deleteDelivery(new Long("17")), true);
+		Assert.assertEquals(deliveryService.deleteDelivery(new Long("27")), true);
 	}
 	*/
 	public Delivery generateDeliveryInstance() {

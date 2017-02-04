@@ -48,15 +48,9 @@ public class DeliveryServiceImpl implements DeliveryService {
 
 		// get delivery pharmacy
 		Pharmacy pharmacy = pharmacyRepository.read(delivery.getPharmacy().getId());
-		
-		System.out.println("Pharmacy: " + pharmacy.toString());
 
 		// get all PharmacyMedicines by pharmacyId
 		List<PharmacyMedicine> pharmMeds = pharmacy.getPharmacyMedicines();
-		
-		for(PharmacyMedicine p: pharmMeds){
-			System.out.println(p + "\n");
-		}
 
 		PharmacyMedicine pharmacyMedicine;
 
@@ -64,7 +58,7 @@ public class DeliveryServiceImpl implements DeliveryService {
 			if (pharmacyMedicineCheck(pharmMeds, delMed)) {
 
 				for (PharmacyMedicine pharmMed : pharmMeds) {
-					if (pharmMed.getMedicine().getId() == delMed.getMedicine().getId()) {
+					if (pharmMed.getMedicine().getId().equals(delMed.getMedicine().getId())) {
 						pharmMed.setPackQuantity(pharmMed.getPackQuantity() + generatePMPackQuantity(delMed));
 					}
 				}
@@ -116,49 +110,50 @@ public class DeliveryServiceImpl implements DeliveryService {
 
 	public boolean deleteDelivery(Long id) {
 		/*
-		Delivery delivey = deliveryRepository.read(id);
-		Pharmacy pharmacy = pharmacyRepository.read(delivey.getPharmacy().getId());
-		
-		List<PharmacyMedicine> pharmMeds = pharmacy.getPharmacyMedicines();
-		
-		// get delivery medicines
-		List<DeliveryMedicine> delMeds = delivey.getDeliveryMedicines();		
-		
-		for (DeliveryMedicine delMed : delMeds) {
-			if (pharmacyMedicineCheck(pharmMeds, delMed)) {
-
-				for (PharmacyMedicine pharmMed : pharmMeds) {
-					if (pharmMed.getMedicine().getId() == delMed.getMedicine().getId()) {
-						
-						if(pharmMed.getPackQuantity() - delMed.getBoxQuantity()*delMed.getMedicine().getQuantityPerBox() >=0){
-							pharmMed.setPackQuantity(pharmMed.getPackQuantity() - delMed.getBoxQuantity()*delMed.getMedicine().getQuantityPerBox());
-						}
-					}
-				}
-
-			} else {
-				// create new pharmacy medicine
-				pharmacyMedicine = new PharmacyMedicine();
-				pharmacyMedicine.setMedicine(delMed.getMedicine());
-				pharmacyMedicine.setPharmacy(delivery.getPharmacy());
-				pharmacyMedicine.setPackQuantity(generatePMPackQuantity(delMed));
-				pharmacyMedicine.setPackPrice(generatePMPackPrice(delivery.getPharmacy(), delMed.getMedicine()));
-
-				pharmMeds.add(pharmacyMedicine);
-			}
-		}
-		
-		*/
+		 * Delivery delivey = deliveryRepository.read(id); Pharmacy pharmacy =
+		 * pharmacyRepository.read(delivey.getPharmacy().getId());
+		 * 
+		 * List<PharmacyMedicine> pharmMeds = pharmacy.getPharmacyMedicines();
+		 * 
+		 * // get delivery medicines List<DeliveryMedicine> delMeds =
+		 * delivey.getDeliveryMedicines();
+		 * 
+		 * for (DeliveryMedicine delMed : delMeds) { if
+		 * (pharmacyMedicineCheck(pharmMeds, delMed)) {
+		 * 
+		 * for (PharmacyMedicine pharmMed : pharmMeds) { if
+		 * (pharmMed.getMedicine().getId() == delMed.getMedicine().getId()) {
+		 * 
+		 * if(pharmMed.getPackQuantity() -
+		 * delMed.getBoxQuantity()*delMed.getMedicine().getQuantityPerBox()
+		 * >=0){ pharmMed.setPackQuantity(pharmMed.getPackQuantity() -
+		 * delMed.getBoxQuantity()*delMed.getMedicine().getQuantityPerBox()); }
+		 * } }
+		 * 
+		 * } else { // create new pharmacy medicine pharmacyMedicine = new
+		 * PharmacyMedicine();
+		 * pharmacyMedicine.setMedicine(delMed.getMedicine());
+		 * pharmacyMedicine.setPharmacy(delivery.getPharmacy());
+		 * pharmacyMedicine.setPackQuantity(generatePMPackQuantity(delMed));
+		 * pharmacyMedicine.setPackPrice(generatePMPackPrice(delivery.
+		 * getPharmacy(), delMed.getMedicine()));
+		 * 
+		 * pharmMeds.add(pharmacyMedicine); } }
+		 * 
+		 */
 
 		return deliveryRepository.delete(id);
-		
+
 	}
 
 	private boolean pharmacyMedicineCheck(List<PharmacyMedicine> pharmMeds, DeliveryMedicine delMed) {
 
 		for (PharmacyMedicine pharmMed : pharmMeds) {
 			// if medicine exists in the pharmacy
-			if (delMed.getMedicine().getId() == pharmMed.getMedicine().getId()) {
+
+			System.out.println("delMed id: " + delMed.getMedicine().getId());
+			System.out.println("pharmMed id: " + pharmMed.getMedicine().getId());
+			if (delMed.getMedicine().getId().equals(pharmMed.getMedicine().getId())) {
 				return true;
 			}
 		}
