@@ -18,7 +18,7 @@ public class App {
 		JFrame dispatcherFrame = ctx.getBean(JFrame.class);
 		dispatcherFrame.setVisible(true);
 
-		SwingController helloController = ctx.getBean("hello", SwingController.class);
+		SwingController helloController = ctx.getBean("addPatient", SwingController.class);
 		helloController.switchToActivity(null);
 
 	}
