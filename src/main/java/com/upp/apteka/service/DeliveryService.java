@@ -15,7 +15,7 @@ public interface DeliveryService {
 	
 	void updateDelivery(Delivery delivery);
 	
-	boolean deleletDelivery(Long id);
+	boolean deleteDelivery(Long id);
 	
 	List<Delivery> findPharmacyDeliveriesByPeriod(Date from, Date to, Long pharmacyId, int offset);
 	List<Delivery> findPharmacyMedicineDeliveriesByPeriod(Date from, Date to, Long pharmacyId, Long medicineId, int offset);

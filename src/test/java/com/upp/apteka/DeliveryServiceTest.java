@@ -1,5 +1,7 @@
 package com.upp.apteka;
 
+import static org.junit.Assert.*;
+
 import java.sql.Date;
 
 import org.apache.log4j.BasicConfigurator;
@@ -7,11 +9,13 @@ import org.apache.log4j.ConsoleAppender;
 import org.apache.log4j.SimpleLayout;
 import org.junit.Before;
 import org.junit.BeforeClass;
+import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.test.context.ContextConfiguration;
 import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 import org.springframework.test.context.support.AnnotationConfigContextLoader;
+import org.junit.Assert;
 
 import com.upp.apteka.bo.Delivery;
 import com.upp.apteka.bo.DeliveryMedicine;
@@ -27,7 +31,7 @@ import com.upp.apteka.service.DeliveryService;
 public class DeliveryServiceTest {
 	
 	@Autowired
-	DeliveryService deliveryService;
+	private DeliveryService deliveryService;
 	
 	@Autowired
 	private PharmacyRepository pharmacyRepository;
@@ -52,10 +56,24 @@ public class DeliveryServiceTest {
 		delivery = null;
 	}
 	
+	@Test
+	public void createDelivery(){
+		delivery = generateDeliveryInstance();
+		deliveryService.addDelivery(delivery);
+		Assert.assertNotNull(delivery.getId());
+		
+	}
+
+	/*
+	@Test
+	public void deleteDelivery(){
+		Assert.assertEquals(deliveryService.deleteDelivery(new Long("17")), true);
+	}
+	*/
 	public Delivery generateDeliveryInstance() {
 
 		//Timestamp deliveryDate = new Timestamp(System.currentTimeMillis());
-		String str="2017-01-30";  
+		String str="2017-02-03";  
 	    Date deliveryDate = Date.valueOf(str);
 		Pharmacy pharmacy = pharmacyRepository.read(new Long("8"));
 
