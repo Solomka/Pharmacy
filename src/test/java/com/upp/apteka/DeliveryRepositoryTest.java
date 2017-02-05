@@ -166,7 +166,7 @@ public class DeliveryRepositoryTest {
 	*/	
 		@Test
 		public void checkIfDeliveryMedicineSold(){
-			Assert.assertEquals(deliveryRepository.checkIfDeliveryMedicineSold(new Long("29")), false);
+			Assert.assertEquals(deliveryRepository.checkIfDeliveryMedicineSold(new Long("28")), false);
 		}
 	
 	/*

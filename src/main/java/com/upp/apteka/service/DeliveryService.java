@@ -4,6 +4,7 @@ import java.sql.Date;
 import java.util.List;
 
 import com.upp.apteka.bo.Delivery;
+import com.upp.apteka.bo.DeliveryMedicine;
 
 public interface DeliveryService {
 
@@ -15,7 +16,7 @@ public interface DeliveryService {
 	
 	Delivery getDelivery(Long id);
 	
-	void addDelivery(Delivery delivery);
+	Long addDelivery(Delivery delivery);
 	
 	void updateDelivery(Delivery delivery);
 	
@@ -28,6 +29,6 @@ public interface DeliveryService {
 	// ?
 	List<Delivery> getPharmacyMedicineDeliveriesByPeriod(Date from, Date to, Long pharmacyId, Long medicineId, int offset);
 	
-	
+	List<DeliveryMedicine> getDeliveryMedicines(Long deliveryId, int offset);
 
 }

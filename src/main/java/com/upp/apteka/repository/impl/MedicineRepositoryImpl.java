@@ -2,7 +2,9 @@ package com.upp.apteka.repository.impl;
 
 import java.util.List;
 
+import org.apache.log4j.Logger;
 import org.hibernate.Query;
+import org.hibernate.criterion.Order;
 import org.springframework.stereotype.Repository;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -13,13 +15,14 @@ import com.upp.apteka.repository.MedicineRepository;
 import com.upp.apteka.utils.repository.AHibernateRepository;
 
 @Repository("medicineRepository")
-@Transactional
 public class MedicineRepositoryImpl extends AHibernateRepository<Medicine, Long> implements MedicineRepository {
+	
+	private static final Logger LOGGER = Logger.getLogger(MedicineRepositoryImpl.class.getName());
 
 	@SuppressWarnings("unchecked")
 	public List<Medicine> getAll(int offset, int limit) {
 
-		return (List<Medicine>) createEntityCriteria().setFirstResult(offset).setMaxResults(limit).list();
+		return (List<Medicine>) createEntityCriteria().setFirstResult(offset).setMaxResults(limit).addOrder(Order.asc("name")).list();
 	}
 
 	public Long create(Medicine medicine) {
@@ -48,7 +51,7 @@ public class MedicineRepositoryImpl extends AHibernateRepository<Medicine, Long>
 		
 		String hql = "SELECT phM"
 				+ " FROM PharmacyMedicine phM"
-				+ " WHERE phM.pharmacyMedicineID.pharmacy.id = :id AND phM.packQuantity != 0";
+				+ " WHERE phM.pharmacyMedicineID.pharmacy.id = :id AND phM.packQuantity != 0 order by phM.pharmacyMedicineID.medicine.name asc";
 		
 		Query query = createQuery(hql).setParameter("id", id);
 		return  (List<PharmacyMedicine>) query.setFirstResult(offset).setMaxResults(limit).list();
@@ -67,7 +70,7 @@ public class MedicineRepositoryImpl extends AHibernateRepository<Medicine, Long>
 	public List<PharmacyMedicine> searchMedicineInPharmacies(Long medicineId, int offset, int limit) {
 		String hql = "SELECT phM"
 				+ " FROM PharmacyMedicine phM"
-				+ " WHERE phM.pharmacyMedicineID.medicine.id = :medicineId AND phM.packQuantity != 0";
+				+ " WHERE phM.pharmacyMedicineID.medicine.id = :medicineId AND phM.packQuantity != 0 order by phM.pharmacyMedicineID.pharmacy.name asc";
 		
 		Query query = createQuery(hql).setParameter("medicineId", medicineId);
 		return  (List<PharmacyMedicine>) query.setFirstResult(offset).setMaxResults(limit).list();

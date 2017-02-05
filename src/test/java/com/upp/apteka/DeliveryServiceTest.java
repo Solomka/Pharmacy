@@ -71,6 +71,7 @@ public class DeliveryServiceTest {
 		
 	}	
 	
+	
 	@Test
 	public void getAllDeliveries(){
 		deliveries = deliveryService.getAllDeliveries(0);
@@ -128,12 +129,55 @@ public class DeliveryServiceTest {
 		showDeliveries(deliveries);
 		Assert.assertNotEquals(deliveries.size(), 0);		
 	}
-*/
+
 	
 	@Test
 	public void deleteDelivery(){
-		Assert.assertEquals(deliveryService.deleteDelivery(new Long("29")), true);
+		Assert.assertEquals(deliveryService.deleteDelivery(new Long("28")), true);
 	}
+	
+	
+	@Test
+	@Transactional
+	public void updateDelivery(){
+		delivery = deliveryService.getDelivery(new Long("28"));
+		List<DeliveryMedicine> delMeds = delivery.getDeliveryMedicines();
+		DeliveryMedicine delMed = delMeds.get(0);
+		System.out.println("delMed: " + delMed);
+		delMed.setBoxQuantity(4);
+		System.out.println("delMed new : " + delMed);
+		
+		for(DeliveryMedicine delM: delMeds){
+			System.out.println("DelMed: "+ delM + "\n");
+		}
+		
+		deliveryService.updateDelivery(delivery);
+		
+		Delivery del2 = deliveryService.getDelivery(new Long("28"));		
+		List<DeliveryMedicine> delMeds2 = del2.getDeliveryMedicines();
+		
+		for(DeliveryMedicine delM: delMeds2){
+			System.out.println("DelMed2: "+ delM + "\n");
+		}
+		
+		DeliveryMedicine delMed2 = delMeds2.get(0);
+		
+		Assert.assertEquals(delMed2.getBoxQuantity(), 4);
+	}
+	
+	
+	@Test
+	public void getDeliveryMedicines(){
+		
+		List<DeliveryMedicine> delMeds = deliveryService.getDeliveryMedicines(new Long("28"), 0);
+		
+		for(DeliveryMedicine delMed: delMeds){
+			System.out.println("DeliveryMedicine: " + delMed.getMedicine().toString() + ", boxQuantity: " + delMed.getBoxQuantity());
+			Assert.assertNotEquals(delMeds.size(), 0);
+		}
+		
+	}
+	*/
 	
 	public Delivery generateDeliveryInstance() {
 

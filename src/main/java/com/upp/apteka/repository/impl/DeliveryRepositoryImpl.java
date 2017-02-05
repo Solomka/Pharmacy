@@ -11,6 +11,8 @@ import org.hibernate.criterion.Restrictions;
 import org.springframework.stereotype.Repository;
 
 import com.upp.apteka.bo.Delivery;
+import com.upp.apteka.bo.DeliveryMedicine;
+import com.upp.apteka.bo.PharmacyMedicine;
 import com.upp.apteka.repository.DeliveryRepository;
 import com.upp.apteka.utils.repository.AHibernateRepository;
 
@@ -94,7 +96,7 @@ public class DeliveryRepositoryImpl extends AHibernateRepository<Delivery, Long>
 		 		+ 				" FROM p.purchaseMedicines AS p1"
 		 		+ 				" WHERE p1.purchMedicine.medicine.id IN "
 		 		+ 										  " (SELECT dm.deliveryMedicineID.medicine.id"
-		 		+ 											" FROM Delivery AS d INNER JOIN d.deliveryMedicines AS dm"
+		 		+ 											" FROM DeliveryMedicine AS dm"
 		 		+ 											" WHERE dm.deliveryMedicineID.delivery.id = :deliveryId))";
 		 
 		 Query query = createQuery(hql).setParameter("deliveryId", deliveryId);
@@ -102,4 +104,14 @@ public class DeliveryRepositoryImpl extends AHibernateRepository<Delivery, Long>
 		 return query.list().size() != 0;
 	 }
 
+	 @SuppressWarnings("unchecked")
+	public List<DeliveryMedicine> getDeliveryMedicines(Long deliveryId, int offset, int limit){
+		 
+		String hql ="SELECT dM"
+					+ " FROM DeliveryMedicine AS dM"
+					+ " WHERE dM.deliveryMedicineID.delivery.id = :deliveryId order by dM.deliveryMedicineID.medicine.name asc";
+			
+		Query query = createQuery(hql).setParameter("deliveryId", deliveryId);
+		return  (List<DeliveryMedicine>) query.setFirstResult(offset).setMaxResults(limit).list();
+	 }
 }

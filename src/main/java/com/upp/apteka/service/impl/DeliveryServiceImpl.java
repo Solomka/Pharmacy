@@ -44,7 +44,7 @@ public class DeliveryServiceImpl implements DeliveryService {
 		return deliveryRepository.read(id);
 	}
 
-	public void addDelivery(Delivery delivery) {
+	public Long addDelivery(Delivery delivery) {
 
 		// save new delivery
 		Long delId = deliveryRepository.create(delivery);
@@ -53,7 +53,7 @@ public class DeliveryServiceImpl implements DeliveryService {
 		List<DeliveryMedicine> delMeds = delivery.getDeliveryMedicines();
 
 		// get delivery pharmacy
-		Pharmacy pharmacy = pharmacyService.getPharmacy(delivery.getPharmacy().getId());
+		Pharmacy pharmacy = pharmacyService.getPharmacy(delivery.getPharmacy().getId());		
 
 		// get all PharmacyMedicines by pharmacyId
 		List<PharmacyMedicine> pharmMeds = pharmacy.getPharmacyMedicines();
@@ -82,6 +82,8 @@ public class DeliveryServiceImpl implements DeliveryService {
 		}
 
 		pharmacyService.updatePharmacy(pharmacy);
+		
+		return delId;
 
 	}
 
@@ -99,7 +101,8 @@ public class DeliveryServiceImpl implements DeliveryService {
 			Delivery delivery = deliveryRepository.read(id);
 			
 			// get delivery pharmacy
-			Pharmacy pharmacy = pharmacyService.getPharmacy(delivery.getPharmacy().getId());
+			//Pharmacy pharmacy = pharmacyService.getPharmacy(delivery.getPharmacy().getId());
+			Pharmacy pharmacy = delivery.getPharmacy();
 
 			// get all PharmacyMedicines by pharmacyId
 			List<PharmacyMedicine> pharmMeds = pharmacy.getPharmacyMedicines();
@@ -132,6 +135,10 @@ public class DeliveryServiceImpl implements DeliveryService {
 			int offset) {
 		return deliveryRepository.findPharmacyMedicineDeliveriesByPeriod(from, to, pharmacyId, medicineId, offset,
 				Constants.LIMIT);
+	}
+	
+	public List<DeliveryMedicine> getDeliveryMedicines(Long deliveryId, int offset){
+		return deliveryRepository.getDeliveryMedicines(deliveryId, offset, Constants.LIMIT);
 	}
 	
 	public boolean checkIfDeliveryMedicineSold(Long deliveryId){
