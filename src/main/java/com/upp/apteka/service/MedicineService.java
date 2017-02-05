@@ -20,7 +20,7 @@ public interface MedicineService {
 	//get existing pharmacy medicines
 	List<PharmacyMedicine> getPharmacyMedicines(Long id, int offset);
 
-	PharmacyMedicine getPharmacyMedicine(Long pharmacyId, String medicineName);
+	List<PharmacyMedicine> getPharmacyMedicine(Long pharmacyId, String medicineName, int offset);
 
 	List<PharmacyMedicine> searchMedicineInPharmacies(String medicineName, int offset);
 

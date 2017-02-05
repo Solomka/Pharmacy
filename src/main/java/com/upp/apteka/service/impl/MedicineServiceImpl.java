@@ -49,9 +49,9 @@ public class MedicineServiceImpl implements MedicineService {
 		return medicineRepository.getPharmacyMedicines(id, offset, Constants.LIMIT);
 	}
 
-	public PharmacyMedicine getPharmacyMedicine(Long pharmacyId, String medicineName) {
+	public List<PharmacyMedicine> getPharmacyMedicine(Long pharmacyId, String medicineName, int offset) {
 
-		return medicineRepository.getPharmacyMedicine(pharmacyId, medicineName);
+		return medicineRepository.getPharmacyMedicine(pharmacyId, medicineName, offset, Constants.LIMIT);
 	}
 
 	public List<PharmacyMedicine> searchMedicineInPharmacies(String medicineName, int offset) {

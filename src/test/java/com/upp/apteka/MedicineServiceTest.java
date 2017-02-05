@@ -109,12 +109,19 @@ public class MedicineServiceTest {
 	
 	@Test
 	public void getPharmacyMedicine() {
-
+		
+		List<PharmacyMedicine> pMs = medicineService.getPharmacyMedicine(new Long("9"), "H", 0);
+		showPharmacyMedicines(pMs);
+		Assert.assertNotEquals(pMs.size(), 0);
 	}
 
+	
 	@Test
 	public void searchMedicineInPharmacies() {
-
+		
+		List<PharmacyMedicine> pMs = medicineService.searchMedicineInPharmacies("Hil", 0);
+		showPharmacyMedicines(pMs);
+		Assert.assertNotEquals(pMs.size(), 0);
 	}
 
 	public void showPharmacyMedicines(List<PharmacyMedicine> pharmacyMedicines) {

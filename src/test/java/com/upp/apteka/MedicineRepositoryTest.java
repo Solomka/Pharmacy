@@ -110,7 +110,7 @@ public class MedicineRepositoryTest {
 	*/
 	@Test 
 	public void searchMedicineInPharmacies(){
-		List<PharmacyMedicine> medicines = medicineRepository.searchMedicineInPharmacies(new Long("4"), 0, 5);
+		List<PharmacyMedicine> medicines = medicineRepository.searchMedicineInPharmacies("Notta", 0, 5);
 		
 		for(PharmacyMedicine medicine: medicines)
 			System.out.println("Medicine: pharmacyName: " + medicine.getPharmacy().getName()+ ", pharmacyAddress: " + medicine.getPharmacy().getAddress()+ ", medicineName: "+ medicine.getMedicine().getName() + ", packPrice= " + medicine.getPackPrice() + ", packQuantity= " + medicine.getPackQuantity()+ "\n" );
