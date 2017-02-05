@@ -1,5 +1,6 @@
 package com.upp.apteka.service.impl;
 
+import java.awt.Container;
 import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -50,27 +51,46 @@ public class PatientServiceImpl implements PatientService {
 	}
 
 	@Override
-	public List<Patient> findByName(String surname) {
-		return patientRepository.findByName(surname);
+	public List<Patient> findByQuery(String surname, boolean or) {
+		return patientRepository.findByQuery(surname, or);
 	}
 
 	@Override
-	public List<Patient> findByName(String surname, int offset, int limit) {
-		return patientRepository.findByName(surname, offset, limit);
+	public List<Patient> findByQuery(String surname, int offset, int limit, boolean or) {
+		return patientRepository.findByQuery(surname, offset, limit, or);
 	}
 
 	@Override
-	public List<ValidationError> processAdding() throws NotFoundException {
+	public List<ValidationError> processAdding(Container container) throws NotFoundException {
 		PatientDto patientDto = applicationContext.getBean(PatientDto.class);
-		patientDto.readFromContext();
+		patientDto.readFromContext(container);
 
 		PatientValidator patientValidator = applicationContext.getBean(PatientValidator.class);
 
 		List<ValidationError> errors = patientValidator.validate(patientDto);
-		patientDto.showErrors(errors);
+		patientDto.showErrors(errors, container);
 
 		if (errors.isEmpty())
 			create(new Patient(patientDto));
+
+		return errors;
+	}
+
+	@Override
+	public List<ValidationError> processEditing(Container container, Long id) throws NotFoundException {
+		PatientDto patientDto = applicationContext.getBean(PatientDto.class);
+		patientDto.readFromContext(container);
+
+		PatientValidator patientValidator = applicationContext.getBean(PatientValidator.class);
+
+		List<ValidationError> errors = patientValidator.validate(patientDto);
+		patientDto.showErrors(errors, container);
+
+		Patient patient = new Patient(patientDto);
+		patient.setId(id);
+		
+		if (errors.isEmpty())
+			update(patient);
 
 		return errors;
 	}

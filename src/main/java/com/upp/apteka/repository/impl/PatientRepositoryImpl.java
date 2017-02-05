@@ -1,8 +1,11 @@
 package com.upp.apteka.repository.impl;
 
+import java.util.ArrayList;
 import java.util.List;
 
 import org.hibernate.Criteria;
+import org.hibernate.criterion.Conjunction;
+import org.hibernate.criterion.Disjunction;
 import org.hibernate.criterion.Restrictions;
 import org.springframework.stereotype.Repository;
 import org.springframework.transaction.annotation.Transactional;
@@ -40,34 +43,71 @@ public class PatientRepositoryImpl extends AHibernateRepository<Patient, Long> i
 
 	@SuppressWarnings("unchecked")
 	@Override
-	public List<Patient> findByName(String surname) {
+	public List<Patient> findByQuery(String query, boolean or) {
 
-		if (surname == null)
+		if (query == null)
 			throw new NullPointerException("Surname can not be null");
 
-		String[] names = surname.split(" ");
+		String[] names = query.split(" ");
 		Criteria criteria = createEntityCriteria();
+
+		List<Disjunction> restrictions = new ArrayList<>();
 
 		for (String name : names)
 			if (!StringUtils.isEmptyOrWhitespaceOnly(name))
-				criteria.add(Restrictions.or(Restrictions.ilike("surname", name), Restrictions.ilike("name", name)));
+				restrictions.add(Restrictions.or(Restrictions.ilike("surname", name), Restrictions.ilike("name", name),
+						Restrictions.ilike("phone", name)));
 
+		if (or && restrictions.size() > 0){
+			Disjunction disjunction = Restrictions.disjunction();
+			
+			for(Disjunction dis: restrictions)
+				disjunction.add(dis);
+			
+			criteria.add(disjunction);
+		}else if (restrictions.size() > 0){
+			Conjunction conjunction = Restrictions.conjunction();
+			
+			for(Disjunction dis: restrictions)
+				conjunction.add(dis);
+			
+			criteria.add(conjunction);
+		}
 		return criteria.list();
 	}
 
 	@SuppressWarnings("unchecked")
 	@Override
-	public List<Patient> findByName(String surname, int offset, int limit) {
-		if (surname == null)
+	public List<Patient> findByQuery(String query, int offset, int limit, boolean or) {
+
+		if (query == null)
 			throw new NullPointerException("Surname can not be null");
 
-		String[] names = surname.split(" ");
+		String[] names = query.split(" ");
 		Criteria criteria = createEntityCriteria().setFirstResult(offset).setMaxResults(limit);
+
+		List<Disjunction> restrictions = new ArrayList<>();
 
 		for (String name : names)
 			if (!StringUtils.isEmptyOrWhitespaceOnly(name))
-				criteria.add(Restrictions.or(Restrictions.ilike("surname", name), Restrictions.ilike("name", name)));
+				restrictions.add(Restrictions.or(Restrictions.ilike("surname", name), Restrictions.ilike("name", name),
+						Restrictions.ilike("phone", name)));
 
+		if (or && restrictions.size() > 0){
+			Disjunction disjunction = Restrictions.disjunction();
+			
+			for(Disjunction dis: restrictions)
+				disjunction.add(dis);
+			
+			criteria.add(disjunction);
+		}else if (restrictions.size() > 0){
+			Conjunction conjunction = Restrictions.conjunction();
+			
+			for(Disjunction dis: restrictions)
+				conjunction.add(dis);
+			
+			criteria.add(conjunction);
+		}
 		return criteria.list();
 	}
 }

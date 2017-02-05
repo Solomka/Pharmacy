@@ -9,7 +9,7 @@ import org.springframework.stereotype.Component;
 import com.upp.apteka.activity.AddPatientActivity;
 
 @Component("addPatient")
-public class HelloController implements SwingController{
+public class AddPatientController implements SwingController{
 	
 	@Autowired
 	private ApplicationContext appContext;

@@ -31,6 +31,17 @@ public class FrameContextImpl implements FrameContext {
 	}
 
 	@Override
+	public Component findComponentByName(Container container, String name) throws NotFoundException {
+		for (Component component : getAllComponents(container)) {
+			if (component.getName() != null && component.getName().equals(name)) {
+				return component;
+			}
+		}
+
+		throw new NotFoundException("Немає такого поля в контексті фрейма");
+	}
+	
+	@Override
 	public Component findComponentByName(String name) throws NotFoundException {
 		for (Component component : getAllComponents(dispatcherFrame)) {
 			if (component.getName() != null && component.getName().equals(name)) {

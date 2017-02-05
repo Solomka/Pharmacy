@@ -18,18 +18,18 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Scope;
 import org.springframework.stereotype.Component;
 
-import com.upp.apteka.service.PatientService;
+import com.upp.apteka.service.DoctorService;
 import com.upp.apteka.validator.ValidationError;
 
 @Component
 @Scope("prototype")
-public class AddPatientActivity {
+public class AddDoctorActivity {
 
 	@Autowired
 	private JFrame jFrame;
 
 	@Autowired
-	private PatientService patientService;
+	private DoctorService doctorService;
 
 	public void showActivity() {
 		
@@ -48,12 +48,16 @@ public class AddPatientActivity {
 		JTextField surname = new JTextField();
 		surname.setName("form:surname");
 
-		JTextField phone = new JTextField();
-		phone.setName("form:phone");
+		JTextField occupation = new JTextField();
+		occupation.setName("form:occupation");
+
+		JTextField standing = new JTextField();
+		standing.setName("form:standing");
 		
 		JLabel nameLabel = new JLabel("Імя:");
 		JLabel surnameLabel = new JLabel("Прізвище:");
-		JLabel phoneLabel = new JLabel("Телефон:");
+		JLabel occupationLabel = new JLabel("Спеціальність:");
+		JLabel standingLabel = new JLabel("Стаж:");
 
 		JLabel nameError = new JLabel();
 		nameError.setName("error:name");
@@ -63,16 +67,20 @@ public class AddPatientActivity {
 		surnameError.setName("error:surname");
 		surnameError.setForeground(Color.RED);
 
-		JLabel phoneError = new JLabel();
-		phoneError.setForeground(Color.RED);
-		phoneError.setName("error:phone");
+		JLabel occupationError = new JLabel();
+		occupationError.setForeground(Color.RED);
+		occupationError.setName("error:occupation");
+		
+		JLabel standingError = new JLabel();
+		standingError.setForeground(Color.RED);
+		standingError.setName("error:standing");
 
 		JButton button = new JButton("Click");
 		button.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
 
 				try {
-					List<ValidationError> errorsList = patientService.processAdding(jFrame);
+					List<ValidationError> errorsList = doctorService.processAdding(jFrame);
 
 					if (errorsList.isEmpty()) {
 						System.out.println("Ама хасла!11");
@@ -99,14 +107,23 @@ public class AddPatientActivity {
 		jFrame.add(surnamePanel);
 		jFrame.add(surname);
 		
-		JPanel phonePanel = new JPanel();
+		JPanel occupationPanel = new JPanel();
 		
-		phonePanel.setLayout(new BorderLayout());
-		phonePanel.add(phoneLabel, BorderLayout.WEST);
-		phonePanel.add(phoneError, BorderLayout.EAST);
+		occupationPanel.setLayout(new BorderLayout());
+		occupationPanel.add(occupationLabel, BorderLayout.WEST);
+		occupationPanel.add(occupationError, BorderLayout.EAST);
 		
-		jFrame.add(phonePanel);
-		jFrame.add(phone);
+		jFrame.add(occupationPanel);
+		jFrame.add(occupation);
+		
+		JPanel standingPanel = new JPanel();
+		
+		standingPanel.setLayout(new BorderLayout());
+		standingPanel.add(standingLabel, BorderLayout.WEST);
+		standingPanel.add(standingError, BorderLayout.EAST);
+		
+		jFrame.add(standingPanel);
+		jFrame.add(standing);
 		
 		jFrame.add(new JLabel(""));
 		jFrame.add(button);

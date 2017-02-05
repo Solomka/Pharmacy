@@ -16,16 +16,17 @@ import com.upp.apteka.validator.ValidationError;
 
 @Component
 @Scope("prototype")
-public class PatientDto {
+public class DoctorDto {
 
 	@Autowired
 	private FrameContext frameContext;
 
 	private String name;
 	private String surname;
-	private String phone;
-	
-	private final static Logger logger = Logger.getLogger(PatientDto.class.getName());
+	private String occupation;
+	private int standing;
+
+	private final static Logger logger = Logger.getLogger(DoctorDto.class.getName());
 
 	public String getName() {
 		return name;
@@ -43,20 +44,30 @@ public class PatientDto {
 		this.surname = surname;
 	}
 
-	public String getPhone() {
-		return phone;
+	public String getOccupation() {
+		return occupation;
 	}
 
-	public void setPhone(String phone) {
-		this.phone = phone;
+	public void setOccupation(String occupation) {
+		this.occupation = occupation;
+	}
+
+	public int getStanding() {
+		return standing;
+	}
+
+	public void setStanding(int standing) {
+		this.standing = standing;
 	}
 
 	@Override
 	public int hashCode() {
 		final int prime = 31;
 		int result = 1;
+		result = prime * result + ((frameContext == null) ? 0 : frameContext.hashCode());
 		result = prime * result + ((name == null) ? 0 : name.hashCode());
-		result = prime * result + ((phone == null) ? 0 : phone.hashCode());
+		result = prime * result + ((occupation == null) ? 0 : occupation.hashCode());
+		result = prime * result + standing;
 		result = prime * result + ((surname == null) ? 0 : surname.hashCode());
 		return result;
 	}
@@ -69,16 +80,23 @@ public class PatientDto {
 			return false;
 		if (getClass() != obj.getClass())
 			return false;
-		PatientDto other = (PatientDto) obj;
+		DoctorDto other = (DoctorDto) obj;
+		if (frameContext == null) {
+			if (other.frameContext != null)
+				return false;
+		} else if (!frameContext.equals(other.frameContext))
+			return false;
 		if (name == null) {
 			if (other.name != null)
 				return false;
 		} else if (!name.equals(other.name))
 			return false;
-		if (phone == null) {
-			if (other.phone != null)
+		if (occupation == null) {
+			if (other.occupation != null)
 				return false;
-		} else if (!phone.equals(other.phone))
+		} else if (!occupation.equals(other.occupation))
+			return false;
+		if (standing != other.standing)
 			return false;
 		if (surname == null) {
 			if (other.surname != null)
@@ -90,7 +108,8 @@ public class PatientDto {
 
 	@Override
 	public String toString() {
-		return "PatientDto [name=" + name + ", surname=" + surname + ", phone=" + phone + "]";
+		return "DoctorDto [frameContext=" + frameContext + ", name=" + name + ", surname=" + surname + ", occupation="
+				+ occupation + ", standing=" + standing + "]";
 	}
 
 	public void readFromContext(Container container) {
@@ -98,11 +117,19 @@ public class PatientDto {
 		try {
 			JTextField name = (JTextField) frameContext.findComponentByName(container, "form:name");
 			JTextField surname = (JTextField) frameContext.findComponentByName(container, "form:surname");
-			JTextField phone = (JTextField) frameContext.findComponentByName(container, "form:phone");
+			JTextField standing = (JTextField) frameContext.findComponentByName(container, "form:standing");
+			JTextField occupation = (JTextField) frameContext.findComponentByName(container, "form:occupation");
 
 			this.name = name.getText();
 			this.surname = surname.getText();
-			this.phone = phone.getText();
+
+			try {
+				this.standing = Integer.parseInt(standing.getText());
+			} catch (Exception e) {
+				this.standing = 0;
+			}
+			this.occupation = occupation.getText();
+
 		} catch (Exception e) {
 			logger.error("Невідповідність типу поля!");
 		}
@@ -110,7 +137,7 @@ public class PatientDto {
 
 	public void showErrors(List<ValidationError> errors, Container container) {
 
-		String[] errorFields = { "error:name", "error:surname", "error:phone" };
+		String[] errorFields = { "error:name", "error:surname", "error:standing", "error:occupation" };
 
 		for (String errorField : errorFields)
 			try {

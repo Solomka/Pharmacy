@@ -9,5 +9,7 @@ import javassist.NotFoundException;
 public interface FrameContext {
 	List<Component> getAllComponents(final Container c);
 	
+	Component findComponentByName(Container container, String name) throws NotFoundException;
+	
 	Component findComponentByName(String name) throws NotFoundException;
 }

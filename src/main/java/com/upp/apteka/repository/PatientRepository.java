@@ -7,7 +7,7 @@ import com.upp.apteka.utils.repository.IRepository;
 
 public interface PatientRepository extends IRepository<Patient, Long>{
 
-	List<Patient> findByName(String surname);
+	List<Patient> findByQuery(String surname, boolean or);
 	
-	List<Patient> findByName(String surname, int offset, int limit);
+	List<Patient> findByQuery(String surname, int offset, int limit, boolean or);
 }

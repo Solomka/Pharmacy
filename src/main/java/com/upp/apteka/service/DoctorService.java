@@ -3,28 +3,28 @@ package com.upp.apteka.service;
 import java.awt.Container;
 import java.util.List;
 
-import com.upp.apteka.bo.Patient;
+import com.upp.apteka.bo.Doctor;
 import com.upp.apteka.validator.ValidationError;
 
 import javassist.NotFoundException;
 
-public interface PatientService {
+public interface DoctorService {
 	
 	List<ValidationError> processAdding(Container container) throws NotFoundException;
 	
 	List<ValidationError> processEditing(Container container, Long id) throws NotFoundException;
 	
-	List<Patient> getAll(int offset, int limit);
+	List<Doctor> getAll(int offset, int limit);
 	
-	List<Patient> findByQuery(String surname, boolean or);
+	List<Doctor> findByQuery(String surname, boolean or);
 	
-	List<Patient> findByQuery(String surname, int offset, int limit, boolean or);
+	List<Doctor> findByQuery(String surname, int offset, int limit, boolean or);
 
-	Long create(Patient patient);
+	Long create(Doctor doctor);
 
-	Patient read(Long key);
+	Doctor read(Long key);
 
-	void update(Patient patient);
+	void update(Doctor doctor);
 
 	boolean delete(Long key);
 }
