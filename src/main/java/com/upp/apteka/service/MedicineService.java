@@ -17,10 +17,11 @@ public interface MedicineService {
 	
 	boolean deleteMedicine(Long medicineId);
 
+	//get existing pharmacy medicines
 	List<PharmacyMedicine> getPharmacyMedicines(Long id, int offset);
 
-	PharmacyMedicine getPharmacyMedicine(Long pharmacyId, Long medicineId);
+	PharmacyMedicine getPharmacyMedicine(Long pharmacyId, String medicineName);
 
-	List<PharmacyMedicine> searchMedicineInPharmacies(Long medicineId, int offset);
+	List<PharmacyMedicine> searchMedicineInPharmacies(String medicineName, int offset);
 
 }

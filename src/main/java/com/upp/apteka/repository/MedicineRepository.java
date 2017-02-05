@@ -10,8 +10,8 @@ public interface MedicineRepository extends IRepository<Medicine, Long> {
 	
 	List<PharmacyMedicine> getPharmacyMedicines(Long id, int offset, int limit);
 	
-	PharmacyMedicine getPharmacyMedicine(Long pharmacyId, Long medicineId);
+	PharmacyMedicine getPharmacyMedicine(Long pharmacyId, String medicineName);
 	
-	List<PharmacyMedicine> searchMedicineInPharmacies(Long medicineId, int offset, int limit);
+	List<PharmacyMedicine> searchMedicineInPharmacies(String medicineName, int offset, int limit);
 
 }

@@ -49,14 +49,14 @@ public class MedicineServiceImpl implements MedicineService {
 		return medicineRepository.getPharmacyMedicines(id, offset, Constants.LIMIT);
 	}
 
-	public PharmacyMedicine getPharmacyMedicine(Long pharmacyId, Long medicineId) {
+	public PharmacyMedicine getPharmacyMedicine(Long pharmacyId, String medicineName) {
 
-		return medicineRepository.getPharmacyMedicine(pharmacyId, medicineId);
+		return medicineRepository.getPharmacyMedicine(pharmacyId, medicineName);
 	}
 
-	public List<PharmacyMedicine> searchMedicineInPharmacies(Long medicineId, int offset) {
+	public List<PharmacyMedicine> searchMedicineInPharmacies(String medicineName, int offset) {
 
-		return medicineRepository.searchMedicineInPharmacies(medicineId, offset, Constants.LIMIT);
+		return medicineRepository.searchMedicineInPharmacies(medicineName, offset, Constants.LIMIT);
 	}
 
 }

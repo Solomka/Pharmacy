@@ -57,22 +57,22 @@ public class MedicineRepositoryImpl extends AHibernateRepository<Medicine, Long>
 		return  (List<PharmacyMedicine>) query.setFirstResult(offset).setMaxResults(limit).list();
 	}
 
-	public PharmacyMedicine getPharmacyMedicine(Long pharmacyId, Long medicineId) {
+	public PharmacyMedicine getPharmacyMedicine(Long pharmacyId, String medicineName) {
 		String hql = "SELECT phM"
 				+ " FROM PharmacyMedicine phM"
-				+ " WHERE phM.pharmacyMedicineID.pharmacy.id = :pharmacyId AND phM.pharmacyMedicineID.medicine.id = :medicineId";
+				+ " WHERE phM.pharmacyMedicineID.pharmacy.id = :pharmacyId AND phM.pharmacyMedicineID.medicine.name = :medicineName";
 		
-		Query query = createQuery(hql).setParameter("pharmacyId", pharmacyId).setParameter("medicineId", medicineId);
+		Query query = createQuery(hql).setParameter("pharmacyId", pharmacyId).setString("medicineName", medicineName + "%");
 		return  (PharmacyMedicine) query.uniqueResult();
 	}
 
 	@SuppressWarnings("unchecked")
-	public List<PharmacyMedicine> searchMedicineInPharmacies(Long medicineId, int offset, int limit) {
+	public List<PharmacyMedicine> searchMedicineInPharmacies(String medicineName, int offset, int limit) {
 		String hql = "SELECT phM"
 				+ " FROM PharmacyMedicine phM"
-				+ " WHERE phM.pharmacyMedicineID.medicine.id = :medicineId AND phM.packQuantity != 0 order by phM.pharmacyMedicineID.pharmacy.name asc";
+				+ " WHERE phM.pharmacyMedicineID.medicine.name = :medicineName AND phM.packQuantity != 0 order by phM.pharmacyMedicineID.pharmacy.name asc";
 		
-		Query query = createQuery(hql).setParameter("medicineId", medicineId);
+		Query query = createQuery(hql).setString("medicineName", medicineName + "%");
 		return  (List<PharmacyMedicine>) query.setFirstResult(offset).setMaxResults(limit).list();
 	}
 
