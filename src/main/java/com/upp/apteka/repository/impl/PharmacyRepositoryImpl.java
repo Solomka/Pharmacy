@@ -5,6 +5,7 @@ import java.util.List;
 import org.apache.log4j.Logger;
 import org.hibernate.Criteria;
 import org.hibernate.Query;
+import org.hibernate.criterion.Order;
 import org.hibernate.criterion.Restrictions;
 import org.springframework.stereotype.Repository;
 
@@ -23,7 +24,7 @@ public class PharmacyRepositoryImpl extends AHibernateRepository<Pharmacy, Long>
 		 * String hql = "FROM Pharmacy"; return (List<Pharmacy>)
 		 * createQuery(hql).list();
 		 */
-		return (List<Pharmacy>) createEntityCriteria().setFirstResult(offset).setMaxResults(limit).list();
+		return (List<Pharmacy>) createEntityCriteria().setFirstResult(offset).setMaxResults(limit).addOrder(Order.asc("name")).list();
 	}
 
 	public Long create(Pharmacy pharmacy) {

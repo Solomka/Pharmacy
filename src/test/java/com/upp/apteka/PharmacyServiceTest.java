@@ -59,7 +59,7 @@ public class PharmacyServiceTest {
 		Pharmacy pharmacy = new Pharmacy("Social pharmacy", "I. Franka, 12 str.", 30);
 		return pharmacy;
 	}
-/*
+
 	@Test
 	public void getAllPharmacies() {
 
@@ -68,7 +68,7 @@ public class PharmacyServiceTest {
 		Assert.assertNotEquals(pharmacies.size(), 0);
 
 	}
-
+/*
 	@Test
 	public void getPharmacy() {
 
@@ -76,7 +76,7 @@ public class PharmacyServiceTest {
 		System.out.println("Pharmacy: " + pharmacy);
 		Assert.assertNotNull(pharmacy);
 	}
-*/
+
 	
 	@Test
 	public void findPharmacyByName() {
@@ -84,7 +84,7 @@ public class PharmacyServiceTest {
 		showPharmacies(pharmacies);
 		Assert.assertNotEquals(pharmacies.size(), 0);
 	}
-	
+	*/
 /*
 	@Test
 	public void addPharmacy() {

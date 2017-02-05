@@ -18,6 +18,7 @@ public class PharmacyServiceImpl implements PharmacyService{
 	@Autowired
 	PharmacyRepository pharmacyRepository;
 
+	//get all pharmacies ordered by name
 	public List<Pharmacy> getAllPharmacies(int offset) {
 		
 		return pharmacyRepository.getAll(offset, Constants.LIMIT);
