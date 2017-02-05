@@ -79,7 +79,7 @@ public class PharmacyServiceTest {
 
 	
 	@Test
-	public void findPharmacyByName() {
+	public void getPharmacyByName() {
 		pharmacies = pharmacyService.findPharmacyByName("z");
 		showPharmacies(pharmacies);
 		Assert.assertNotEquals(pharmacies.size(), 0);

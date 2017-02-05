@@ -44,7 +44,7 @@ public class PharmacyServiceImpl implements PharmacyService{
 		return pharmacyRepository.delete(idPharmacy);
 	}
 
-	public List<Pharmacy> findPharmacyByName(String name) {
+	public List<Pharmacy> getPharmacyByName(String name) {
 		
 		return pharmacyRepository.findPharmacyByName(name);
 	}

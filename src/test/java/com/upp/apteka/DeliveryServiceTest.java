@@ -3,6 +3,7 @@ package com.upp.apteka;
 import static org.junit.Assert.*;
 
 import java.sql.Date;
+import java.util.ArrayList;
 import java.util.List;
 
 import org.apache.log4j.BasicConfigurator;
@@ -27,6 +28,7 @@ import com.upp.apteka.config.AppConfig;
 import com.upp.apteka.repository.MedicineRepository;
 import com.upp.apteka.repository.PharmacyRepository;
 import com.upp.apteka.service.DeliveryService;
+import com.upp.apteka.service.PharmacyService;
 
 @RunWith(SpringJUnit4ClassRunner.class)
 @ContextConfiguration(classes = AppConfig.class, loader = AnnotationConfigContextLoader.class)
@@ -36,12 +38,14 @@ public class DeliveryServiceTest {
 	private DeliveryService deliveryService;
 	
 	@Autowired
-	private PharmacyRepository pharmacyRepository;
+	private PharmacyService pharmacyService;
 	
 	@Autowired
 	private MedicineRepository medicineRepository;
 	
 	private Delivery delivery;
+	private List<Delivery> deliveries;
+	
 	
 	@BeforeClass
 	public static void prepare() {
@@ -56,43 +60,87 @@ public class DeliveryServiceTest {
 	public void before() {
 
 		delivery = null;
+		deliveries = new ArrayList<Delivery>();
 	}
-	
+	/*
 	@Test
-	public void createDelivery(){
+	public void addDelivery(){
 		delivery = generateDeliveryInstance();
 		deliveryService.addDelivery(delivery);
 		Assert.assertNotNull(delivery.getId());
 		
-	}
+	}	
 	
 	@Test
-	@Transactional
-	public void readDelivery(){
-	    delivery = deliveryService.readDelivery(new Long("28"));
-	    
-	    System.out.println("Delivery: id: " + delivery.getId() + ", date: "+ delivery.getDate());
-		List<DeliveryMedicine> delMeds = delivery.getDeliveryMedicines();
-		
-		for(DeliveryMedicine delMed: delMeds){
-			System.out.println("Delivery Medicine: name: "+ delMed.getMedicine().getName() + ", box_quantity: " + delMed.getBoxQuantity() );;
-		}
-		
+	public void getAllDeliveries(){
+		deliveries = deliveryService.getAllDeliveries(0);
+		showDeliveries(deliveries);
+		Assert.assertNotEquals(deliveries.size(), 0);
+	}
+	
+	
+	@Test
+	public void getAllPharmacyDeliveries(){
+		deliveries = deliveryService.getAllPharmacyDeliveries(new Long("9"), 0);
+		showDeliveries(deliveries);
+		Assert.assertNotEquals(deliveries.size(), 0);
+	}
+	
+	
+	@Test
+	public void getDelivery(){
+	    delivery = deliveryService.getDelivery(new Long("28"));	    
+	    System.out.println("Delivery: id: " + delivery.getId() + ", date: "+ delivery.getDate());				
 		Assert.assertNotNull(delivery);
 	}
-
-	/*
+	
+	
+	@Test
+	public void getPharmacyDeliveriesByPeriod(){
+		
+		String strFrom="2017-01-31";  
+	    Date from = Date.valueOf(strFrom);
+	    System.out.println("FromDate: " + from.toString());
+	    
+	    String strTo="2017-02-05";  
+	    Date to = Date.valueOf(strTo);
+	    System.out.println("ToDate: " + to.toString());
+		
+		deliveries = deliveryService.getPharmacyDeliveriesByPeriod(from, to, new Long("8"), 0);
+		
+		showDeliveries(deliveries);
+		Assert.assertNotEquals(deliveries.size(), 0);
+		
+	}
+	
+	
+	@Test
+	public void getPharmacyMedicineDeliveriesByPeriod(){
+		String strFrom="2017-01-31";  
+	    Date from = Date.valueOf(strFrom);
+	    System.out.println("FromDate: " + from.toString());
+	    
+	    String strTo="2017-02-05";  
+	    Date to = Date.valueOf(strTo);
+	    System.out.println("FromDate: " + to.toString());
+		
+		deliveries = deliveryService.getPharmacyMedicineDeliveriesByPeriod(from, to, new Long("8"), new Long("3"), 0);
+		showDeliveries(deliveries);
+		Assert.assertNotEquals(deliveries.size(), 0);		
+	}
+*/
+	
 	@Test
 	public void deleteDelivery(){
-		Assert.assertEquals(deliveryService.deleteDelivery(new Long("27")), true);
+		Assert.assertEquals(deliveryService.deleteDelivery(new Long("29")), true);
 	}
-	*/
+	
 	public Delivery generateDeliveryInstance() {
 
 		//Timestamp deliveryDate = new Timestamp(System.currentTimeMillis());
 		String str="2017-02-03";  
 	    Date deliveryDate = Date.valueOf(str);
-		Pharmacy pharmacy = pharmacyRepository.read(new Long("9"));
+		Pharmacy pharmacy = pharmacyService.getPharmacy(new Long("9"));
 
 		Delivery delivery = new Delivery(deliveryDate, pharmacy);
 
@@ -115,6 +163,12 @@ public class DeliveryServiceTest {
 		delM2.setMedicine(medicine2);
 		delivery.addToDeliveryMedicine(delM2);
 
+	}
+	
+	private void showDeliveries(List<Delivery> deliveries){
+		for(Delivery delivery: deliveries)
+			System.out.println("Delivery: " + delivery + ", pharmacy:" + delivery.getPharmacy() + "\n");
+		
 	}
 
 }

@@ -137,7 +137,7 @@ public class DeliveryRepositoryTest {
 		for(Delivery delivery: deliveries)
 			System.out.println("delivery: " + delivery.toString() + "\n");
 		Assert.assertNotNull(deliveries);
-	}*/
+	}
 		
 		@Test
 		public void getPharmacyMedicineDeliveryByPeriod() throws ParseException{
@@ -163,6 +163,11 @@ public class DeliveryRepositoryTest {
 			Assert.assertNotEquals(deliveries.size(), 0);		
 		
 	}
+	*/	
+		@Test
+		public void checkIfDeliveryMedicineSold(){
+			Assert.assertEquals(deliveryRepository.checkIfDeliveryMedicineSold(new Long("29")), false);
+		}
 	
 	/*
 	@Test

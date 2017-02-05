@@ -16,7 +16,7 @@ public interface PharmacyService {
 	
 	boolean deletePharmacy(Long idPharmacy);
 	
-	List<Pharmacy> findPharmacyByName(String name);
+	List<Pharmacy> getPharmacyByName(String name);
 	
 
 }

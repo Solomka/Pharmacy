@@ -7,18 +7,26 @@ import com.upp.apteka.bo.Delivery;
 
 public interface DeliveryService {
 
+	//get all deliveries to all pharmacies ordered by date (the most recent dates first)
 	List<Delivery> getAllDeliveries(int offset);
 	
-	Delivery readDelivery(Long id);
+	//get all pharmacy deliveries ordered by date (the most recent dates first)
+	List<Delivery> getAllPharmacyDeliveries(Long pharmacyId, int offset);
+	
+	Delivery getDelivery(Long id);
 	
 	void addDelivery(Delivery delivery);
 	
 	void updateDelivery(Delivery delivery);
 	
+	//delete delivery if no one medicine from the delivery medicines was sold
 	boolean deleteDelivery(Long id);
+	boolean checkIfDeliveryMedicineSold(Long deliveryId);
 	
-	List<Delivery> findPharmacyDeliveriesByPeriod(Date from, Date to, Long pharmacyId, int offset);
-	List<Delivery> findPharmacyMedicineDeliveriesByPeriod(Date from, Date to, Long pharmacyId, Long medicineId, int offset);
+	List<Delivery> getPharmacyDeliveriesByPeriod(Date from, Date to, Long pharmacyId, int offset);
+	
+	// ?
+	List<Delivery> getPharmacyMedicineDeliveriesByPeriod(Date from, Date to, Long pharmacyId, Long medicineId, int offset);
 	
 	
 
