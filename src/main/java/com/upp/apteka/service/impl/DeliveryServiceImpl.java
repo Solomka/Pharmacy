@@ -30,10 +30,12 @@ public class DeliveryServiceImpl implements DeliveryService {
 	PharmacyRepository pharmacyRepository;
 
 	public List<Delivery> getAllDeliveries(int offset) {
+		
 		return deliveryRepository.getAll(offset, Constants.LIMIT);
 	}
 
 	public Delivery readDelivery(Long id) {
+		
 		return deliveryRepository.read(id);
 	}
 
@@ -79,6 +81,7 @@ public class DeliveryServiceImpl implements DeliveryService {
 	}
 	
 	public void updateDelivery(Delivery delivery) {
+		
 		deliveryRepository.update(delivery);
 	}
 
