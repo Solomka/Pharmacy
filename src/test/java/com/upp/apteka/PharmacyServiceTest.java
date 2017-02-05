@@ -77,6 +77,7 @@ public class PharmacyServiceTest {
 		Assert.assertNotNull(pharmacy);
 	}
 */
+	
 	@Test
 	public void findPharmacyByName() {
 		pharmacies = pharmacyService.findPharmacyByName("Z");
@@ -106,6 +107,7 @@ public class PharmacyServiceTest {
 		Assert.assertEquals(pharmacyService.deletePharmacy(new Long("10")), true);
 	}
 	*/
+	
 	private void showPharmacies(List<Pharmacy> pharmacies) {
 		for (Pharmacy pharmacy : pharmacies)
 			System.out.println("Pharmacy:" + pharmacy + "\n");
