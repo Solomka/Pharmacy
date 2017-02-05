@@ -7,7 +7,6 @@ import java.util.List;
 import org.hibernate.Criteria;
 import org.hibernate.criterion.Conjunction;
 import org.hibernate.criterion.Disjunction;
-import org.hibernate.criterion.LogicalExpression;
 import org.hibernate.criterion.Restrictions;
 import org.springframework.stereotype.Repository;
 import org.springframework.transaction.annotation.Transactional;
@@ -21,9 +20,9 @@ import com.upp.apteka.utils.repository.AHibernateRepository;
 @Transactional
 public class PrescriptionRepositoryImpl extends AHibernateRepository<Prescription, Long>
 		implements PrescriptionRepository {
-
-	private final String doctorRestriction = "(id_patient IN (SELECT id FROM patient WHERE UPPER(name) LIKE UPPER('%?%') OR UPPER(surname) LIKE UPPER('%?%') OR phone LIKE '%?%'))";
-	private final String patientRestriction = "(id_doctor IN (SELECT id FROM doctor WHERE UPPER(name) LIKE UPPER('%?%') OR UPPER(surname) LIKE UPPER('%?%')))";
+	
+	private final String patientRestriction = "(id_patient IN (SELECT id FROM patient WHERE UPPER(name) LIKE UPPER('%?%') OR UPPER(surname) LIKE UPPER('%?%') OR phone LIKE '%?%'))";
+	private final String doctorRestriction = "(id_doctor IN (SELECT id FROM doctor WHERE UPPER(name) LIKE UPPER('%?%') OR UPPER(surname) LIKE UPPER('%?%')))";
 	private final String pharmacyRestriction = "(EXISTS (SELECT * FROM purchase WHERE id_prescr = id AND id_pharmacy IN (SELECT id FROM pharmacy WHERE UPPER(name) LIKE UPPER('%?%'))))";
 	private final String medicineRestriction = "(EXISTS (SELECT * FROM prescr_medicine WHERE id_prescr = id AND id_medicine IN (SELECT id FROM medicine WHERE UPPER(name) LIKE UPPER('%?%'))))";
 
@@ -52,11 +51,13 @@ public class PrescriptionRepositoryImpl extends AHibernateRepository<Prescriptio
 		return deleteEntity(key);
 	}
 
+	@SuppressWarnings("unchecked")
 	@Override
 	public List<Prescription> findByQuery(String query, Date start, Date finish, boolean or, Boolean sold) {
 		return createSearchCriteria(query, start, finish, or, sold).list();
 	}
 
+	@SuppressWarnings("unchecked")
 	@Override
 	public List<Prescription> findByQuery(String query, Date start, Date finish, int offset, int limit, boolean or,
 			Boolean sold) {

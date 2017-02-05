@@ -50,13 +50,13 @@ public class DoctorServiceImpl implements DoctorService{
 	}
 
 	@Override
-	public List<Doctor> findByQuery(String surname, boolean or) {
-		return doctorRepository.findByQuery(surname, or);
+	public List<Doctor> findByQuery(String query, boolean or) {
+		return doctorRepository.findByQuery(query, or);
 	}
 
 	@Override
-	public List<Doctor> findByQuery(String surname, int offset, int limit, boolean or) {
-		return doctorRepository.findByQuery(surname, offset, limit, or);
+	public List<Doctor> findByQuery(String query, int offset, int limit, boolean or) {
+		return doctorRepository.findByQuery(query, offset, limit, or);
 	}
 
 	@Override

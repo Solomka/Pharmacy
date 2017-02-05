@@ -16,9 +16,9 @@ public interface DoctorService {
 	
 	List<Doctor> getAll(int offset, int limit);
 	
-	List<Doctor> findByQuery(String surname, boolean or);
+	List<Doctor> findByQuery(String query, boolean or);
 	
-	List<Doctor> findByQuery(String surname, int offset, int limit, boolean or);
+	List<Doctor> findByQuery(String query, int offset, int limit, boolean or);
 
 	Long create(Doctor doctor);
 
