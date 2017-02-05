@@ -50,8 +50,9 @@ public class PharmacyRepositoryImpl extends AHibernateRepository<Pharmacy, Long>
 	@SuppressWarnings("unchecked")
 	public List<Pharmacy> findPharmacyByName(String name) {
 		
-		 String hql = "FROM Pharmacy WHERE name = :name";
-		 Query query = createQuery(hql).setParameter("name", name); 
+		 String hql = "FROM Pharmacy WHERE name LIKE :name";
+		 //Query query = createQuery(hql).setString("name", + "%" + name + "%"); 
+		 Query query = createQuery(hql).setString("name", name + "%"); 
 		 return (List<Pharmacy>) query.list();		 
 
 		/*

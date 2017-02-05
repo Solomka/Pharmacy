@@ -80,7 +80,7 @@ public class PharmacyServiceTest {
 	
 	@Test
 	public void findPharmacyByName() {
-		pharmacies = pharmacyService.findPharmacyByName("Z");
+		pharmacies = pharmacyService.findPharmacyByName("z");
 		showPharmacies(pharmacies);
 		Assert.assertNotEquals(pharmacies.size(), 0);
 	}
