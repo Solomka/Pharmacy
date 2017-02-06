@@ -42,7 +42,7 @@ public class PatientRepositoryImpl extends AHibernateRepository<Patient, Long> i
 	}
 
 	@SuppressWarnings("unchecked")
-	@Override
+	//@Override
 	public List<Patient> findByQuery(String query, boolean or) {
 
 		if (query == null)
@@ -51,7 +51,7 @@ public class PatientRepositoryImpl extends AHibernateRepository<Patient, Long> i
 		String[] names = query.split(" ");
 		Criteria criteria = createEntityCriteria();
 
-		List<Disjunction> restrictions = new ArrayList<>();
+		List<Disjunction> restrictions = new ArrayList<Disjunction>();
 
 		for (String name : names)
 			if (!StringUtils.isEmptyOrWhitespaceOnly(name))
@@ -77,7 +77,7 @@ public class PatientRepositoryImpl extends AHibernateRepository<Patient, Long> i
 	}
 
 	@SuppressWarnings("unchecked")
-	@Override
+	//@Override
 	public List<Patient> findByQuery(String query, int offset, int limit, boolean or) {
 
 		if (query == null)
@@ -86,7 +86,7 @@ public class PatientRepositoryImpl extends AHibernateRepository<Patient, Long> i
 		String[] names = query.split(" ");
 		Criteria criteria = createEntityCriteria().setFirstResult(offset).setMaxResults(limit);
 
-		List<Disjunction> restrictions = new ArrayList<>();
+		List<Disjunction> restrictions = new ArrayList<Disjunction>();
 
 		for (String name : names)
 			if (!StringUtils.isEmptyOrWhitespaceOnly(name))

@@ -52,13 +52,13 @@ public class PrescriptionRepositoryImpl extends AHibernateRepository<Prescriptio
 	}
 
 	@SuppressWarnings("unchecked")
-	@Override
+	//@Override
 	public List<Prescription> findByQuery(String query, Date start, Date finish, boolean or, Boolean sold) {
 		return createSearchCriteria(query, start, finish, or, sold).list();
 	}
 
 	@SuppressWarnings("unchecked")
-	@Override
+	//@Override
 	public List<Prescription> findByQuery(String query, Date start, Date finish, int offset, int limit, boolean or,
 			Boolean sold) {
 		Criteria criteria = createSearchCriteria(query, start, finish, or, sold);
@@ -81,7 +81,7 @@ public class PrescriptionRepositoryImpl extends AHibernateRepository<Prescriptio
 		if (!StringUtils.isEmptyOrWhitespaceOnly(query)) {
 
 			// Всі підкритерії
-			List<Disjunction> restrictions = new ArrayList<>();
+			List<Disjunction> restrictions = new ArrayList<Disjunction>();
 
 			String[] subValues = query.split(" ");
 

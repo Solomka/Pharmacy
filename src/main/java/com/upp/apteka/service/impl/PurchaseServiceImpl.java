@@ -25,23 +25,23 @@ public class PurchaseServiceImpl implements PurchaseService{
 	@Autowired
 	private PrescriptionService prescriptionService;
 
-	@Override
+	//@Override
 	public List<Purchase> getAll(int offset, int limit) {
 		return purchaseRepository.getAll(offset, limit);
 	}
 
-	@Override
+	//@Override
 	public List<Purchase> findByQuery(String query, Date start, Date finish, boolean or, Long number) {
 		return purchaseRepository.findByQuery(query, start, finish, or, number);
 	}
 
-	@Override
+	//@Override
 	public List<Purchase> findByQuery(String query, Date start, Date finishDate, int offset, int limit, boolean or,
 			Long number) {
 		return purchaseRepository.findByQuery(query, start, finishDate, offset, limit, or, number);
 	}
 
-	@Override
+	//@Override
 	@Transactional
 	public Long create(Purchase purchase) {
 		Set<PurchaseMedicine> purchMedicines = purchase.getPurchaseMedicines();
@@ -63,12 +63,12 @@ public class PurchaseServiceImpl implements PurchaseService{
 		return purchaseRepository.create(purchase);
 	}
 
-	@Override
+	//@Override
 	public Purchase read(Long key) {
 		return purchaseRepository.read(key);
 	}
 
-	@Override
+	//@Override
 	@Transactional
 	public void update(Purchase newPurchase) {
 		Purchase purchase = read(newPurchase.getId());
@@ -104,7 +104,7 @@ public class PurchaseServiceImpl implements PurchaseService{
 		
 	}
 
-	@Override
+	//@Override
 	@Transactional
 	public boolean delete(Long key) {
 		Purchase purchase = read(key);

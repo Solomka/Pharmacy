@@ -47,13 +47,13 @@ public class PurchaseRepositoryImpl extends AHibernateRepository<Purchase, Long>
 	}
 
 	@SuppressWarnings("unchecked")
-	@Override
+	//@Override
 	public List<Purchase> findByQuery(String query, Date start, Date finish, boolean or, Long number) {
 		return createSearchCriteria(query, start, finish, or, number).list();
 	}
 
 	@SuppressWarnings("unchecked")
-	@Override
+	//@Override
 	public List<Purchase> findByQuery(String query, Date start, Date finish, int offset, int limit, boolean or,
 			Long number) {
 		Criteria criteria = createSearchCriteria(query, start, finish, or, number);
@@ -80,7 +80,7 @@ public class PurchaseRepositoryImpl extends AHibernateRepository<Purchase, Long>
 		if (!StringUtils.isEmptyOrWhitespaceOnly(query)) {
 
 			// Всі підкритерії
-			List<Disjunction> restrictions = new ArrayList<>();
+			List<Disjunction> restrictions = new ArrayList<Disjunction>();
 
 			String[] subValues = query.split(" ");
 
