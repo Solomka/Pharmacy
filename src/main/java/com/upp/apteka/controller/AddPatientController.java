@@ -6,16 +6,16 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.ApplicationContext;
 import org.springframework.stereotype.Component;
 
-import com.upp.apteka.activity.HelloActivity;
+import com.upp.apteka.activity.AddPatientActivity;
 
-@Component("hello")
-public class HelloController implements SwingController{
+@Component("addPatient")
+public class AddPatientController implements SwingController{
 	
 	@Autowired
 	private ApplicationContext appContext;
 	
 	public void switchToActivity(Map<String, Object> params){
-		HelloActivity helloActivity = appContext.getBean(HelloActivity.class, "HELLO-HELLO");
+		AddPatientActivity helloActivity = appContext.getBean(AddPatientActivity.class);
 		helloActivity.showActivity();
 
 	}

@@ -3,10 +3,8 @@ package com.upp.apteka.repository.impl;
 import java.util.List;
 
 import org.apache.log4j.Logger;
-import org.hibernate.Criteria;
 import org.hibernate.Query;
 import org.hibernate.criterion.Order;
-import org.hibernate.criterion.Restrictions;
 import org.springframework.stereotype.Repository;
 
 import com.upp.apteka.bo.Pharmacy;
