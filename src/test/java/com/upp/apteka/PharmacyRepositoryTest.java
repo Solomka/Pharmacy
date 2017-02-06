@@ -18,6 +18,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.test.context.ContextConfiguration;
 import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 import org.springframework.test.context.support.AnnotationConfigContextLoader;
+import org.springframework.transaction.annotation.Transactional;
 
 import com.upp.apteka.bo.Pharmacy;
 import com.upp.apteka.config.AppConfig;
@@ -25,6 +26,7 @@ import com.upp.apteka.repository.PharmacyRepository;
 
 @RunWith(SpringJUnit4ClassRunner.class)
 @ContextConfiguration(classes = AppConfig.class, loader = AnnotationConfigContextLoader.class)
+@Transactional
 public class PharmacyRepositoryTest {
 
 	private static final Logger LOGGER = Logger.getLogger(PharmacyRepositoryTest.class.getName());
@@ -59,7 +61,7 @@ public class PharmacyRepositoryTest {
 
 	public static Pharmacy generatePharmacyInstance() {
 
-		Pharmacy pharmacy = new Pharmacy("Green pharmacy", "Zelena, 12 str.", 30);
+		Pharmacy pharmacy = new Pharmacy("Znahr", "Levandivka, 12 str.", 30);
 		return pharmacy;
 	}
 /*
@@ -79,7 +81,7 @@ public class PharmacyRepositoryTest {
 	
 	@Test 
 	public void getAllPharmacies(){
-		List<Pharmacy> pharmacies = pharmacyRepository.getAll();
+		List<Pharmacy> pharmacies = pharmacyRepository.getAll(0, 5);
 		
 		for(Pharmacy pharmacy: pharmacies)
 			System.out.println("Pharmacy:" + pharmacy + "\n" );
@@ -89,7 +91,7 @@ public class PharmacyRepositoryTest {
 	@Test
 	public void getPharmacyByName(){
 		//List<Pharmacy> pharmacies = pharmacyRepository.searchByCriteria(PharmacySpecificationUtils.findPharmacyByName("Green apteka"));
-		List<Pharmacy> pharmacies = pharmacyRepository.findPharamcyByName("Green apteka");
+		List<Pharmacy> pharmacies = pharmacyRepository.findPharmacyByName("Green apteka");
 		for(Pharmacy pharmacy: pharmacies)
 			System.out.println("Pharmacy by name:" + pharmacy + "\n" );
 		Assert.assertNotEquals(pharmacies.size(), 0);

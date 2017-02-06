@@ -31,6 +31,7 @@ import com.upp.apteka.repository.PharmacyRepository;
 
 @RunWith(SpringJUnit4ClassRunner.class)
 @ContextConfiguration(classes = AppConfig.class, loader = AnnotationConfigContextLoader.class)
+@Transactional
 public class DeliveryRepositoryTest {
 
 	/*
@@ -96,8 +97,7 @@ public class DeliveryRepositoryTest {
 		Assert.assertNotNull(deliveries);
 	}
 	
-	@Test
-	@Transactional
+	@Test	
 	public void getDelivery(){
 		delivery = deliveryRepository.read(new Long("9"));
 		
@@ -137,10 +137,9 @@ public class DeliveryRepositoryTest {
 		for(Delivery delivery: deliveries)
 			System.out.println("delivery: " + delivery.toString() + "\n");
 		Assert.assertNotNull(deliveries);
-	}*/
+	}
 		
 		@Test
-		@Transactional
 		public void getPharmacyMedicineDeliveryByPeriod() throws ParseException{
 					
 			String strFrom="2017-01-12";  
@@ -152,7 +151,7 @@ public class DeliveryRepositoryTest {
 		    System.out.println("FromDate: " + to.toString());
 			
 			//List<Delivery> deliveries = deliveryRepository.searchByCriteria(DeliverySpecificationUtils.findDeliveryByPeriodAndPharmacy(from, to, new Long("8")));
-			List<Delivery> deliveries = deliveryRepository.findPharmacyMedicineDeliveriesByPeriod(from, to, new Long("8"), new Long("3"));
+			List<Delivery> deliveries = deliveryRepository.findPharmacyMedicineDeliveriesByPeriod(from, to, new Long("8"), new Long("3"), 0, 5);
 			for(Delivery delivery: deliveries){
 				System.out.println("delivery: " + delivery.toString() + "\n");
 			List<DeliveryMedicine> pharmacyMedicines = delivery.getDeliveryMedicines();
@@ -164,6 +163,11 @@ public class DeliveryRepositoryTest {
 			Assert.assertNotEquals(deliveries.size(), 0);		
 		
 	}
+	*/	
+		@Test
+		public void checkIfDeliveryMedicineSold(){
+			Assert.assertEquals(deliveryRepository.checkIfDeliveryMedicineSold(new Long("28")), false);
+		}
 	
 	/*
 	@Test
@@ -175,7 +179,7 @@ public class DeliveryRepositoryTest {
 	public Delivery generateDeliveryInstance() {
 
 		//Timestamp deliveryDate = new Timestamp(System.currentTimeMillis());
-		String str="2017-01-31";  
+		String str="2017-01-30";  
 	    Date deliveryDate = Date.valueOf(str);
 		Pharmacy pharmacy = pharmacyRepository.read(new Long("8"));
 
@@ -189,13 +193,13 @@ public class DeliveryRepositoryTest {
 	private void generateDeliveryMedicineList(Delivery delivery) {
 
 		DeliveryMedicine delM1 = new DeliveryMedicine(1);
-		Medicine medicine = medicineRepository.read(new Long("2"));
+		Medicine medicine = medicineRepository.read(new Long("4"));
 
 		delM1.setMedicine(medicine);
 		delivery.addToDeliveryMedicine(delM1);
 
 		DeliveryMedicine delM2 = new DeliveryMedicine(2);
-		Medicine medicine2 = medicineRepository.read(new Long("3"));
+		Medicine medicine2 = medicineRepository.read(new Long("5"));
 
 		delM2.setMedicine(medicine2);
 		delivery.addToDeliveryMedicine(delM2);

@@ -3,6 +3,7 @@ package com.upp.apteka.bo;
 import java.io.Serializable;
 import java.util.List;
 import java.util.Objects;
+import java.util.Set;
 
 import javax.persistence.CascadeType;
 import javax.persistence.Column;
@@ -13,6 +14,8 @@ import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.OneToMany;
 import javax.persistence.Table;
+
+import org.hibernate.annotations.Cascade;
 
 @Entity
 @Table(name = "pharmacy")
@@ -44,11 +47,17 @@ public class Pharmacy implements Serializable {
 	@Column(name = "extra", nullable = false)
 	private double extra;
 
-	@OneToMany(fetch = FetchType.LAZY, mappedBy = "pharmacyMedicineID.pharmacy")
+	@OneToMany(fetch = FetchType.LAZY, mappedBy = "pharmacyMedicineID.pharmacy", cascade = { CascadeType.PERSIST,
+			CascadeType.MERGE })
+
+	@Cascade({ org.hibernate.annotations.CascadeType.SAVE_UPDATE })
 	private List<PharmacyMedicine> pharmacyMedicines;
 
 	@OneToMany(mappedBy = "pharmacy", cascade = CascadeType.REFRESH)
 	private List<Delivery> deliveries;
+	
+	@OneToMany(fetch = FetchType.LAZY, mappedBy = "pharmacy")
+	private Set<Purchase> purchases;
 
 	public Pharmacy() {
 
@@ -119,6 +128,14 @@ public class Pharmacy implements Serializable {
 
 	public void setDeliveries(List<Delivery> deliveries) {
 		this.deliveries = deliveries;
+	}
+	
+	public Set<Purchase> getPurchases() {
+		return purchases;
+	}
+
+	public void setPurchases(Set<Purchase> purchases) {
+		this.purchases = purchases;
 	}
 
 	/**

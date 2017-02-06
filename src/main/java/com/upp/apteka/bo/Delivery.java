@@ -2,7 +2,6 @@ package com.upp.apteka.bo;
 
 import java.io.Serializable;
 import java.sql.Date;
-import java.sql.Timestamp;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -151,7 +150,7 @@ public class Delivery implements Serializable {
 
 	@Override
 	public String toString() {
-		return "Delivery [id=" + id + ", date=" + date + ", pharmacy=" + pharmacy.toString() + "]";
+		return "Delivery [id=" + id + ", date=" + date + "]";
 	}
 
 }
