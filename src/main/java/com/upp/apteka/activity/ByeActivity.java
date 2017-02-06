@@ -38,7 +38,7 @@ public class ByeActivity {
 
 		button.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
-				mapper.changeActivity("hello", null);
+				mapper.changeActivity("addPatient", null);
 			}
 		});
 		jFrame.add(button);

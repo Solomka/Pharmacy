@@ -41,7 +41,7 @@ public class AppConfig {
 
 		dispatcherFrame.setTitle("Аптека");
 		dispatcherFrame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-		dispatcherFrame.setSize(500, 300);
+		dispatcherFrame.setSize(500, 350);
 		dispatcherFrame.setLocationRelativeTo(null);
 
 		return dispatcherFrame;

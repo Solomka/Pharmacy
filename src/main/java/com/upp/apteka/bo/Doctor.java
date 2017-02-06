@@ -12,6 +12,8 @@ import javax.persistence.Id;
 import javax.persistence.OneToMany;
 import javax.persistence.Table;
 
+import com.upp.apteka.dto.DoctorDto;
+
 @Entity
 @Table(name = "doctor")
 public class Doctor implements Serializable{
@@ -37,6 +39,13 @@ public class Doctor implements Serializable{
 	
 	@OneToMany(fetch = FetchType.LAZY, mappedBy = "doctor")
 	private Set<Prescription> prescriptions;
+	
+	public Doctor(DoctorDto doctorDto){
+		this.name = doctorDto.getName();
+		this.occupation = doctorDto.getOccupation();
+		this.surname = doctorDto.getSurname();
+		this.standing = doctorDto.getStanding();
+	}
 	
 	public Doctor(){
 		
