@@ -112,6 +112,9 @@ public class DoctorDto {
 				+ occupation + ", standing=" + standing + "]";
 	}
 
+	//Container == JFrame
+	//A generic Abstract Window Toolkit(AWT) container object is a component that can contain other AWT components.
+	//construct this.DoctorDTO from Form inputs
 	public void readFromContext(Container container) {
 
 		try {

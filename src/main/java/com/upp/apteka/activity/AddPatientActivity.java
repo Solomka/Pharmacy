@@ -23,7 +23,7 @@ import com.upp.apteka.validator.ValidationError;
 
 @Component
 @Scope("prototype")
-public class AddPatientActivity {
+public class AddPatientActivity implements Activity{
 
 	@Autowired
 	private JFrame jFrame;

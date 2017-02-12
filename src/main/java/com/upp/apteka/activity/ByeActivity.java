@@ -16,7 +16,7 @@ import com.upp.apteka.config.Mapper;
 
 @Component
 @Scope("prototype")
-public class ByeActivity {
+public class ByeActivity implements Activity{
 
 	@Autowired
 	private Mapper mapper;
