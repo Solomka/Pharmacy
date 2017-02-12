@@ -5,9 +5,9 @@ import java.io.IOException;
 
 import javax.swing.JFrame;
 
+import org.springframework.context.ApplicationContext;
 import org.springframework.context.annotation.AnnotationConfigApplicationContext;
 
-import com.mysql.jdbc.StringUtils;
 import com.upp.apteka.config.AppConfig;
 import com.upp.apteka.controller.SwingController;
 
@@ -15,7 +15,9 @@ public class App {
 	public static void main(String[] args) throws FileNotFoundException, IOException, ClassNotFoundException {
 
 		@SuppressWarnings("resource")
-		AnnotationConfigApplicationContext ctx = new AnnotationConfigApplicationContext(AppConfig.class);
+		// AnnotationConfigApplicationContext ctx = new
+		// AnnotationConfigApplicationContext(AppConfig.class);
+		ApplicationContext ctx = new AnnotationConfigApplicationContext(AppConfig.class);
 		JFrame dispatcherFrame = ctx.getBean(JFrame.class);
 		dispatcherFrame.setVisible(true);
 

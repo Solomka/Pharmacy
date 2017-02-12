@@ -7,12 +7,13 @@ import java.util.regex.Pattern;
 
 import org.springframework.context.annotation.Scope;
 import org.springframework.stereotype.Component;
+
 import com.mysql.jdbc.StringUtils;
 import com.upp.apteka.dto.PatientDto;
 
 @Component
 @Scope("prototype")
-public class PatientValidator {
+public class PatientValidator implements Validator {
 
 	public List<ValidationError> validate(Object target) {
 

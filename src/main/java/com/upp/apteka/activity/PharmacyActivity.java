@@ -10,19 +10,21 @@ import com.upp.apteka.service.PharmacyService;
 
 @Component
 @Scope("prototype")
-public class PharmacyActivity {
+public class PharmacyActivity implements Activity {
 
+	// GridLayout
+	// BorderLayout
+	// GridBagLayout
 
 	@Autowired
 	private JFrame jFrame;
-	
+
 	@Autowired
 	private PharmacyService pharmacyService;
-	
-	//GridLayout
-	//BorderLayout
-	//GridBagLayout
-	
-	
-	
+
+	public void showActivity() {
+		// TODO Auto-generated method stub
+
+	}
+
 }

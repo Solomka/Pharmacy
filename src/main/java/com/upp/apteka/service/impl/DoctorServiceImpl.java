@@ -61,7 +61,9 @@ public class DoctorServiceImpl implements DoctorService{
 
 	//@Override
 	public List<ValidationError> processAdding(Container container) throws NotFoundException {
+		//get empty DoctorDto object
 		DoctorDto doctorDto = applicationContext.getBean(DoctorDto.class);
+		//set values to doctotDto object fields
 		doctorDto.readFromContext(container);
 
 		DoctorValidator doctorValidator = applicationContext.getBean(DoctorValidator.class);
