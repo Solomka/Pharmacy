@@ -3,7 +3,7 @@
 -- http://www.phpmyadmin.net
 --
 -- Хост: localhost
--- Время создания: Янв 31 2017 г., 23:08
+-- Время создания: Фев 11 2017 г., 19:32
 -- Версия сервера: 5.1.41
 -- Версия PHP: 5.3.1
 
@@ -31,7 +31,7 @@ CREATE TABLE IF NOT EXISTS `delivery` (
   `id_pharmacy` int(11) NOT NULL,
   PRIMARY KEY (`id`),
   KEY `id_pharmacy` (`id_pharmacy`)
-) ENGINE=InnoDB  DEFAULT CHARSET=utf8 AUTO_INCREMENT=12 ;
+) ENGINE=InnoDB  DEFAULT CHARSET=utf8 AUTO_INCREMENT=31 ;
 
 --
 -- Дамп данных таблицы `delivery`
@@ -39,7 +39,11 @@ CREATE TABLE IF NOT EXISTS `delivery` (
 
 INSERT INTO `delivery` (`id`, `date`, `id_pharmacy`) VALUES
 (9, '2017-01-30', 8),
-(11, '2017-01-31', 8);
+(11, '2017-01-31', 8),
+(12, '2017-01-30', 8),
+(13, '2017-01-30', 8),
+(20, '2017-02-03', 8),
+(30, '2017-02-03', 9);
 
 -- --------------------------------------------------------
 
@@ -63,7 +67,15 @@ INSERT INTO `delivery_medicine` (`id_delivery`, `id_medicine`, `box_quantity`) V
 (9, 2, 1),
 (9, 3, 2),
 (11, 2, 1),
-(11, 3, 2);
+(11, 3, 2),
+(12, 2, 1),
+(12, 3, 2),
+(13, 4, 1),
+(13, 5, 2),
+(20, 4, 1),
+(20, 5, 2),
+(30, 4, 1),
+(30, 5, 2);
 
 -- --------------------------------------------------------
 
@@ -78,12 +90,18 @@ CREATE TABLE IF NOT EXISTS `doctor` (
   `occupation` varchar(50) NOT NULL,
   `standing` int(11) NOT NULL,
   PRIMARY KEY (`id`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8 AUTO_INCREMENT=1 ;
+) ENGINE=InnoDB  DEFAULT CHARSET=utf8 AUTO_INCREMENT=6 ;
 
 --
 -- Дамп данных таблицы `doctor`
 --
 
+INSERT INTO `doctor` (`id`, `surname`, `name`, `occupation`, `standing`) VALUES
+(1, 'Курочкін', 'Андрій', 'Хірург', 2015),
+(2, 'Бла', 'Бла', 'бла', 2017),
+(3, 'Бла', 'Бла', 'бла', 2017),
+(4, 'Бла', 'Бла', 'бла', 2017),
+(5, 'Бла', 'Бла', 'бла', 2000);
 
 -- --------------------------------------------------------
 
@@ -98,7 +116,7 @@ CREATE TABLE IF NOT EXISTS `medicine` (
   `box_price` decimal(13,2) NOT NULL,
   `quantity_per_box` int(11) NOT NULL,
   PRIMARY KEY (`id`)
-) ENGINE=InnoDB  DEFAULT CHARSET=utf8 AUTO_INCREMENT=5 ;
+) ENGINE=InnoDB  DEFAULT CHARSET=utf8 AUTO_INCREMENT=6 ;
 
 --
 -- Дамп данных таблицы `medicine`
@@ -107,7 +125,8 @@ CREATE TABLE IF NOT EXISTS `medicine` (
 INSERT INTO `medicine` (`id`, `name`, `producer`, `box_price`, `quantity_per_box`) VALUES
 (2, 'Travomel', 'Znahar', '100.00', 25),
 (3, 'Notta', 'Znahar', '100.00', 30),
-(4, 'Notta', 'Znahar', '100.00', 30);
+(4, 'Mezym', 'Znahar', '100.00', 30),
+(5, 'Hilac', 'Znahar', '200.00', 10);
 
 -- --------------------------------------------------------
 
@@ -119,7 +138,9 @@ CREATE TABLE IF NOT EXISTS `patient` (
   `id` int(11) NOT NULL AUTO_INCREMENT,
   `surname` varchar(50) NOT NULL,
   `name` varchar(50) NOT NULL,
-  PRIMARY KEY (`id`)
+  `phone` varchar(16) NOT NULL,
+  PRIMARY KEY (`id`),
+  UNIQUE KEY `phone` (`phone`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8 AUTO_INCREMENT=1 ;
 
 --
@@ -139,14 +160,15 @@ CREATE TABLE IF NOT EXISTS `pharmacy` (
   `address` varchar(255) NOT NULL,
   `extra` double NOT NULL,
   PRIMARY KEY (`id`)
-) ENGINE=InnoDB  DEFAULT CHARSET=utf8 AUTO_INCREMENT=9 ;
+) ENGINE=InnoDB  DEFAULT CHARSET=utf8 AUTO_INCREMENT=10 ;
 
 --
 -- Дамп данных таблицы `pharmacy`
 --
 
 INSERT INTO `pharmacy` (`id`, `name`, `address`, `extra`) VALUES
-(8, 'Green apteka', 'Zelena, 12 str.', 30);
+(8, 'Green apteka', 'Zelena, 12 str.', 30),
+(9, 'Znahar', 'Levandivka, 12 str.', 30);
 
 -- --------------------------------------------------------
 
@@ -167,6 +189,11 @@ CREATE TABLE IF NOT EXISTS `pharmacy_medicine` (
 -- Дамп данных таблицы `pharmacy_medicine`
 --
 
+INSERT INTO `pharmacy_medicine` (`id_pharmacy`, `id_medicine`, `pack_price`, `pack_quantity`) VALUES
+(8, 4, '1.73', 30),
+(8, 5, '10.40', 20),
+(9, 4, '1.73', 30),
+(9, 5, '10.40', 20);
 
 -- --------------------------------------------------------
 

@@ -4,22 +4,31 @@ import java.sql.Date;
 import java.util.List;
 
 import com.upp.apteka.bo.Delivery;
+import com.upp.apteka.bo.DeliveryMedicine;
 
 public interface DeliveryService {
 
+	//get all deliveries to all pharmacies ordered by date (the most recent dates first)
 	List<Delivery> getAllDeliveries(int offset);
 	
-	Delivery readDelivery(Long id);
+	//get all pharmacy deliveries ordered by date (the most recent dates first)
+	List<Delivery> getAllPharmacyDeliveries(Long pharmacyId, int offset);
 	
-	void addDelivery(Delivery delivery);
+	Delivery getDelivery(Long id);
+	
+	Long addDelivery(Delivery delivery);
 	
 	void updateDelivery(Delivery delivery);
 	
-	boolean deleletDelivery(Long id);
+	//delete delivery if no one medicine from the delivery medicines was sold
+	boolean deleteDelivery(Long id);
+	boolean checkIfDeliveryMedicineSold(Long deliveryId);
 	
-	List<Delivery> findPharmacyDeliveriesByPeriod(Date from, Date to, Long pharmacyId, int offset);
-	List<Delivery> findPharmacyMedicineDeliveriesByPeriod(Date from, Date to, Long pharmacyId, Long medicineId, int offset);
+	List<Delivery> getPharmacyDeliveriesByPeriod(Date from, Date to, Long pharmacyId, int offset);
 	
+	// ?
+	List<Delivery> getPharmacyMedicineDeliveriesByPeriod(Date from, Date to, Long pharmacyId, Long medicineId, int offset);
 	
+	List<DeliveryMedicine> getDeliveryMedicines(Long deliveryId, int offset);
 
 }

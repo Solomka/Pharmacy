@@ -15,6 +15,8 @@ import javax.persistence.Id;
 import javax.persistence.OneToMany;
 import javax.persistence.Table;
 
+import org.hibernate.annotations.Cascade;
+
 @Entity
 @Table(name = "pharmacy")
 public class Pharmacy implements Serializable {
@@ -45,7 +47,10 @@ public class Pharmacy implements Serializable {
 	@Column(name = "extra", nullable = false)
 	private double extra;
 
-	@OneToMany(fetch = FetchType.LAZY, mappedBy = "pharmacyMedicineID.pharmacy")
+	@OneToMany(fetch = FetchType.LAZY, mappedBy = "pharmacyMedicineID.pharmacy", cascade = { CascadeType.PERSIST,
+			CascadeType.MERGE })
+
+	@Cascade({ org.hibernate.annotations.CascadeType.SAVE_UPDATE })
 	private List<PharmacyMedicine> pharmacyMedicines;
 
 	@OneToMany(mappedBy = "pharmacy", cascade = CascadeType.REFRESH)

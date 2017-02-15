@@ -12,7 +12,7 @@ import com.upp.apteka.dto.DoctorDto;
 
 @Component
 @Scope("prototype")
-public class DoctorValidator {
+public class DoctorValidator implements Validator {
 
 	public List<ValidationError> validate(Object target) {
 

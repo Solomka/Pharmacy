@@ -150,7 +150,7 @@ public class Delivery implements Serializable {
 
 	@Override
 	public String toString() {
-		return "Delivery [id=" + id + ", date=" + date + ", pharmacy=" + pharmacy.toString() + "]";
+		return "Delivery [id=" + id + ", date=" + date + "]";
 	}
 
 }

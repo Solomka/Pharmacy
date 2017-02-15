@@ -30,7 +30,7 @@ public class FrameContextImpl implements FrameContext {
 		return compList;
 	}
 
-	@Override
+	//@Override
 	public Component findComponentByName(Container container, String name) throws NotFoundException {
 		for (Component component : getAllComponents(container)) {
 			if (component.getName() != null && component.getName().equals(name)) {
@@ -41,7 +41,7 @@ public class FrameContextImpl implements FrameContext {
 		throw new NotFoundException("Немає такого поля в контексті фрейма");
 	}
 	
-	@Override
+	//@Override
 	public Component findComponentByName(String name) throws NotFoundException {
 		for (Component component : getAllComponents(dispatcherFrame)) {
 			if (component.getName() != null && component.getName().equals(name)) {

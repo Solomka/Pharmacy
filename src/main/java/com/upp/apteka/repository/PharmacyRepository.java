@@ -7,6 +7,6 @@ import com.upp.apteka.utils.repository.IRepository;
 
 public interface PharmacyRepository extends IRepository<Pharmacy, Long> {
 
-	List<Pharmacy> findPharamcyByName(String name);
+	List<Pharmacy> findPharmacyByName(String name);
 
 }

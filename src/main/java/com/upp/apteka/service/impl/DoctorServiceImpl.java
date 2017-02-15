@@ -24,44 +24,46 @@ public class DoctorServiceImpl implements DoctorService{
 	@Autowired
 	private ApplicationContext applicationContext;
 
-	@Override
+	//@Override
 	public List<Doctor> getAll(int offset, int limit) {
 		return doctorRepository.getAll(offset, limit);
 	}
 
-	@Override
+	//@Override
 	public Long create(Doctor doctor) {
 		return doctorRepository.create(doctor);
 	}
 
-	@Override
+	//@Override
 	public Doctor read(Long key) {
 		return doctorRepository.read(key);
 	}
 
-	@Override
+	//@Override
 	public void update(Doctor doctor) {
 		doctorRepository.update(doctor);
 	}
 
-	@Override
+	//@Override
 	public boolean delete(Long key) {
 		return doctorRepository.delete(key);
 	}
 
-	@Override
+	//@Override
 	public List<Doctor> findByQuery(String query, boolean or) {
 		return doctorRepository.findByQuery(query, or);
 	}
 
-	@Override
+	//@Override
 	public List<Doctor> findByQuery(String query, int offset, int limit, boolean or) {
 		return doctorRepository.findByQuery(query, offset, limit, or);
 	}
 
-	@Override
+	//@Override
 	public List<ValidationError> processAdding(Container container) throws NotFoundException {
+		//get empty DoctorDto object
 		DoctorDto doctorDto = applicationContext.getBean(DoctorDto.class);
+		//set values to doctotDto object fields
 		doctorDto.readFromContext(container);
 
 		DoctorValidator doctorValidator = applicationContext.getBean(DoctorValidator.class);
@@ -75,7 +77,7 @@ public class DoctorServiceImpl implements DoctorService{
 		return errors;
 	}
 
-	@Override
+	//@Override
 	public List<ValidationError> processEditing(Container container, Long id) throws NotFoundException {
 		DoctorDto doctorDto = applicationContext.getBean(DoctorDto.class);
 		doctorDto.readFromContext(container);

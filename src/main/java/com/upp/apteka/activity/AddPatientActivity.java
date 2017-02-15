@@ -24,10 +24,12 @@ import com.upp.apteka.validator.ValidationError;
 
 @Component
 @Scope("prototype")
-public class AddPatientActivity {
+
+public class AddPatientActivity implements Activity{
 	
 	private static final int INPUT_WIDTH = 500;
 	private static final int INPUT_HEIGHT = 40;
+
 
 	@Autowired
 	private JFrame jFrame;

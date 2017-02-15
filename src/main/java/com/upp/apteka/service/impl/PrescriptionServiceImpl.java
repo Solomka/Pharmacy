@@ -35,37 +35,38 @@ public class PrescriptionServiceImpl implements PrescriptionService {
 	private PatientService patientService;
 
 	@Override
+
 	public List<Prescription> getAll(int offset, int limit) {
 		return prescriptionRepository.getAll(offset, limit);
 	}
 
-	@Override
+	//@Override
 	public Long create(Prescription prescription) {
 		return prescriptionRepository.create(prescription);
 	}
 
-	@Override
+	//@Override
 	public Prescription read(Long key) {
 		return prescriptionRepository.read(key);
 	}
 
-	@Override
+	//@Override
 	public void update(Prescription prescription) {
 		prescriptionRepository.update(prescription);
 
 	}
 
-	@Override
+	//@Override
 	public boolean delete(Long key) {
 		return prescriptionRepository.delete(key);
 	}
 
-	@Override
+	//@Override
 	public List<Prescription> findByQuery(String query, Date start, Date finishDate, boolean or, Boolean sold) {
 		return prescriptionRepository.findByQuery(query, start, finishDate, or, sold);
 	}
 
-	@Override
+	//@Override
 	public List<Prescription> findByQuery(String query, Date start, Date finishDate, int offset, int limit, boolean or,
 			Boolean sold) {
 		return prescriptionRepository.findByQuery(query, start, finishDate, offset, limit, or, sold);

@@ -24,7 +24,7 @@ import com.upp.apteka.validator.ValidationError;
 
 @Component
 @Scope("prototype")
-public class AddDoctorActivity {
+public class AddDoctorActivity implements Activity {
 
 	@Autowired
 	private JFrame jFrame;
@@ -44,6 +44,7 @@ public class AddDoctorActivity {
 		
 		JPanel namePanel = new JPanel();
 		namePanel.setPreferredSize(new Dimension(INPUT_WIDTH, INPUT_HEIGHT));
+
 		
 		JTextField name = new JTextField();
 		name.setPreferredSize(new Dimension(INPUT_WIDTH, INPUT_HEIGHT));
@@ -61,11 +62,13 @@ public class AddDoctorActivity {
 		standing.setPreferredSize(new Dimension(INPUT_WIDTH, INPUT_HEIGHT));
 		standing.setName("form:standing");
 		
+		// init labels for textFields
 		JLabel nameLabel = new JLabel("Імя:");
 		JLabel surnameLabel = new JLabel("Прізвище:");
 		JLabel occupationLabel = new JLabel("Спеціальність:");
 		JLabel standingLabel = new JLabel("Стаж:");
 
+		//init empty labels for future input errors
 		JLabel nameError = new JLabel();
 		nameError.setName("error:name");
 		nameError.setForeground(Color.RED);
@@ -75,13 +78,14 @@ public class AddDoctorActivity {
 		surnameError.setForeground(Color.RED);
 
 		JLabel occupationError = new JLabel();
-		occupationError.setForeground(Color.RED);
 		occupationError.setName("error:occupation");
+		occupationError.setForeground(Color.RED);		
 		
-		JLabel standingError = new JLabel();
-		standingError.setForeground(Color.RED);
+		JLabel standingError = new JLabel();		
 		standingError.setName("error:standing");
+		standingError.setForeground(Color.RED);
 
+		//init button
 		JButton button = new JButton("Click");
 		button.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
@@ -98,10 +102,21 @@ public class AddDoctorActivity {
 			}
 		});
 		
+		/*
+		 * namePanel:
+		 * 	- layout
+		 *  - JLabel nameLabel
+		 *  - JLabel errorLabel
+		 */
+		
 		namePanel.setLayout(new BorderLayout());
 		namePanel.add(nameLabel, BorderLayout.WEST);
 		namePanel.add(nameError, BorderLayout.EAST);
 		
+		/*
+		 * first add JLabel(name/error)
+		 * second add JTextField
+		 */
 		jFrame.add(namePanel);
 		jFrame.add(name);
 		
