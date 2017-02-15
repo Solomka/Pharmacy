@@ -1,12 +1,12 @@
 package com.upp.apteka.service.impl;
 
 import java.sql.Date;
-import java.util.HashSet;
+import java.util.ArrayList;
 import java.util.List;
-import java.util.Set;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import com.upp.apteka.bo.Doctor;
 import com.upp.apteka.bo.Patient;
@@ -20,6 +20,7 @@ import com.upp.apteka.service.PatientService;
 import com.upp.apteka.service.PrescriptionService;
 
 @Service
+@Transactional
 public class PrescriptionServiceImpl implements PrescriptionService {
 
 	@Autowired
@@ -47,7 +48,9 @@ public class PrescriptionServiceImpl implements PrescriptionService {
 
 	//@Override
 	public Prescription read(Long key) {
-		return prescriptionRepository.read(key);
+		Prescription prescription = prescriptionRepository.read(key);
+		System.out.println(prescription.getPrescriptionMedicines());
+		return prescription;
 	}
 
 	//@Override
@@ -86,7 +89,7 @@ public class PrescriptionServiceImpl implements PrescriptionService {
 
 		prescription.setId(id);
 
-		Set<PrescriptionMedicine> set = new HashSet<>();
+		List<PrescriptionMedicine> set = new ArrayList<>();
 
 		for (ChooseMedicineDto cmd : dtos) {
 			PrescriptionMedicine pm = new PrescriptionMedicine();

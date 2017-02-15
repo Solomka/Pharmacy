@@ -2,7 +2,7 @@ package com.upp.apteka.bo;
 
 import java.io.Serializable;
 import java.sql.Date;
-import java.util.Set;
+import java.util.List;
 
 import javax.persistence.Column;
 import javax.persistence.Entity;
@@ -41,7 +41,7 @@ public class Prescription implements Serializable{
 	
 	@OneToMany(fetch = FetchType.LAZY, mappedBy = "pk.prescription")
 	@Cascade({ org.hibernate.annotations.CascadeType.SAVE_UPDATE })
-	private Set<PrescriptionMedicine> prescriptionMedicines;
+	private List<PrescriptionMedicine> prescriptionMedicines;
 	
 	public Prescription(){
 		
@@ -87,11 +87,11 @@ public class Prescription implements Serializable{
 		this.date = date;
 	}
 
-	public Set<PrescriptionMedicine> getPrescriptionMedicines() {
+	public List<PrescriptionMedicine> getPrescriptionMedicines() {
 		return prescriptionMedicines;
 	}
 
-	public void setPrescriptionMedicines(Set<PrescriptionMedicine> prescriptionMedicines) {
+	public void setPrescriptionMedicines(List<PrescriptionMedicine> prescriptionMedicines) {
 		this.prescriptionMedicines = prescriptionMedicines;
 	}
 

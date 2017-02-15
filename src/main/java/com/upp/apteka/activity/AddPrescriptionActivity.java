@@ -8,7 +8,6 @@ import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.sql.Date;
 import java.text.DateFormat;
-import java.text.NumberFormat;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
@@ -26,6 +25,7 @@ import javax.swing.JOptionPane;
 import javax.swing.JPanel;
 import javax.swing.JScrollPane;
 import javax.swing.border.Border;
+import javax.swing.text.NumberFormatter;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Scope;
@@ -146,9 +146,9 @@ public class AddPrescriptionActivity {
 		 */
 		JLabel quantityLabel = new JLabel("Кількість: ");
 		
-		NumberFormat intFormat = NumberFormat.getNumberInstance();
-		intFormat.setMinimumIntegerDigits(1);
-		final JFormattedTextField textField = new JFormattedTextField(intFormat);
+		NumberFormatter nf = new NumberFormatter();
+		nf.setMinimum(0);
+		final JFormattedTextField textField = new JFormattedTextField(nf);
 		textField.setColumns(5);
 		textField.setPreferredSize(new Dimension(BUTTON_WIDTH, BUTTON_HEIGHT));
 
