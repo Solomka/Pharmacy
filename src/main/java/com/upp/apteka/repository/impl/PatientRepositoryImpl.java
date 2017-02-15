@@ -43,7 +43,7 @@ public class PatientRepositoryImpl extends AHibernateRepository<Patient, Long> i
 	}
 
 	@SuppressWarnings("unchecked")
-	//@Override
+	// @Override
 	public List<Patient> findByQuery(String query, boolean or) {
 
 		if (query == null)
@@ -79,7 +79,7 @@ public class PatientRepositoryImpl extends AHibernateRepository<Patient, Long> i
 	}
 
 	@SuppressWarnings("unchecked")
-	//@Override
+	// @Override
 	public List<Patient> findByQuery(String query, int offset, int limit, boolean or) {
 
 		if (query == null)
@@ -112,5 +112,13 @@ public class PatientRepositoryImpl extends AHibernateRepository<Patient, Long> i
 			criteria.add(conjunction);
 		}
 		return criteria.list();
+	}
+
+	@Override
+	public boolean containsNumber(String number) {
+		Criteria criteria = createEntityCriteria();
+
+		criteria.add(Restrictions.eq("phone", number));
+		return 1 == criteria.list().size();
 	}
 }

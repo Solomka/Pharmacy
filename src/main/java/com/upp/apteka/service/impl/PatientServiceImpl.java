@@ -95,4 +95,9 @@ public class PatientServiceImpl implements PatientService {
 		return errors;
 	}
 
+	@Override
+	public boolean containsNumber(String number) {
+		return patientRepository.containsNumber(number);
+	}
+
 }
