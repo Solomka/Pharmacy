@@ -6,6 +6,7 @@ import java.util.List;
 import org.hibernate.Criteria;
 import org.hibernate.criterion.Conjunction;
 import org.hibernate.criterion.Disjunction;
+import org.hibernate.criterion.MatchMode;
 import org.hibernate.criterion.Restrictions;
 import org.springframework.stereotype.Repository;
 import org.springframework.transaction.annotation.Transactional;
@@ -55,22 +56,23 @@ public class PatientRepositoryImpl extends AHibernateRepository<Patient, Long> i
 
 		for (String name : names)
 			if (!StringUtils.isEmptyOrWhitespaceOnly(name))
-				restrictions.add(Restrictions.or(Restrictions.ilike("surname", name), Restrictions.ilike("name", name),
-						Restrictions.ilike("phone", name)));
+				restrictions.add(Restrictions.or(Restrictions.ilike("surname", name, MatchMode.ANYWHERE),
+						Restrictions.ilike("name", name, MatchMode.ANYWHERE),
+						Restrictions.ilike("phone", name, MatchMode.ANYWHERE)));
 
-		if (or && restrictions.size() > 0){
+		if (or && restrictions.size() > 0) {
 			Disjunction disjunction = Restrictions.disjunction();
-			
-			for(Disjunction dis: restrictions)
+
+			for (Disjunction dis : restrictions)
 				disjunction.add(dis);
-			
+
 			criteria.add(disjunction);
-		}else if (restrictions.size() > 0){
+		} else if (restrictions.size() > 0) {
 			Conjunction conjunction = Restrictions.conjunction();
-			
-			for(Disjunction dis: restrictions)
+
+			for (Disjunction dis : restrictions)
 				conjunction.add(dis);
-			
+
 			criteria.add(conjunction);
 		}
 		return criteria.list();
@@ -90,22 +92,23 @@ public class PatientRepositoryImpl extends AHibernateRepository<Patient, Long> i
 
 		for (String name : names)
 			if (!StringUtils.isEmptyOrWhitespaceOnly(name))
-				restrictions.add(Restrictions.or(Restrictions.ilike("surname", name), Restrictions.ilike("name", name),
-						Restrictions.ilike("phone", name)));
+				restrictions.add(Restrictions.or(Restrictions.ilike("surname", name, MatchMode.ANYWHERE),
+						Restrictions.ilike("name", name, MatchMode.ANYWHERE),
+						Restrictions.ilike("phone", name, MatchMode.ANYWHERE)));
 
-		if (or && restrictions.size() > 0){
+		if (or && restrictions.size() > 0) {
 			Disjunction disjunction = Restrictions.disjunction();
-			
-			for(Disjunction dis: restrictions)
+
+			for (Disjunction dis : restrictions)
 				disjunction.add(dis);
-			
+
 			criteria.add(disjunction);
-		}else if (restrictions.size() > 0){
+		} else if (restrictions.size() > 0) {
 			Conjunction conjunction = Restrictions.conjunction();
-			
-			for(Disjunction dis: restrictions)
+
+			for (Disjunction dis : restrictions)
 				conjunction.add(dis);
-			
+
 			criteria.add(conjunction);
 		}
 		return criteria.list();

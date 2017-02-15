@@ -2,7 +2,8 @@ package com.upp.apteka.activity;
 
 import java.awt.BorderLayout;
 import java.awt.Color;
-import java.awt.GridLayout;
+import java.awt.Dimension;
+import java.awt.FlowLayout;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.util.List;
@@ -24,6 +25,9 @@ import com.upp.apteka.validator.ValidationError;
 @Component
 @Scope("prototype")
 public class AddPatientActivity {
+	
+	private static final int INPUT_WIDTH = 500;
+	private static final int INPUT_HEIGHT = 40;
 
 	@Autowired
 	private JFrame jFrame;
@@ -33,22 +37,24 @@ public class AddPatientActivity {
 
 	public void showActivity() {
 		
-		GridLayout gridLayout = new GridLayout(0,1,0,5);
-		
 		JPanel mainPanel = new JPanel();
 		mainPanel.setBorder(BorderFactory.createEmptyBorder(0, 20, 15, 20));
 		jFrame.setContentPane(mainPanel);
-		jFrame.getContentPane().setLayout(gridLayout);
+		jFrame.getContentPane().setLayout(new FlowLayout());
 		
 		JPanel namePanel = new JPanel();
+		namePanel.setPreferredSize(new Dimension(INPUT_WIDTH, INPUT_HEIGHT));
 		
 		JTextField name = new JTextField();
+		name.setPreferredSize(new Dimension(INPUT_WIDTH, INPUT_HEIGHT));
 		name.setName("form:name");
 
 		JTextField surname = new JTextField();
+		surname.setPreferredSize(new Dimension(INPUT_WIDTH, INPUT_HEIGHT));
 		surname.setName("form:surname");
 
 		JTextField phone = new JTextField();
+		phone.setPreferredSize(new Dimension(INPUT_WIDTH, INPUT_HEIGHT));
 		phone.setName("form:phone");
 		
 		JLabel nameLabel = new JLabel("Імя:");
@@ -91,6 +97,7 @@ public class AddPatientActivity {
 		jFrame.add(name);
 		
 		JPanel surnamePanel = new JPanel();
+		surnamePanel.setPreferredSize(new Dimension(INPUT_WIDTH, INPUT_HEIGHT));
 		
 		surnamePanel.setLayout(new BorderLayout());
 		surnamePanel.add(surnameLabel, BorderLayout.WEST);
@@ -100,6 +107,7 @@ public class AddPatientActivity {
 		jFrame.add(surname);
 		
 		JPanel phonePanel = new JPanel();
+		phonePanel.setPreferredSize(new Dimension(INPUT_WIDTH, INPUT_HEIGHT));
 		
 		phonePanel.setLayout(new BorderLayout());
 		phonePanel.add(phoneLabel, BorderLayout.WEST);
@@ -108,7 +116,6 @@ public class AddPatientActivity {
 		jFrame.add(phonePanel);
 		jFrame.add(phone);
 		
-		jFrame.add(new JLabel(""));
 		jFrame.add(button);
 	}
 

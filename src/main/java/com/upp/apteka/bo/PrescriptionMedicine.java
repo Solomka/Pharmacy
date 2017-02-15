@@ -13,17 +13,14 @@ import javax.persistence.Transient;
 @Table(name = "prescr_medicine")
 @AssociationOverrides({
 		@AssociationOverride(name = "pk.prescription",
-			joinColumns = @JoinColumn(name = "id_prescription")),
+			joinColumns = @JoinColumn(name = "id_prescr")),
 		@AssociationOverride(name = "pk.medicine",
 			joinColumns = @JoinColumn(name = "id_medicine")) })
 public class PrescriptionMedicine {
 	
 	private PrescriptionMedicineID pk = new PrescriptionMedicineID();
-	
-	@Column(name = "pack_quantity", nullable = false)
-	private int packQuantity;
-	
-	@Column(name = "pack_bought", nullable = false)
+
+	private int packQuantity;	
 	private int packBought;
 	
 	@EmbeddedId
@@ -53,6 +50,7 @@ public class PrescriptionMedicine {
 		getPk().setPrescription(prescription);
 	}
 
+	@Column(name = "pack_quantity", nullable = false)
 	public int getPackQuantity() {
 		return packQuantity;
 	}
@@ -61,6 +59,7 @@ public class PrescriptionMedicine {
 		this.packQuantity = packQuantity;
 	}
 
+	@Column(name = "pack_bought", nullable = false)
 	public int getPackBought() {
 		return packBought;
 	}

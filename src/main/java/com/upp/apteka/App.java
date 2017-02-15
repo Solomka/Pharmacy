@@ -7,7 +7,6 @@ import javax.swing.JFrame;
 
 import org.springframework.context.annotation.AnnotationConfigApplicationContext;
 
-import com.mysql.jdbc.StringUtils;
 import com.upp.apteka.config.AppConfig;
 import com.upp.apteka.controller.SwingController;
 
@@ -19,8 +18,8 @@ public class App {
 		JFrame dispatcherFrame = ctx.getBean(JFrame.class);
 		dispatcherFrame.setVisible(true);
 
-		SwingController helloController = ctx.getBean("addDoctor", SwingController.class);
-		helloController.switchToActivity(null);
+		SwingController controller = ctx.getBean("addPrescription", SwingController.class);
+		controller.switchToActivity(null);
 
 	}
 }

@@ -1,13 +1,22 @@
 package com.upp.apteka.service.impl;
 
-import java.util.Date;
+import java.sql.Date;
+import java.util.HashSet;
 import java.util.List;
+import java.util.Set;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import com.upp.apteka.bo.Doctor;
+import com.upp.apteka.bo.Patient;
 import com.upp.apteka.bo.Prescription;
+import com.upp.apteka.bo.PrescriptionMedicine;
+import com.upp.apteka.dto.ChooseMedicineDto;
+import com.upp.apteka.repository.MedicineRepository;
 import com.upp.apteka.repository.PrescriptionRepository;
+import com.upp.apteka.service.DoctorService;
+import com.upp.apteka.service.PatientService;
 import com.upp.apteka.service.PrescriptionService;
 
 @Service
@@ -15,6 +24,15 @@ public class PrescriptionServiceImpl implements PrescriptionService {
 
 	@Autowired
 	private PrescriptionRepository prescriptionRepository;
+
+	@Autowired
+	private MedicineRepository medicineService;
+
+	@Autowired
+	private DoctorService doctorService;
+
+	@Autowired
+	private PatientService patientService;
 
 	@Override
 	public List<Prescription> getAll(int offset, int limit) {
@@ -51,6 +69,39 @@ public class PrescriptionServiceImpl implements PrescriptionService {
 	public List<Prescription> findByQuery(String query, Date start, Date finishDate, int offset, int limit, boolean or,
 			Boolean sold) {
 		return prescriptionRepository.findByQuery(query, start, finishDate, offset, limit, or, sold);
+	}
+
+	@Override
+	public Long create(Long doctorId, Long patientId, Date date, List<ChooseMedicineDto> dtos) {
+		Doctor doctor = doctorService.read(doctorId);
+		Patient patient = patientService.read(patientId);
+
+		Prescription prescription = new Prescription();
+		prescription.setDate(date);
+		prescription.setDoctor(doctor);
+		prescription.setPatient(patient);
+
+		Long id = prescriptionRepository.create(prescription);
+
+		prescription.setId(id);
+
+		Set<PrescriptionMedicine> set = new HashSet<>();
+
+		for (ChooseMedicineDto cmd : dtos) {
+			PrescriptionMedicine pm = new PrescriptionMedicine();
+
+			pm.setMedicine(medicineService.read(cmd.getMedicineId()));
+			pm.setPrescription(prescription);
+			pm.setPackQuantity(cmd.getQuantity());
+			pm.setPackBought(0);
+
+			set.add(pm);
+		}
+
+		prescription.setPrescriptionMedicines(set);
+		prescriptionRepository.update(prescription);
+
+		return id;
 	}
 
 }
