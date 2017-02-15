@@ -1,13 +1,14 @@
 -- phpMyAdmin SQL Dump
--- version 3.2.4
+-- version 4.1.14
 -- http://www.phpmyadmin.net
 --
--- Хост: localhost
--- Время создания: Фев 11 2017 г., 19:32
--- Версия сервера: 5.1.41
--- Версия PHP: 5.3.1
+-- Хост: 127.0.0.1
+-- Час створення: Лют 16 2017 р., 00:06
+-- Версія сервера: 5.6.17
+-- Версія PHP: 5.5.12
 
-SET SQL_MODE="NO_AUTO_VALUE_ON_ZERO";
+SET SQL_MODE = "NO_AUTO_VALUE_ON_ZERO";
+SET time_zone = "+00:00";
 
 
 /*!40101 SET @OLD_CHARACTER_SET_CLIENT=@@CHARACTER_SET_CLIENT */;
@@ -16,39 +17,27 @@ SET SQL_MODE="NO_AUTO_VALUE_ON_ZERO";
 /*!40101 SET NAMES utf8 */;
 
 --
--- База данных: `pharmacy`
+-- База даних: `pharmacy`
 --
 
 -- --------------------------------------------------------
 
 --
--- Структура таблицы `delivery`
+-- Структура таблиці `delivery`
 --
 
 CREATE TABLE IF NOT EXISTS `delivery` (
   `id` int(11) NOT NULL AUTO_INCREMENT,
-  `date` date NOT NULL,
+  `date` datetime NOT NULL,
   `id_pharmacy` int(11) NOT NULL,
   PRIMARY KEY (`id`),
   KEY `id_pharmacy` (`id_pharmacy`)
-) ENGINE=InnoDB  DEFAULT CHARSET=utf8 AUTO_INCREMENT=31 ;
-
---
--- Дамп данных таблицы `delivery`
---
-
-INSERT INTO `delivery` (`id`, `date`, `id_pharmacy`) VALUES
-(9, '2017-01-30', 8),
-(11, '2017-01-31', 8),
-(12, '2017-01-30', 8),
-(13, '2017-01-30', 8),
-(20, '2017-02-03', 8),
-(30, '2017-02-03', 9);
+) ENGINE=InnoDB DEFAULT CHARSET=utf8 AUTO_INCREMENT=1 ;
 
 -- --------------------------------------------------------
 
 --
--- Структура таблицы `delivery_medicine`
+-- Структура таблиці `delivery_medicine`
 --
 
 CREATE TABLE IF NOT EXISTS `delivery_medicine` (
@@ -59,28 +48,10 @@ CREATE TABLE IF NOT EXISTS `delivery_medicine` (
   KEY `id_medicine` (`id_medicine`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 
---
--- Дамп данных таблицы `delivery_medicine`
---
-
-INSERT INTO `delivery_medicine` (`id_delivery`, `id_medicine`, `box_quantity`) VALUES
-(9, 2, 1),
-(9, 3, 2),
-(11, 2, 1),
-(11, 3, 2),
-(12, 2, 1),
-(12, 3, 2),
-(13, 4, 1),
-(13, 5, 2),
-(20, 4, 1),
-(20, 5, 2),
-(30, 4, 1),
-(30, 5, 2);
-
 -- --------------------------------------------------------
 
 --
--- Структура таблицы `doctor`
+-- Структура таблиці `doctor`
 --
 
 CREATE TABLE IF NOT EXISTS `doctor` (
@@ -93,20 +64,18 @@ CREATE TABLE IF NOT EXISTS `doctor` (
 ) ENGINE=InnoDB  DEFAULT CHARSET=utf8 AUTO_INCREMENT=6 ;
 
 --
--- Дамп данных таблицы `doctor`
+-- Дамп даних таблиці `doctor`
 --
 
 INSERT INTO `doctor` (`id`, `surname`, `name`, `occupation`, `standing`) VALUES
-(1, 'Курочкін', 'Андрій', 'Хірург', 2015),
-(2, 'Бла', 'Бла', 'бла', 2017),
-(3, 'Бла', 'Бла', 'бла', 2017),
-(4, 'Бла', 'Бла', 'бла', 2017),
-(5, 'Бла', 'Бла', 'бла', 2000);
+(2, 'Testing', 'Test', 'Bla-bla-bla', 228),
+(4, 'Іван', 'Іванов', 'Гуф', 2003),
+(5, 'Test', 'Test', 'Test', 2012);
 
 -- --------------------------------------------------------
 
 --
--- Структура таблицы `medicine`
+-- Структура таблиці `medicine`
 --
 
 CREATE TABLE IF NOT EXISTS `medicine` (
@@ -116,42 +85,43 @@ CREATE TABLE IF NOT EXISTS `medicine` (
   `box_price` decimal(13,2) NOT NULL,
   `quantity_per_box` int(11) NOT NULL,
   PRIMARY KEY (`id`)
-) ENGINE=InnoDB  DEFAULT CHARSET=utf8 AUTO_INCREMENT=6 ;
+) ENGINE=InnoDB  DEFAULT CHARSET=utf8 AUTO_INCREMENT=4 ;
 
 --
--- Дамп данных таблицы `medicine`
+-- Дамп даних таблиці `medicine`
 --
 
 INSERT INTO `medicine` (`id`, `name`, `producer`, `box_price`, `quantity_per_box`) VALUES
-(2, 'Travomel', 'Znahar', '100.00', 25),
-(3, 'Notta', 'Znahar', '100.00', 30),
-(4, 'Mezym', 'Znahar', '100.00', 30),
-(5, 'Hilac', 'Znahar', '200.00', 10);
+(1, 'Мезим', 'Дарниця', '50.00', 50),
+(2, 'Фестал', 'Обухів', '50.00', 50),
+(3, 'Орасепт', 'Київ', '50.00', 50);
 
 -- --------------------------------------------------------
 
 --
--- Структура таблицы `patient`
+-- Структура таблиці `patient`
 --
 
 CREATE TABLE IF NOT EXISTS `patient` (
   `id` int(11) NOT NULL AUTO_INCREMENT,
   `surname` varchar(50) NOT NULL,
   `name` varchar(50) NOT NULL,
-  `phone` varchar(16) NOT NULL,
-  PRIMARY KEY (`id`),
-  UNIQUE KEY `phone` (`phone`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8 AUTO_INCREMENT=1 ;
+  `phone` varchar(30) DEFAULT NULL,
+  PRIMARY KEY (`id`)
+) ENGINE=InnoDB  DEFAULT CHARSET=utf8 AUTO_INCREMENT=4 ;
 
 --
--- Дамп данных таблицы `patient`
+-- Дамп даних таблиці `patient`
 --
 
+INSERT INTO `patient` (`id`, `surname`, `name`, `phone`) VALUES
+(2, 'Testing', 'Test', '+3807727482'),
+(3, 'Yanivskyy', 'Oleh', '+38(097)-118-57-64');
 
 -- --------------------------------------------------------
 
 --
--- Структура таблицы `pharmacy`
+-- Структура таблиці `pharmacy`
 --
 
 CREATE TABLE IF NOT EXISTS `pharmacy` (
@@ -160,20 +130,21 @@ CREATE TABLE IF NOT EXISTS `pharmacy` (
   `address` varchar(255) NOT NULL,
   `extra` double NOT NULL,
   PRIMARY KEY (`id`)
-) ENGINE=InnoDB  DEFAULT CHARSET=utf8 AUTO_INCREMENT=10 ;
+) ENGINE=InnoDB  DEFAULT CHARSET=utf8 AUTO_INCREMENT=4 ;
 
 --
--- Дамп данных таблицы `pharmacy`
+-- Дамп даних таблиці `pharmacy`
 --
 
 INSERT INTO `pharmacy` (`id`, `name`, `address`, `extra`) VALUES
-(8, 'Green apteka', 'Zelena, 12 str.', 30),
-(9, 'Znahar', 'Levandivka, 12 str.', 30);
+(1, 'Guf and co', 'Guf-Tsoy 22, 2B', 0.3),
+(2, 'Guf and co', 'Guf-Tsoy 22, 2B', 0.3),
+(3, 'Guf and co', 'Guf-Tsoy 22, 2B', 0.3);
 
 -- --------------------------------------------------------
 
 --
--- Структура таблицы `pharmacy_medicine`
+-- Структура таблиці `pharmacy_medicine`
 --
 
 CREATE TABLE IF NOT EXISTS `pharmacy_medicine` (
@@ -186,19 +157,19 @@ CREATE TABLE IF NOT EXISTS `pharmacy_medicine` (
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 
 --
--- Дамп данных таблицы `pharmacy_medicine`
+-- Дамп даних таблиці `pharmacy_medicine`
 --
 
 INSERT INTO `pharmacy_medicine` (`id_pharmacy`, `id_medicine`, `pack_price`, `pack_quantity`) VALUES
-(8, 4, '1.73', 30),
-(8, 5, '10.40', 20),
-(9, 4, '1.73', 30),
-(9, 5, '10.40', 20);
+(1, 1, '50.00', 2),
+(1, 2, '50.00', 230),
+(1, 3, '50.00', 11),
+(3, 3, '50.00', 20);
 
 -- --------------------------------------------------------
 
 --
--- Структура таблицы `prescription`
+-- Структура таблиці `prescription`
 --
 
 CREATE TABLE IF NOT EXISTS `prescription` (
@@ -209,17 +180,26 @@ CREATE TABLE IF NOT EXISTS `prescription` (
   PRIMARY KEY (`id`),
   KEY `id_doctor` (`id_doctor`),
   KEY `id_patient` (`id_patient`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8 AUTO_INCREMENT=1 ;
+) ENGINE=InnoDB  DEFAULT CHARSET=utf8 AUTO_INCREMENT=9 ;
 
 --
--- Дамп данных таблицы `prescription`
+-- Дамп даних таблиці `prescription`
 --
 
+INSERT INTO `prescription` (`id`, `date`, `id_doctor`, `id_patient`) VALUES
+(1, '2012-12-12', 2, 3),
+(2, '2012-12-12', 2, 3),
+(3, '2010-12-12', 2, 3),
+(4, '2009-12-12', 2, 3),
+(5, '2005-12-12', 2, 3),
+(6, '2001-12-12', 2, 3),
+(7, '2012-02-02', 2, 3),
+(8, '2007-02-08', 2, 3);
 
 -- --------------------------------------------------------
 
 --
--- Структура таблицы `prescr_medicine`
+-- Структура таблиці `prescr_medicine`
 --
 
 CREATE TABLE IF NOT EXISTS `prescr_medicine` (
@@ -232,19 +212,23 @@ CREATE TABLE IF NOT EXISTS `prescr_medicine` (
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 
 --
--- Дамп данных таблицы `prescr_medicine`
+-- Дамп даних таблиці `prescr_medicine`
 --
 
+INSERT INTO `prescr_medicine` (`id_prescr`, `id_medicine`, `pack_quantity`, `pack_bought`) VALUES
+(6, 2, 10, 0),
+(7, 2, 10, 0),
+(8, 3, 22, 9);
 
 -- --------------------------------------------------------
 
 --
--- Структура таблицы `purchase`
+-- Структура таблиці `purchase`
 --
 
 CREATE TABLE IF NOT EXISTS `purchase` (
   `id` int(11) NOT NULL AUTO_INCREMENT,
-  `date` date NOT NULL,
+  `date` datetime NOT NULL,
   `id_patient` int(11) NOT NULL,
   `id_prescr` int(11) NOT NULL,
   `id_pharmacy` int(11) NOT NULL,
@@ -252,17 +236,20 @@ CREATE TABLE IF NOT EXISTS `purchase` (
   KEY `id_patient` (`id_patient`),
   KEY `id_prescr` (`id_prescr`),
   KEY `id_pharmacy` (`id_pharmacy`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8 AUTO_INCREMENT=1 ;
+) ENGINE=InnoDB  DEFAULT CHARSET=utf8 AUTO_INCREMENT=3 ;
 
 --
--- Дамп данных таблицы `purchase`
+-- Дамп даних таблиці `purchase`
 --
 
+INSERT INTO `purchase` (`id`, `date`, `id_patient`, `id_prescr`, `id_pharmacy`) VALUES
+(1, '2017-02-15 00:00:00', 3, 8, 1),
+(2, '2017-02-16 00:00:00', 3, 8, 1);
 
 -- --------------------------------------------------------
 
 --
--- Структура таблицы `purch_medicine`
+-- Структура таблиці `purch_medicine`
 --
 
 CREATE TABLE IF NOT EXISTS `purch_medicine` (
@@ -274,50 +261,45 @@ CREATE TABLE IF NOT EXISTS `purch_medicine` (
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 
 --
--- Дамп данных таблицы `purch_medicine`
---
-
-
---
--- Ограничения внешнего ключа сохраненных таблиц
+-- Обмеження зовнішнього ключа збережених таблиць
 --
 
 --
--- Ограничения внешнего ключа таблицы `delivery`
+-- Обмеження зовнішнього ключа таблиці `delivery`
 --
 ALTER TABLE `delivery`
   ADD CONSTRAINT `delivery_ibfk_1` FOREIGN KEY (`id_pharmacy`) REFERENCES `pharmacy` (`id`) ON DELETE NO ACTION ON UPDATE CASCADE;
 
 --
--- Ограничения внешнего ключа таблицы `delivery_medicine`
+-- Обмеження зовнішнього ключа таблиці `delivery_medicine`
 --
 ALTER TABLE `delivery_medicine`
   ADD CONSTRAINT `delivery_medicine_ibfk_1` FOREIGN KEY (`id_delivery`) REFERENCES `delivery` (`id`) ON DELETE CASCADE ON UPDATE CASCADE,
   ADD CONSTRAINT `delivery_medicine_ibfk_2` FOREIGN KEY (`id_medicine`) REFERENCES `medicine` (`id`) ON DELETE NO ACTION ON UPDATE CASCADE;
 
 --
--- Ограничения внешнего ключа таблицы `pharmacy_medicine`
+-- Обмеження зовнішнього ключа таблиці `pharmacy_medicine`
 --
 ALTER TABLE `pharmacy_medicine`
   ADD CONSTRAINT `pharmacy_medicine_ibfk_1` FOREIGN KEY (`id_pharmacy`) REFERENCES `pharmacy` (`id`) ON DELETE NO ACTION ON UPDATE CASCADE,
   ADD CONSTRAINT `pharmacy_medicine_ibfk_2` FOREIGN KEY (`id_medicine`) REFERENCES `medicine` (`id`) ON DELETE NO ACTION ON UPDATE CASCADE;
 
 --
--- Ограничения внешнего ключа таблицы `prescription`
+-- Обмеження зовнішнього ключа таблиці `prescription`
 --
 ALTER TABLE `prescription`
   ADD CONSTRAINT `prescription_ibfk_3` FOREIGN KEY (`id_doctor`) REFERENCES `doctor` (`id`) ON DELETE NO ACTION ON UPDATE CASCADE,
   ADD CONSTRAINT `prescription_ibfk_4` FOREIGN KEY (`id_patient`) REFERENCES `patient` (`id`) ON DELETE NO ACTION ON UPDATE CASCADE;
 
 --
--- Ограничения внешнего ключа таблицы `prescr_medicine`
+-- Обмеження зовнішнього ключа таблиці `prescr_medicine`
 --
 ALTER TABLE `prescr_medicine`
   ADD CONSTRAINT `prescr_medicine_ibfk_1` FOREIGN KEY (`id_prescr`) REFERENCES `prescription` (`id`) ON DELETE CASCADE ON UPDATE CASCADE,
   ADD CONSTRAINT `prescr_medicine_ibfk_2` FOREIGN KEY (`id_medicine`) REFERENCES `medicine` (`id`) ON DELETE NO ACTION ON UPDATE CASCADE;
 
 --
--- Ограничения внешнего ключа таблицы `purchase`
+-- Обмеження зовнішнього ключа таблиці `purchase`
 --
 ALTER TABLE `purchase`
   ADD CONSTRAINT `purchase_ibfk_1` FOREIGN KEY (`id_patient`) REFERENCES `patient` (`id`) ON DELETE NO ACTION ON UPDATE CASCADE,
@@ -325,7 +307,7 @@ ALTER TABLE `purchase`
   ADD CONSTRAINT `purchase_ibfk_3` FOREIGN KEY (`id_pharmacy`) REFERENCES `pharmacy` (`id`) ON DELETE NO ACTION ON UPDATE CASCADE;
 
 --
--- Ограничения внешнего ключа таблицы `purch_medicine`
+-- Обмеження зовнішнього ключа таблиці `purch_medicine`
 --
 ALTER TABLE `purch_medicine`
   ADD CONSTRAINT `purch_medicine_ibfk_1` FOREIGN KEY (`id_purchase`) REFERENCES `purchase` (`id`) ON DELETE CASCADE ON UPDATE CASCADE,
