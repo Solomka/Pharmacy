@@ -27,4 +27,6 @@ public interface PatientService {
 	void update(Patient patient);
 
 	boolean delete(Long key);
+	
+	boolean containsNumber(String number);
 }

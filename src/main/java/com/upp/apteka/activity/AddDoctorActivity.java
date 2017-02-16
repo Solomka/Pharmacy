@@ -2,7 +2,8 @@ package com.upp.apteka.activity;
 
 import java.awt.BorderLayout;
 import java.awt.Color;
-import java.awt.GridLayout;
+import java.awt.Dimension;
+import java.awt.FlowLayout;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.util.List;
@@ -27,31 +28,38 @@ public class AddDoctorActivity implements Activity {
 
 	@Autowired
 	private JFrame jFrame;
+	
+	private static final int INPUT_WIDTH = 500;
+	private static final int INPUT_HEIGHT = 40;
 
 	@Autowired
 	private DoctorService doctorService;
 
 	public void showActivity() {
 		
-		GridLayout gridLayout = new GridLayout(0,1,0,5);
-		
 		JPanel mainPanel = new JPanel();
 		mainPanel.setBorder(BorderFactory.createEmptyBorder(0, 20, 15, 20));
 		jFrame.setContentPane(mainPanel);
-		jFrame.getContentPane().setLayout(gridLayout);		
+		jFrame.getContentPane().setLayout(new FlowLayout());
 		
-		// init textFields for user inputs
+		JPanel namePanel = new JPanel();
+		namePanel.setPreferredSize(new Dimension(INPUT_WIDTH, INPUT_HEIGHT));
+
 		
 		JTextField name = new JTextField();
+		name.setPreferredSize(new Dimension(INPUT_WIDTH, INPUT_HEIGHT));
 		name.setName("form:name");
 
 		JTextField surname = new JTextField();
+		surname.setPreferredSize(new Dimension(INPUT_WIDTH, INPUT_HEIGHT));
 		surname.setName("form:surname");
 
 		JTextField occupation = new JTextField();
+		occupation.setPreferredSize(new Dimension(INPUT_WIDTH, INPUT_HEIGHT));
 		occupation.setName("form:occupation");
 
 		JTextField standing = new JTextField();
+		standing.setPreferredSize(new Dimension(INPUT_WIDTH, INPUT_HEIGHT));
 		standing.setName("form:standing");
 		
 		// init labels for textFields
@@ -100,7 +108,6 @@ public class AddDoctorActivity implements Activity {
 		 *  - JLabel nameLabel
 		 *  - JLabel errorLabel
 		 */
-		JPanel namePanel = new JPanel();
 		
 		namePanel.setLayout(new BorderLayout());
 		namePanel.add(nameLabel, BorderLayout.WEST);
@@ -114,6 +121,7 @@ public class AddDoctorActivity implements Activity {
 		jFrame.add(name);
 		
 		JPanel surnamePanel = new JPanel();
+		surnamePanel.setPreferredSize(new Dimension(INPUT_WIDTH, INPUT_HEIGHT));
 		
 		surnamePanel.setLayout(new BorderLayout());
 		surnamePanel.add(surnameLabel, BorderLayout.WEST);
@@ -123,24 +131,25 @@ public class AddDoctorActivity implements Activity {
 		jFrame.add(surname);
 		
 		JPanel occupationPanel = new JPanel();
+		occupationPanel.setPreferredSize(new Dimension(INPUT_WIDTH, INPUT_HEIGHT));
 		
 		occupationPanel.setLayout(new BorderLayout());
 		occupationPanel.add(occupationLabel, BorderLayout.WEST);
 		occupationPanel.add(occupationError, BorderLayout.EAST);
 		
-		jFrame.add(occupationPanel);
-		jFrame.add(occupation);
-		
 		JPanel standingPanel = new JPanel();
+		standingPanel.setPreferredSize(new Dimension(INPUT_WIDTH, INPUT_HEIGHT));
 		
 		standingPanel.setLayout(new BorderLayout());
 		standingPanel.add(standingLabel, BorderLayout.WEST);
 		standingPanel.add(standingError, BorderLayout.EAST);
 		
+		jFrame.add(occupationPanel);
+		jFrame.add(occupation);
+		
 		jFrame.add(standingPanel);
 		jFrame.add(standing);
 		
-		jFrame.add(new JLabel(""));
 		jFrame.add(button);
 	}
 

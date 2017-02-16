@@ -1,7 +1,7 @@
 package com.upp.apteka.bo;
 
 import java.sql.Date;
-import java.util.Set;
+import java.util.List;
 
 import javax.persistence.Column;
 import javax.persistence.Entity;
@@ -39,7 +39,7 @@ public class Purchase {
 	private Pharmacy pharmacy;
 	
 	@OneToMany(fetch = FetchType.LAZY, mappedBy = "purchMedicine.purchase")
-	private Set<PurchaseMedicine> purchaseMedicines;
+	private List<PurchaseMedicine> purchaseMedicines;
 
 	public Long getId() {
 		return id;
@@ -81,11 +81,11 @@ public class Purchase {
 		this.pharmacy = pharmacy;
 	}
 	
-	public Set<PurchaseMedicine> getPurchaseMedicines() {
+	public List<PurchaseMedicine> getPurchaseMedicines() {
 		return purchaseMedicines;
 	}
 
-	public void setPurchaseMedicines(Set<PurchaseMedicine> purchaseMedicines) {
+	public void setPurchaseMedicines(List<PurchaseMedicine> purchaseMedicines) {
 		this.purchaseMedicines = purchaseMedicines;
 	}
 

@@ -5,15 +5,20 @@ import java.util.List;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Scope;
 import org.springframework.stereotype.Component;
 
 import com.mysql.jdbc.StringUtils;
 import com.upp.apteka.dto.PatientDto;
+import com.upp.apteka.service.PatientService;
 
 @Component
 @Scope("prototype")
 public class PatientValidator implements Validator {
+	
+	@Autowired
+	private PatientService patientService;
 
 	public List<ValidationError> validate(Object target) {
 
@@ -35,7 +40,8 @@ public class PatientValidator implements Validator {
 
 		if (!matcher.matches()) {
 			errors.add(new ValidationError("error:phone", "Потрібно вказати номер у форматі +38(ХХХ)-ХХХ-ХХ-ХХ"));
-		}
+		}else if(patientService.containsNumber(patientDto.getPhone()))
+			errors.add(new ValidationError("error:phone", "Такий номер вже використовується"));
 
 		return errors;
 	}

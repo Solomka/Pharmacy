@@ -1,11 +1,14 @@
 package com.upp.apteka.service;
 
-import java.util.Date;
+import java.sql.Date;
 import java.util.List;
 
 import com.upp.apteka.bo.Prescription;
+import com.upp.apteka.dto.ChooseMedicineDto;
 
 public interface PrescriptionService {
+	
+	Long create(Long doctorId, Long patientId, Date date, List<ChooseMedicineDto> dtos);
 	
 	List<Prescription> getAll(int offset, int limit);
 	

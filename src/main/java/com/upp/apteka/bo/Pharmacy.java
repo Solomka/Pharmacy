@@ -3,7 +3,7 @@ package com.upp.apteka.bo;
 import java.io.Serializable;
 import java.util.List;
 import java.util.Objects;
-import java.util.Set;
+import java.util.List;
 
 import javax.persistence.CascadeType;
 import javax.persistence.Column;
@@ -57,7 +57,8 @@ public class Pharmacy implements Serializable {
 	private List<Delivery> deliveries;
 	
 	@OneToMany(fetch = FetchType.LAZY, mappedBy = "pharmacy")
-	private Set<Purchase> purchases;
+	@Cascade({ org.hibernate.annotations.CascadeType.SAVE_UPDATE })
+	private List<Purchase> purchases;
 
 	public Pharmacy() {
 
@@ -130,11 +131,11 @@ public class Pharmacy implements Serializable {
 		this.deliveries = deliveries;
 	}
 	
-	public Set<Purchase> getPurchases() {
+	public List<Purchase> getPurchases() {
 		return purchases;
 	}
 
-	public void setPurchases(Set<Purchase> purchases) {
+	public void setPurchases(List<Purchase> purchases) {
 		this.purchases = purchases;
 	}
 
