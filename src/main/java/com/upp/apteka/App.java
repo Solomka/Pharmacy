@@ -21,6 +21,7 @@ public class App {
 		JFrame dispatcherFrame = ctx.getBean(JFrame.class);
 		dispatcherFrame.setVisible(true);
 
+		// on the same frame put all addDoctor activity view elements
 		SwingController helloController = ctx.getBean("addDoctor", SwingController.class);
 		helloController.switchToActivity(null);
 
