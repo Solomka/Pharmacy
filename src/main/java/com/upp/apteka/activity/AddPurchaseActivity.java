@@ -27,6 +27,7 @@ import com.upp.apteka.bo.Purchase;
 import com.upp.apteka.bo.PurchaseMedicine;
 import com.upp.apteka.component.buy.form.BuyInputForm;
 import com.upp.apteka.service.MedicineService;
+import com.upp.apteka.service.PharmacyService;
 import com.upp.apteka.service.PurchaseService;
 
 @Component
@@ -41,10 +42,18 @@ public class AddPurchaseActivity {
 
 	@Autowired
 	private MedicineService medicineService;
+	
+	@Autowired
+	private PharmacyService pharmacyService;
 
 	private List<BuyInputForm> forms;
+	
+	@Autowired
+	private Long pharmacyId;
 
-	public void showActivity(final Prescription prescription, final Pharmacy pharmacy) {
+	public void showActivity(final Prescription prescription) {
+		
+		final Pharmacy pharmacy = pharmacyService.getPharmacy(pharmacyId);
 
 		JPanel mainPanel = new JPanel();
 		mainPanel.setBorder(BorderFactory.createTitledBorder("Загальна інформація"));
@@ -90,7 +99,7 @@ public class AddPurchaseActivity {
 		JPanel fieldsInputPanel = new JPanel();
 		fieldsInputPanel.setBorder(BorderFactory.createTitledBorder("Дані про покупку"));
 		fieldsInputPanel.setLayout(new FlowLayout());
-		fieldsInputPanel.setPreferredSize(new Dimension(560, BuyInputForm.HEIGHT * forms.size() + 60));
+		fieldsInputPanel.setPreferredSize(new Dimension(560, (BuyInputForm.HEIGHT + 10) * forms.size() + 60));
 
 		for (BuyInputForm form : forms)
 			fieldsInputPanel.add(form);

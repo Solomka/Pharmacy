@@ -48,9 +48,7 @@ public class PrescriptionServiceImpl implements PrescriptionService {
 
 	//@Override
 	public Prescription read(Long key) {
-		Prescription prescription = prescriptionRepository.read(key);
-		System.out.println(prescription.getPrescriptionMedicines());
-		return prescription;
+		return prescriptionRepository.read(key);
 	}
 
 	//@Override
@@ -106,6 +104,11 @@ public class PrescriptionServiceImpl implements PrescriptionService {
 		prescriptionRepository.update(prescription);
 
 		return id;
+	}
+
+	@Override
+	public List<Prescription> getUnboughtPrescriptions(Long customerId) {
+		return prescriptionRepository.getUnboughtPrescriptions(customerId);
 	}
 
 }

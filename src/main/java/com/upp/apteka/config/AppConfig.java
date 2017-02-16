@@ -20,8 +20,6 @@ import org.springframework.context.annotation.Import;
 import org.springframework.context.annotation.PropertySource;
 import org.springframework.core.env.Environment;
 import org.springframework.jdbc.datasource.DriverManagerDataSource;
-import org.springframework.transaction.annotation.EnableTransactionManagement;
-import org.springframework.transaction.annotation.Transactional;
 
 @Configuration
 @ComponentScan(basePackages = "com.upp.apteka")
@@ -47,6 +45,11 @@ public class AppConfig {
 		return dataSource;
 
 	}
+	
+	@Bean
+	public Long pharmacyId(){
+		return 8L;
+	}
 
 	@Bean
 	public JFrame getDispatcherFrame() throws ClassNotFoundException, InstantiationException, IllegalAccessException,
@@ -56,7 +59,7 @@ public class AppConfig {
 		dispatcherFrame.setTitle("Аптека");
 		dispatcherFrame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 		dispatcherFrame.setSize(600, 600);
-		dispatcherFrame.setResizable(false);
+		//dispatcherFrame.setResizable(false);
 		dispatcherFrame.setLocationRelativeTo(null);
 		UIManager.setLookAndFeel(UIManager.getSystemLookAndFeelClassName());
 
@@ -93,10 +96,21 @@ public class AppConfig {
 				
 			}
 		});
+		
+		JMenuItem addPurchase = new JMenuItem("Додати покупку");
+		addPurchase.addActionListener(new ActionListener() {
+			
+			@Override
+			public void actionPerformed(ActionEvent e) {
+				mapper.changeActivity("selectPrescription", null);
+				
+			}
+		});
 
 		test.add(addDoctor);
 		test.add(addPatient);
 		test.add(addPrescription);
+		test.add(addPurchase);
 		
 		menuBar.add(test);
 		

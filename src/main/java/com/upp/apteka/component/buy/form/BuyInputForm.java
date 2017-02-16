@@ -49,7 +49,7 @@ public class BuyInputForm extends JPanel {
 		inputPanel.add(quantityLabel);
 		add(inputPanel);
 		
-		if(medicineAvailable == 0)
+		if(medicineAvailable == 0 || packBought == packAvailable)
 			numberField.setEditable(false);
 	}
 

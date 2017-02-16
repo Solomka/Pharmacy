@@ -11,8 +11,6 @@ import org.springframework.context.ApplicationContext;
 import org.springframework.context.annotation.AnnotationConfigApplicationContext;
 
 import com.upp.apteka.config.AppConfig;
-import com.upp.apteka.controller.SwingController;
-
 public class App {
 	
 	public static void main(String[] args) throws FileNotFoundException, IOException, ClassNotFoundException {
@@ -24,15 +22,6 @@ public class App {
 		JFrame dispatcherFrame = ctx.getBean(JFrame.class);
 		dispatcherFrame.setVisible(true);
 
-		SwingController controller = ctx.getBean("addPurchase", SwingController.class);
-		
-		Map<String, Object> params = new HashMap<>();
-		
-		//TODO JUST FOR TESTING PURPOSE
-		params.put("prescriptionId", 8L);
-		params.put("pharmacyId", 1L);
-		
-		controller.switchToActivity(params);
 
 	}
 }
