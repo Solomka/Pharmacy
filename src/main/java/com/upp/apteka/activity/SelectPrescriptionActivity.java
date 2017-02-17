@@ -29,9 +29,9 @@ import com.upp.apteka.config.Mapper;
 import com.upp.apteka.service.PrescriptionService;
 import com.upp.apteka.service.searchable.SearchablePatientService;
 
-@Component
+@Component("selectPrescriptionActivity")
 @Scope("prototype")
-public class SelectPrescriptionActivity {
+public class SelectPrescriptionActivity implements Activity {
 
 	@Autowired
 	private SearchablePatientService searchablePatientService;
@@ -56,7 +56,7 @@ public class SelectPrescriptionActivity {
 	private static final int LIST_BORDER_HORIZONTAL = 80;
 	private static final int LIST_BORDER_VERTICAL = 40;
 
-	public void showActivity() {
+	public void showActivity(Map<String, Object> params) {
 		frame.setLayout(new BorderLayout());
 
 		JPanel patientPanel = new JPanel();
@@ -84,10 +84,10 @@ public class SelectPrescriptionActivity {
 				LIST_BORDER_VERTICAL, LIST_BORDER_HORIZONTAL));
 
 		final DefaultListModel<SearchableItem> model = new DefaultListModel<>();
-		
+
 		final JList<SearchableItem> list = new JList<SearchableItem>(model);
 		list.setFont(font);
-		
+
 		JScrollPane pane = new JScrollPane(list);
 
 		JButton chooseButton = new JButton("Обрати");

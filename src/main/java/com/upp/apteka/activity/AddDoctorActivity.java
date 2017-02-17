@@ -8,12 +8,15 @@ import java.awt.GridLayout;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.util.Calendar;
+import java.util.List;
+import java.util.Map;
 
 import javax.swing.BorderFactory;
 import javax.swing.JButton;
 import javax.swing.JFormattedTextField;
 import javax.swing.JFrame;
 import javax.swing.JLabel;
+import javax.swing.JOptionPane;
 import javax.swing.JPanel;
 import javax.swing.JTextField;
 import javax.swing.text.NumberFormatter;
@@ -22,11 +25,11 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Scope;
 import org.springframework.stereotype.Component;
 
+import com.upp.apteka.config.Mapper;
 import com.upp.apteka.service.DoctorService;
+import com.upp.apteka.validator.ValidationError;
 
-import javassist.NotFoundException;
-
-@Component
+@Component("addDoctorActivity")
 @Scope("prototype")
 public class AddDoctorActivity implements Activity {
 
@@ -37,13 +40,16 @@ public class AddDoctorActivity implements Activity {
 	private static final int BUTTON_HEIGHT = 35;
 
 	private static final int BORDER = 40;
-	
+
 	private static final Font font = new Font("SansSerif", Font.PLAIN, 14);
+
+	@Autowired
+	private Mapper mapper;
 
 	@Autowired
 	private DoctorService doctorService;
 
-	public void showActivity() {
+	public void showActivity(Map<String, Object> params) {
 
 		JPanel mainPanel = new JPanel();
 		mainPanel.setBorder(BorderFactory.createEmptyBorder(BORDER / 3, BORDER, BORDER / 3, BORDER));
@@ -63,10 +69,10 @@ public class AddDoctorActivity implements Activity {
 		JTextField occupation = new JTextField();
 		occupation.setFont(font);
 		occupation.setName("form:occupation");
-		
-		Calendar now = Calendar.getInstance();   // Gets the current date and time
+
+		Calendar now = Calendar.getInstance(); // Gets the current date and time
 		int year = now.get(Calendar.YEAR);
-		
+
 		NumberFormatter nf = new NumberFormatter();
 		nf.setMinimum(1900);
 		nf.setMaximum(year);
@@ -77,15 +83,14 @@ public class AddDoctorActivity implements Activity {
 		// init labels for textFields
 		JLabel nameLabel = new JLabel("Імя:");
 		nameLabel.setFont(font);
-		
+
 		JLabel surnameLabel = new JLabel("Прізвище:");
 		surnameLabel.setFont(font);
-		
+
 		JLabel occupationLabel = new JLabel("Спеціальність:");
 		occupationLabel.setFont(font);
-		
-		JLabel standingLabel = new JLabel(
-				"Стаж (вказати рік [1900-" + year + "]):");
+
+		JLabel standingLabel = new JLabel("Стаж (вказати рік [1900-" + year + "]):");
 		standingLabel.setFont(font);
 
 		// init empty labels for future input errors
@@ -118,12 +123,21 @@ public class AddDoctorActivity implements Activity {
 		button.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
 
-					try {
-						doctorService.processAdding(jFrame);
-					} catch (NotFoundException notFoundException) {
-						notFoundException.printStackTrace();
-					}
+				try {
+					List<ValidationError> list = doctorService.processAdding(jFrame);
 
+					if (list.size() == 0) {
+						mapper.changeActivity("addDoctor", null);
+
+						JOptionPane.showMessageDialog(jFrame, "Успішно додано лікаря!", "Успішна операція",
+								JOptionPane.INFORMATION_MESSAGE);
+					}
+				} catch (Exception addException) {
+					JOptionPane.showMessageDialog(jFrame,
+							new String[] { "Сервіс тимчасово недоступний. Спробуйте, будь ласка, пізніше." }, "Помилка",
+							JOptionPane.ERROR_MESSAGE);
+					return;
+				}
 			}
 		});
 

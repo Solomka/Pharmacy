@@ -6,7 +6,8 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.ApplicationContext;
 import org.springframework.stereotype.Component;
 
-import com.upp.apteka.activity.AddPurchaseActivity;
+import com.upp.apteka.activity.Activity;
+import com.upp.apteka.bo.Prescription;
 import com.upp.apteka.service.PrescriptionService;
 
 @Component("addPurchase")
@@ -19,8 +20,13 @@ public class AddPurchaseController implements SwingController {
 	private PrescriptionService prescriptionService;
 
 	public void switchToActivity(Map<String, Object> params) {
-		AddPurchaseActivity activity = appContext.getBean(AddPurchaseActivity.class);
-		activity.showActivity(prescriptionService.read((Long) params.get("prescriptionId")));
+		Activity activity = (Activity) appContext.getBean("addPurchaseActivity");
+
+		Prescription prescription = prescriptionService.read((Long) params.get("prescriptionId"));
+		params.clear();
+		params.put("prescription", prescription);
+
+		activity.showActivity(params);
 
 	}
 }

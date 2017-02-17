@@ -6,17 +6,24 @@ import java.awt.Dimension;
 import java.awt.GridLayout;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.awt.event.KeyEvent;
+import java.awt.event.KeyListener;
+import java.math.BigDecimal;
+import java.math.RoundingMode;
 import java.sql.Date;
+import java.text.NumberFormat;
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 import javax.swing.BorderFactory;
 import javax.swing.JButton;
 import javax.swing.JFrame;
 import javax.swing.JLabel;
+import javax.swing.JOptionPane;
 import javax.swing.JPanel;
 import javax.swing.JScrollPane;
-
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Scope;
 import org.springframework.stereotype.Component;
@@ -28,14 +35,15 @@ import com.upp.apteka.bo.PrescriptionMedicine;
 import com.upp.apteka.bo.Purchase;
 import com.upp.apteka.bo.PurchaseMedicine;
 import com.upp.apteka.component.buy.form.BuyInputForm;
+import com.upp.apteka.config.Mapper;
 import com.upp.apteka.layout.ModifiedFlowLayout;
 import com.upp.apteka.service.MedicineService;
 import com.upp.apteka.service.PharmacyService;
 import com.upp.apteka.service.PurchaseService;
 
-@Component
+@Component("addPurchaseActivity")
 @Scope("prototype")
-public class AddPurchaseActivity {
+public class AddPurchaseActivity implements Activity {
 
 	@Autowired
 	private JFrame frame;
@@ -50,15 +58,22 @@ public class AddPurchaseActivity {
 	private PharmacyService pharmacyService;
 
 	private List<BuyInputForm> forms;
+	
+	private JLabel totalPriceLabel;
 
 	@Autowired
 	private Long pharmacyId;
+
+	@Autowired
+	private Mapper mapper;
 
 	private static final int WINDOW_BORDER = 20;
 	private static final int SUBMIT_WIDTH = 100;
 	private static final int SUBMIT_HEIGHT = 35;
 
-	public void showActivity(final Prescription prescription) {
+	public void showActivity(final Map<String, Object> params) {
+
+		final Prescription prescription = (Prescription) params.get("prescription");
 
 		frame.setContentPane(new JPanel());
 		frame.setLayout(new BorderLayout());
@@ -83,6 +98,9 @@ public class AddPurchaseActivity {
 				+ " " + prescription.getDoctor().getName() + "<br/><b>Дата</b>: " + prescription.getDate()
 				+ "</html>"));
 
+		totalPriceLabel = new JLabel("<html><b>Вартість</b>: 0");
+		infoPanel.add(totalPriceLabel);
+
 		forms = new ArrayList<>();
 
 		mainPanel.add(infoPanel);
@@ -94,16 +112,35 @@ public class AddPurchaseActivity {
 
 			for (PharmacyMedicine pharmMedicine : pharmacyMedicines) {
 				if (pharmMedicine.getPharmacy().getId() == pharmacy.getId()) {
-
-					forms.add(new BuyInputForm(pm.getMedicine().getId(),
+					BuyInputForm buy = new BuyInputForm(pm.getMedicine().getId(),
 							pm.getMedicine().getName() + " " + pm.getMedicine().getProducer(), pm.getPackBought(),
-							pm.getPackQuantity(), pharmMedicine.getPackQuantity()));
+							pm.getPackQuantity(), pharmMedicine.getPackQuantity(), pharmMedicine.getPackPrice());
+					forms.add(buy);
+
+					buy.getNumberField().addKeyListener(new KeyListener() {
+
+						@Override
+						public void keyTyped(KeyEvent e) {
+							// TODO Auto-generated method stub
+
+						}
+
+						@Override
+						public void keyReleased(KeyEvent e) {
+							updatePrice();
+								
+						}
+
+						@Override
+						public void keyPressed(KeyEvent e) {
+						}
+					});
 					continue outer;
 				}
 			}
 			forms.add(new BuyInputForm(pm.getMedicine().getId(),
 					pm.getMedicine().getName() + " " + pm.getMedicine().getProducer(), pm.getPackBought(),
-					pm.getPackQuantity(), 0));
+					pm.getPackQuantity(), 0, new BigDecimal(-1)));
 
 		}
 
@@ -159,12 +196,62 @@ public class AddPurchaseActivity {
 				purchase.setPurchaseMedicines(purchaseMedicines);
 
 				if (purchaseMedicines.size() > 0) {
-					purchaseService.create(purchase);
+
+					try {
+						purchaseService.create(purchase);
+					} catch (Exception addingException) {
+						addingException.printStackTrace();
+						JOptionPane.showMessageDialog(frame,
+								new String[] { "Сервіс тимчасово недоступний. Спробуйте, будь ласка, пізніше." },
+								"Помилка", JOptionPane.ERROR_MESSAGE);
+						return;
+					}
+
+					Map<String, Object> newParams = new HashMap<String, Object>();
+					newParams.put("prescriptionId", prescription.getId());
+					
+					mapper.changeActivity("addPurchase", newParams);
+
+					JOptionPane.showMessageDialog(frame, "Успішно здійснено покупку!", "Успішна операція",
+							JOptionPane.INFORMATION_MESSAGE);
+				}else{
+					updatePrice();
 				}
 			}
 		});
 
 		frame.add(submitPanel, BorderLayout.SOUTH);
+	}
+
+	protected void updatePrice() {
+		try {
+
+			double totalPrice = 0;
+
+			for (BuyInputForm buyInputForm : forms) {
+				Integer value;
+
+				try {
+					value = buyInputForm.getNumber();
+				} catch (Exception numE) {
+					value = 0;
+				}
+
+				if (value != null && value > 0) {
+					totalPrice += buyInputForm.getPrice().doubleValue() * value;
+				}
+
+			}
+
+			NumberFormat nf= NumberFormat.getInstance();
+			nf.setMaximumFractionDigits(2);
+			nf.setMinimumFractionDigits(2);
+			nf.setRoundingMode(RoundingMode.HALF_UP);
+			
+			totalPriceLabel.setText("<html><b>Вартість</b>: " + nf.format(totalPrice));
+		} finally {
+		}
+		
 	}
 
 }

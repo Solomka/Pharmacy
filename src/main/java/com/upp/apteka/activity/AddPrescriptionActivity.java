@@ -11,6 +11,7 @@ import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Map;
 
 import javax.swing.BorderFactory;
 import javax.swing.DefaultListModel;
@@ -32,15 +33,16 @@ import org.springframework.stereotype.Component;
 
 import com.upp.apteka.component.combobox.searchable.SearchableComboBox;
 import com.upp.apteka.component.combobox.searchable.SearchableItem;
+import com.upp.apteka.config.Mapper;
 import com.upp.apteka.dto.ChooseMedicineDto;
 import com.upp.apteka.service.PrescriptionService;
 import com.upp.apteka.service.searchable.SearchableDoctorService;
 import com.upp.apteka.service.searchable.SearchableMedicineService;
 import com.upp.apteka.service.searchable.SearchablePatientService;
 
-@Component
+@Component("addPrescriptionActivity")
 @Scope("prototype")
-public class AddPrescriptionActivity {
+public class AddPrescriptionActivity implements Activity {
 
 	private List<ChooseMedicineDto> selectedItems;
 
@@ -48,7 +50,7 @@ public class AddPrescriptionActivity {
 
 	private static final int BUTTON_WIDTH = 100;
 	private static final int BUTTON_HEIGHT = 25;
-	
+
 	private static final int MIN_MEDICINE_PANEL_HEIGHT = 80;
 
 	private static final String DATE_FORMAT = "MM/dd/yyyy";
@@ -58,6 +60,9 @@ public class AddPrescriptionActivity {
 
 	@Autowired
 	private JFrame jFrame;
+	
+	@Autowired
+	private Mapper mapper;
 
 	@Autowired
 	private SearchableDoctorService searchableDoctorService;
@@ -69,16 +74,17 @@ public class AddPrescriptionActivity {
 	private SearchableMedicineService searchableMedicineService;
 
 	private DefaultListModel<SearchableItem> defaultListModel;
-	
+
 	private static final int WINDOW_BORDER = 20;
 
-	public void showActivity() {
+	public void showActivity(Map<String, Object> params) {
 
 		selectedItems = new ArrayList<>();
 
 		JPanel contentPanel = new JPanel();
 		contentPanel.setLayout(new BorderLayout());
-		contentPanel.setBorder(BorderFactory.createEmptyBorder(WINDOW_BORDER, WINDOW_BORDER, WINDOW_BORDER, WINDOW_BORDER));
+		contentPanel
+				.setBorder(BorderFactory.createEmptyBorder(WINDOW_BORDER, WINDOW_BORDER, WINDOW_BORDER, WINDOW_BORDER));
 
 		jFrame.setContentPane(contentPanel);
 
@@ -108,7 +114,7 @@ public class AddPrescriptionActivity {
 
 		JPanel listPanel = new JPanel();
 		listPanel.setLayout(new BorderLayout());
-		
+
 		listPanel.setBorder(BorderFactory.createEmptyBorder(0, 20, 5, 20));
 
 		/**
@@ -181,7 +187,7 @@ public class AddPrescriptionActivity {
 		final JComboBox<SearchableItem> searchDoctor = new SearchableComboBox(searchableDoctorService);
 		final JComboBox<SearchableItem> searchPatient = new SearchableComboBox(searchablePatientService);
 		final JComboBox<SearchableItem> searchMedicine = new SearchableComboBox(searchableMedicineService);
-		
+
 		doctorPanel.add(doctorLabel);
 		doctorPanel.add(searchDoctor);
 
@@ -190,7 +196,7 @@ public class AddPrescriptionActivity {
 
 		datePanel.add(dateLabel);
 		datePanel.add(txtDate);
-		
+
 		medicinePanel.setPreferredSize(new Dimension(0, MIN_MEDICINE_PANEL_HEIGHT));
 		medicinePanel.add(medicineLabel);
 		medicinePanel.add(searchMedicine);
@@ -288,7 +294,20 @@ public class AddPrescriptionActivity {
 						java.util.Date date = format.parse(text);
 						Date sqlDate = new Date(date.getTime());
 
-						prescriptionService.create(doctorId, patientId, sqlDate, selectedItems);
+						try {
+							prescriptionService.create(doctorId, patientId, sqlDate, selectedItems);
+						} catch (Exception addingError) {
+							JOptionPane.showMessageDialog(jFrame,
+									new String[] { "Сервіс тимчасово недоступний. Спробуйте, будь ласка, пізніше." },
+									"Помилка", JOptionPane.ERROR_MESSAGE);
+							return;
+						}
+						
+						mapper.changeActivity("addPrescription", null);
+						
+						JOptionPane.showMessageDialog(jFrame,
+			                    "Успішно додано рецепт!",
+			                    "Успішна операція", JOptionPane.INFORMATION_MESSAGE);
 
 					} catch (ParseException parseException) {
 						JOptionPane.showMessageDialog(jFrame, new String[] { "Некоректна дата!" }, "Помилка",

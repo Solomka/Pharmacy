@@ -2,6 +2,7 @@ package com.upp.apteka.component.buy.form;
 
 import java.awt.Dimension;
 import java.awt.FlowLayout;
+import java.math.BigDecimal;
 
 import javax.swing.JFormattedTextField;
 import javax.swing.JLabel;
@@ -17,13 +18,16 @@ public class BuyInputForm extends JPanel {
 	private JLabel medicineLabel;
 	private JTextField numberField;
 	private JLabel quantityLabel;
+	private JLabel priceLabel;
 
 	private Long medicineId;
-	
+	private BigDecimal price;
+
 	public static final int HEIGHT = 20;
 
-	public BuyInputForm(Long medicineId, String medicineName, int packBought, int packAvailable,
-			int medicineAvailable) {
+	public BuyInputForm(Long medicineId, String medicineName, int packBought, int packAvailable, int medicineAvailable,
+			BigDecimal price) {
+		this.setPrice(price);
 		setLayout(new FlowLayout());
 		this.medicineId = medicineId;
 		medicineLabel = new JLabel(medicineName);
@@ -43,23 +47,49 @@ public class BuyInputForm extends JPanel {
 
 		quantityLabel = new JLabel(packBought + "/" + packAvailable + "(" + medicineAvailable + ")");
 		quantityLabel.setPreferredSize(new Dimension(100, HEIGHT));
+
+		if (price.intValue() != -1)
+			priceLabel = new JLabel(price + " грн");
+		else
+			priceLabel = new JLabel("NaN");
+
+		priceLabel.setPreferredSize(new Dimension(100, HEIGHT));
+
 		add(medicineLabel);
 
 		inputPanel.add(numberField);
 		inputPanel.add(quantityLabel);
 		add(inputPanel);
-		
-		if(medicineAvailable == 0 || packBought == packAvailable)
+		add(priceLabel);
+
+		if (medicineAvailable == 0 || packBought == packAvailable)
 			numberField.setEditable(false);
 	}
 
 	public Integer getNumber() {
-		if (numberField.getText() == null || numberField.getText().equals(""))
+
+		String value = numberField.getText().replace(" ", "");
+
+		try {
+			return Integer.parseInt(value);
+		} catch (Exception e) {
 			return null;
-		return Integer.parseInt(numberField.getText());
+		}
 	}
 
 	public Long getMedicineId() {
 		return medicineId;
+	}
+
+	public BigDecimal getPrice() {
+		return price;
+	}
+
+	public void setPrice(BigDecimal price) {
+		this.price = price;
+	}
+
+	public JTextField getNumberField() {
+		return numberField;
 	}
 }

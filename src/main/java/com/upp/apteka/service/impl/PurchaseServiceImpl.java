@@ -58,10 +58,9 @@ public class PurchaseServiceImpl implements PurchaseService {
 				if (prescrMedicine.getMedicine().getId() == purchMedicine.getMedicine().getId()) {
 					prescrMedicine.setPackBought(prescrMedicine.getPackBought() + purchMedicine.getPackQuantity());
 
-					if (prescrMedicine.getPackBought() + purchMedicine.getPackQuantity() > prescrMedicine
-							.getPackQuantity())
+					if (prescrMedicine.getPackBought() > prescrMedicine.getPackQuantity())
 						throw new IllegalArgumentException("Чітер. Занадто багато лікарств. Наркоман, напевно!");
-
+				
 					List<PharmacyMedicine> pharmacyMedicines = prescrMedicine.getMedicine().getPharmacyMedicines();
 
 					for (PharmacyMedicine pm : pharmacyMedicines)
@@ -124,7 +123,7 @@ public class PurchaseServiceImpl implements PurchaseService {
 				if (prescrMedicine.getMedicine().getId() == purchMedicine.getMedicine().getId()) {
 					prescrMedicine.setPackBought(prescrMedicine.getPackBought() + purchMedicine.getPackQuantity());
 
-					if (prescrMedicine.getPackBought() + purchMedicine.getPackQuantity() > prescrMedicine
+					if (prescrMedicine.getPackBought()> prescrMedicine
 							.getPackQuantity())
 						throw new IllegalArgumentException("Чітер. Занадто багато лікарств. Наркоман, напевно!");
 

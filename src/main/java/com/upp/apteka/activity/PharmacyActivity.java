@@ -1,5 +1,7 @@
 package com.upp.apteka.activity;
 
+import java.util.Map;
+
 import javax.swing.JFrame;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -22,7 +24,7 @@ public class PharmacyActivity implements Activity {
 	@Autowired
 	private PharmacyService pharmacyService;
 
-	public void showActivity() {
+	public void showActivity(Map<String, Object> params) {
 		// TODO Auto-generated method stub
 
 	}

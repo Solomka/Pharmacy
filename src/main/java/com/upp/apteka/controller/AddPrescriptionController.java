@@ -6,7 +6,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.ApplicationContext;
 import org.springframework.stereotype.Component;
 
-import com.upp.apteka.activity.AddPrescriptionActivity;
+import com.upp.apteka.activity.Activity;
 
 @Component("addPrescription")
 public class AddPrescriptionController implements SwingController{
@@ -15,8 +15,8 @@ public class AddPrescriptionController implements SwingController{
 	private ApplicationContext appContext;
 	
 	public void switchToActivity(Map<String, Object> params){
-		AddPrescriptionActivity activity = appContext.getBean(AddPrescriptionActivity.class);
-		activity.showActivity();
+		Activity activity = (Activity) appContext.getBean("addPrescriptionActivity");
+		activity.showActivity(null);
 
 	}
 }

@@ -35,11 +35,11 @@ public class PatientValidator implements Validator {
 		else if (patientDto.getName().length() > 50)
 			errors.add(new ValidationError("error:name", "Занадто довге ім'я."));
 
-		Pattern pattern = Pattern.compile("^[+]38[(][0-9]{3}[)]-[0-9]{3}-[0-9]{2}-[0-9]{2}$");
+		Pattern pattern = Pattern.compile("^[0-9]{3}-[0-9]{3}-[0-9]{4}$");
 		Matcher matcher = pattern.matcher(patientDto.getPhone());
 
 		if (!matcher.matches()) {
-			errors.add(new ValidationError("error:phone", "Потрібно вказати номер у форматі +38(ХХХ)-ХХХ-ХХ-ХХ"));
+			errors.add(new ValidationError("error:phone", "Потрібно вказати номер у форматі ХХХ-ХХХ-ХХХХ"));
 		}else if(patientService.containsNumber(patientDto.getPhone()))
 			errors.add(new ValidationError("error:phone", "Такий номер вже використовується"));
 
