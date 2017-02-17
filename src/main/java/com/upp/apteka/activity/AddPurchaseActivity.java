@@ -1,7 +1,8 @@
 package com.upp.apteka.activity;
 
+import java.awt.BorderLayout;
+import java.awt.Color;
 import java.awt.Dimension;
-import java.awt.FlowLayout;
 import java.awt.GridLayout;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
@@ -14,6 +15,7 @@ import javax.swing.JButton;
 import javax.swing.JFrame;
 import javax.swing.JLabel;
 import javax.swing.JPanel;
+import javax.swing.JScrollPane;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Scope;
@@ -26,6 +28,7 @@ import com.upp.apteka.bo.PrescriptionMedicine;
 import com.upp.apteka.bo.Purchase;
 import com.upp.apteka.bo.PurchaseMedicine;
 import com.upp.apteka.component.buy.form.BuyInputForm;
+import com.upp.apteka.layout.ModifiedFlowLayout;
 import com.upp.apteka.service.MedicineService;
 import com.upp.apteka.service.PharmacyService;
 import com.upp.apteka.service.PurchaseService;
@@ -42,41 +45,49 @@ public class AddPurchaseActivity {
 
 	@Autowired
 	private MedicineService medicineService;
-	
+
 	@Autowired
 	private PharmacyService pharmacyService;
 
 	private List<BuyInputForm> forms;
-	
+
 	@Autowired
 	private Long pharmacyId;
 
+	private static final int WINDOW_BORDER = 20;
+	private static final int SUBMIT_WIDTH = 100;
+	private static final int SUBMIT_HEIGHT = 35;
+
 	public void showActivity(final Prescription prescription) {
-		
+
+		frame.setContentPane(new JPanel());
+		frame.setLayout(new BorderLayout());
+
 		final Pharmacy pharmacy = pharmacyService.getPharmacy(pharmacyId);
+
+		JPanel contentPanel = new JPanel();
+		contentPanel
+				.setBorder(BorderFactory.createEmptyBorder(WINDOW_BORDER, WINDOW_BORDER, WINDOW_BORDER, WINDOW_BORDER));
+		contentPanel.setLayout(new BorderLayout(WINDOW_BORDER, WINDOW_BORDER));
 
 		JPanel mainPanel = new JPanel();
 		mainPanel.setBorder(BorderFactory.createTitledBorder("Загальна інформація"));
+		mainPanel.setLayout(new GridLayout(0, 1));
 
 		JPanel infoPanel = new JPanel();
-		infoPanel.setBorder(BorderFactory.createEmptyBorder(0, 20, 0, 20));
+		infoPanel.setBorder(BorderFactory.createEmptyBorder(0, WINDOW_BORDER, 0, WINDOW_BORDER));
 		infoPanel.setLayout(new GridLayout(0, 1));
-		// TODO Винести константи
-		infoPanel.setPreferredSize(new Dimension(540, 100));
 
-		infoPanel.add(new JLabel(
-				"Покупець: " + prescription.getPatient().getSurname() + " " + prescription.getPatient().getName()));
-		infoPanel.add(new JLabel(
-				"Лікар: " + prescription.getDoctor().getSurname() + " " + prescription.getDoctor().getName()));
-		infoPanel.add(new JLabel("Дата: " + prescription.getDate()));
+		infoPanel.add(new JLabel("<html><b>Покупець</b>: " + prescription.getPatient().getSurname() + " "
+				+ prescription.getPatient().getName() + "<br/><b>Лікар</b>: " + prescription.getDoctor().getSurname()
+				+ " " + prescription.getDoctor().getName() + "<br/><b>Дата</b>: " + prescription.getDate()
+				+ "</html>"));
 
 		forms = new ArrayList<>();
 
-		frame.setContentPane(new JPanel());
-		frame.setLayout(new FlowLayout());
-		
 		mainPanel.add(infoPanel);
-		frame.add(mainPanel);
+
+		contentPanel.add(mainPanel, BorderLayout.NORTH);
 
 		outer: for (PrescriptionMedicine pm : prescription.getPrescriptionMedicines()) {
 			List<PharmacyMedicine> pharmacyMedicines = pm.getMedicine().getPharmacyMedicines();
@@ -96,17 +107,29 @@ public class AddPurchaseActivity {
 
 		}
 
+		JPanel parentPanel = new JPanel();
+		parentPanel.setBorder(BorderFactory.createEmptyBorder(0, 2, 0, 2));
+		parentPanel.setLayout(new GridLayout(0, 1));
+
 		JPanel fieldsInputPanel = new JPanel();
-		fieldsInputPanel.setBorder(BorderFactory.createTitledBorder("Дані про покупку"));
-		fieldsInputPanel.setLayout(new FlowLayout());
-		fieldsInputPanel.setPreferredSize(new Dimension(560, (BuyInputForm.HEIGHT + 10) * forms.size() + 60));
+		fieldsInputPanel.setLayout(new ModifiedFlowLayout());
+
+		JScrollPane scroll = new JScrollPane(fieldsInputPanel);
+		scroll.getVerticalScrollBar().setUnitIncrement(16);
+		scroll.setBorder(BorderFactory.createLineBorder(new Color(224, 224, 224), 1));
 
 		for (BuyInputForm form : forms)
 			fieldsInputPanel.add(form);
 
-		frame.add(fieldsInputPanel);
+		parentPanel.add(scroll);
+		contentPanel.add(parentPanel);
 
+		frame.add(contentPanel);
+
+		JPanel submitPanel = new JPanel();
 		JButton submit = new JButton("Купити");
+		submit.setPreferredSize(new Dimension(SUBMIT_WIDTH, SUBMIT_HEIGHT));
+		submitPanel.add(submit);
 
 		submit.addActionListener(new ActionListener() {
 
@@ -141,7 +164,7 @@ public class AddPurchaseActivity {
 			}
 		});
 
-		frame.add(submit);
+		frame.add(submitPanel, BorderLayout.SOUTH);
 	}
 
 }

@@ -1,5 +1,6 @@
 package com.upp.apteka.config;
 
+import java.awt.Dimension;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 
@@ -58,7 +59,7 @@ public class AppConfig {
 
 		dispatcherFrame.setTitle("Аптека");
 		dispatcherFrame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-		dispatcherFrame.setSize(600, 600);
+		dispatcherFrame.setMinimumSize(new Dimension(650,700));
 		//dispatcherFrame.setResizable(false);
 		dispatcherFrame.setLocationRelativeTo(null);
 		UIManager.setLookAndFeel(UIManager.getSystemLookAndFeelClassName());

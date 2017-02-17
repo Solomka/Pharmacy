@@ -2,7 +2,6 @@ package com.upp.apteka.activity;
 
 import java.awt.BorderLayout;
 import java.awt.Dimension;
-import java.awt.FlowLayout;
 import java.awt.GridLayout;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
@@ -47,14 +46,13 @@ public class AddPrescriptionActivity {
 
 	private JList<SearchableItem> list;
 
-	private static final int INPUT_WIDTH = 500;
-	private static final int INPUT_HEIGHT = 25;
-
 	private static final int BUTTON_WIDTH = 100;
 	private static final int BUTTON_HEIGHT = 25;
+	
+	private static final int MIN_MEDICINE_PANEL_HEIGHT = 80;
 
 	private static final String DATE_FORMAT = "MM/dd/yyyy";
-	
+
 	@Autowired
 	private PrescriptionService prescriptionService;
 
@@ -71,23 +69,33 @@ public class AddPrescriptionActivity {
 	private SearchableMedicineService searchableMedicineService;
 
 	private DefaultListModel<SearchableItem> defaultListModel;
+	
+	private static final int WINDOW_BORDER = 20;
 
 	public void showActivity() {
 
 		selectedItems = new ArrayList<>();
 
-		JPanel mainPanel = new JPanel();
-		jFrame.setContentPane(mainPanel);
-		jFrame.getContentPane().setLayout(new FlowLayout());
+		JPanel contentPanel = new JPanel();
+		contentPanel.setLayout(new BorderLayout());
+		contentPanel.setBorder(BorderFactory.createEmptyBorder(WINDOW_BORDER, WINDOW_BORDER, WINDOW_BORDER, WINDOW_BORDER));
+
+		jFrame.setContentPane(contentPanel);
 
 		/**
 		 * Головні панелі (з бордером)
 		 */
+
+		JPanel parentPanel = new JPanel();
+		parentPanel.setLayout(new GridLayout(0, 1, 10, 10));
+
 		JPanel mainFieldsPanel = new JPanel();
 		Border fieldsBorder = BorderFactory.createTitledBorder("Дані лікаря/пацієнта");
+		mainFieldsPanel.setLayout(new GridLayout(0, 1));
 		mainFieldsPanel.setBorder(fieldsBorder);
 
 		JPanel mainListPanel = new JPanel();
+		mainListPanel.setLayout(new BorderLayout());
 		Border listBorder = BorderFactory.createTitledBorder("Дані про ліки");
 		mainListPanel.setBorder(listBorder);
 
@@ -100,6 +108,7 @@ public class AddPrescriptionActivity {
 
 		JPanel listPanel = new JPanel();
 		listPanel.setLayout(new BorderLayout());
+		
 		listPanel.setBorder(BorderFactory.createEmptyBorder(0, 20, 5, 20));
 
 		/**
@@ -129,23 +138,23 @@ public class AddPrescriptionActivity {
 		defaultListModel = new DefaultListModel<>();
 		list = new JList<>(defaultListModel);
 		JScrollPane pane = new JScrollPane(list);
-		
+
 		/**
 		 * Блок кнопок додати/видалити
 		 */
-		
+
 		JButton addButton = new JButton("Додати");
 		JButton removeButton = new JButton("Видалити");
 
 		JPanel buttonsPanel = new JPanel();
 		buttonsPanel.add(addButton);
 		buttonsPanel.add(removeButton);
-		
+
 		/**
 		 * Блок кількості
 		 */
 		JLabel quantityLabel = new JLabel("Кількість: ");
-		
+
 		NumberFormatter nf = new NumberFormatter();
 		nf.setMinimum(0);
 		final JFormattedTextField textField = new JFormattedTextField(nf);
@@ -161,23 +170,18 @@ public class AddPrescriptionActivity {
 		controlPanel.add(quantityPanel, BorderLayout.WEST);
 		controlPanel.add(buttonsPanel, BorderLayout.EAST);
 
-		JLabel dateLabel = new JLabel("Введіть дату");
+		JLabel dateLabel = new JLabel("Введіть дату:");
 		JLabel doctorLabel = new JLabel("Виберіть лікаря:");
 		JLabel patientLabel = new JLabel("Виберіть пацієнта:");
 		JLabel medicineLabel = new JLabel("Виберіть ліки:");
-		
+
 		DateFormat df = new SimpleDateFormat(DATE_FORMAT);
 		final JFormattedTextField txtDate = new JFormattedTextField(df);
-		
-		final JComboBox<SearchableItem> searchDoctor = new SearchableComboBox(searchableDoctorService);
-		searchDoctor.setPreferredSize(new Dimension(INPUT_WIDTH, INPUT_HEIGHT));
-		
-		final JComboBox<SearchableItem> searchPatient = new SearchableComboBox(searchablePatientService);
-		searchPatient.setPreferredSize(new Dimension(INPUT_WIDTH, INPUT_HEIGHT));
-		
-		final JComboBox<SearchableItem> searchMedicine = new SearchableComboBox(searchableMedicineService);
-		searchMedicine.setPreferredSize(new Dimension(INPUT_WIDTH, INPUT_HEIGHT));
 
+		final JComboBox<SearchableItem> searchDoctor = new SearchableComboBox(searchableDoctorService);
+		final JComboBox<SearchableItem> searchPatient = new SearchableComboBox(searchablePatientService);
+		final JComboBox<SearchableItem> searchMedicine = new SearchableComboBox(searchableMedicineService);
+		
 		doctorPanel.add(doctorLabel);
 		doctorPanel.add(searchDoctor);
 
@@ -186,7 +190,8 @@ public class AddPrescriptionActivity {
 
 		datePanel.add(dateLabel);
 		datePanel.add(txtDate);
-
+		
+		medicinePanel.setPreferredSize(new Dimension(0, MIN_MEDICINE_PANEL_HEIGHT));
 		medicinePanel.add(medicineLabel);
 		medicinePanel.add(searchMedicine);
 
@@ -250,16 +255,21 @@ public class AddPrescriptionActivity {
 		});
 
 		mainFieldsPanel.add(fieldsPanel);
-		jFrame.add(mainFieldsPanel);
+		parentPanel.add(mainFieldsPanel);
 
 		mainListPanel.add(listPanel);
-		jFrame.add(mainListPanel);
+		parentPanel.add(mainListPanel);
 
+		jFrame.add(parentPanel);
+
+		JPanel proceedPanel = new JPanel();
 		JButton submitButton = new JButton("Створити");
 		JButton resetButton = new JButton("Відновити");
 
-		jFrame.add(submitButton);
-		jFrame.add(resetButton);
+		proceedPanel.add(submitButton);
+		proceedPanel.add(resetButton);
+
+		jFrame.add(proceedPanel, BorderLayout.SOUTH);
 
 		submitButton.addActionListener(new ActionListener() {
 
@@ -268,7 +278,7 @@ public class AddPrescriptionActivity {
 				SearchableItem doctor = (SearchableItem) searchDoctor.getSelectedItem();
 				SearchableItem patient = (SearchableItem) searchPatient.getSelectedItem();
 				String text = txtDate.getText();
-				
+
 				if (doctor != null && patient != null && text != null && !text.equals("") && !selectedItems.isEmpty()) {
 					Long doctorId = doctor.getId();
 					Long patientId = patient.getId();
@@ -277,9 +287,9 @@ public class AddPrescriptionActivity {
 					try {
 						java.util.Date date = format.parse(text);
 						Date sqlDate = new Date(date.getTime());
-						
+
 						prescriptionService.create(doctorId, patientId, sqlDate, selectedItems);
-						
+
 					} catch (ParseException parseException) {
 						JOptionPane.showMessageDialog(jFrame, new String[] { "Некоректна дата!" }, "Помилка",
 								JOptionPane.ERROR_MESSAGE);
