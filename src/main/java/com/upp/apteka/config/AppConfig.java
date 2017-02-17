@@ -55,6 +55,7 @@ public class AppConfig {
 	@Bean
 	public JFrame getDispatcherFrame() throws ClassNotFoundException, InstantiationException, IllegalAccessException,
 			UnsupportedLookAndFeelException {
+
 		JFrame dispatcherFrame = new JFrame();
 
 		dispatcherFrame.setTitle("Аптека");
@@ -66,7 +67,7 @@ public class AppConfig {
 
 		JMenuBar menuBar = new JMenuBar();
 
-		JMenu test = new JMenu("Тестове меню");
+		JMenu test = new JMenu("Додавання");
 		
 		JMenuItem addDoctor = new JMenuItem("Додати лікаря");
 		addDoctor.addActionListener(new ActionListener() {

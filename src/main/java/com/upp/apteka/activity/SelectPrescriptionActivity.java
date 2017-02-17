@@ -1,7 +1,9 @@
 package com.upp.apteka.activity;
 
 import java.awt.BorderLayout;
+import java.awt.Dimension;
 import java.awt.FlowLayout;
+import java.awt.Font;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.util.HashMap;
@@ -39,9 +41,20 @@ public class SelectPrescriptionActivity {
 
 	@Autowired
 	private JFrame frame;
-	
+
 	@Autowired
 	private Mapper mapper;
+
+	private static final int SELECT_WIDTH = 300;
+	private static final int SELECT_HEIGHT = 35;
+
+	private static final int BUTTON_WIDTH = 100;
+	private static final int BUTTON_HEIGHT = 35;
+
+	private static final Font font = new Font("SansSerif", Font.PLAIN, 14);
+
+	private static final int LIST_BORDER_HORIZONTAL = 80;
+	private static final int LIST_BORDER_VERTICAL = 40;
 
 	public void showActivity() {
 		frame.setLayout(new BorderLayout());
@@ -50,8 +63,14 @@ public class SelectPrescriptionActivity {
 		patientPanel.setLayout(new FlowLayout());
 
 		JLabel patientLabel = new JLabel("Пацієнт: ");
+		patientLabel.setFont(font);
+
 		final SearchableComboBox searchableComboBox = new SearchableComboBox(searchablePatientService);
+		searchableComboBox.setPreferredSize(new Dimension(SELECT_WIDTH, SELECT_HEIGHT));
+		searchableComboBox.setFont(font);
+
 		JButton selectPatientButton = new JButton("Вибрати");
+		selectPatientButton.setPreferredSize(new Dimension(BUTTON_WIDTH, BUTTON_HEIGHT));
 
 		patientPanel.add(patientLabel);
 		patientPanel.add(searchableComboBox);
@@ -61,19 +80,27 @@ public class SelectPrescriptionActivity {
 
 		JPanel listPanel = new JPanel();
 		listPanel.setLayout(new BorderLayout());
-		listPanel.setBorder(BorderFactory.createEmptyBorder(20, 80, 20, 80));
+		listPanel.setBorder(BorderFactory.createEmptyBorder(LIST_BORDER_VERTICAL, LIST_BORDER_HORIZONTAL,
+				LIST_BORDER_VERTICAL, LIST_BORDER_HORIZONTAL));
+
 		final DefaultListModel<SearchableItem> model = new DefaultListModel<>();
+		
 		final JList<SearchableItem> list = new JList<SearchableItem>(model);
+		list.setFont(font);
+		
 		JScrollPane pane = new JScrollPane(list);
 
 		JButton chooseButton = new JButton("Обрати");
+		chooseButton.setPreferredSize(new Dimension(BUTTON_WIDTH, BUTTON_HEIGHT));
 		JPanel buttonPanel = new JPanel();
 
+		buttonPanel.setBorder(BorderFactory.createEmptyBorder(LIST_BORDER_VERTICAL, 0, 0, 0));
 		buttonPanel.add(chooseButton);
 
 		listPanel.add(pane, BorderLayout.CENTER);
 		listPanel.add(buttonPanel, BorderLayout.SOUTH);
 
+		selectPatientButton.setFont(font);
 		selectPatientButton.addActionListener(new ActionListener() {
 
 			@Override
@@ -95,16 +122,17 @@ public class SelectPrescriptionActivity {
 			}
 		});
 
+		chooseButton.setFont(font);
 		chooseButton.addActionListener(new ActionListener() {
 
 			@Override
 			public void actionPerformed(ActionEvent e) {
 				SearchableItem item = list.getSelectedValue();
-				
-				if(item != null){
+
+				if (item != null) {
 					Map<String, Object> params = new HashMap<String, Object>();
 					params.put("prescriptionId", item.getId());
-					
+
 					mapper.changeActivity("addPurchase", params);
 				}
 

@@ -3,10 +3,10 @@ package com.upp.apteka.activity;
 import java.awt.BorderLayout;
 import java.awt.Color;
 import java.awt.Dimension;
-import java.awt.FlowLayout;
+import java.awt.Font;
+import java.awt.GridLayout;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
-import java.util.List;
 
 import javax.swing.BorderFactory;
 import javax.swing.JButton;
@@ -20,16 +20,18 @@ import org.springframework.context.annotation.Scope;
 import org.springframework.stereotype.Component;
 
 import com.upp.apteka.service.PatientService;
-import com.upp.apteka.validator.ValidationError;
+import javassist.NotFoundException;
 
 @Component
 @Scope("prototype")
-
 public class AddPatientActivity implements Activity{
 	
-	private static final int INPUT_WIDTH = 500;
-	private static final int INPUT_HEIGHT = 40;
+	private static final int BUTTON_WIDTH = 200;
+	private static final int BUTTON_HEIGHT = 35;
 
+	private static final int BORDER = 40;
+	
+	private static final Font font = new Font("SansSerif", Font.PLAIN, 14);
 
 	@Autowired
 	private JFrame jFrame;
@@ -40,53 +42,60 @@ public class AddPatientActivity implements Activity{
 	public void showActivity() {
 		
 		JPanel mainPanel = new JPanel();
-		mainPanel.setBorder(BorderFactory.createEmptyBorder(0, 20, 15, 20));
+		mainPanel.setBorder(BorderFactory.createEmptyBorder(BORDER / 3, BORDER, BORDER / 3, BORDER));
 		jFrame.setContentPane(mainPanel);
-		jFrame.getContentPane().setLayout(new FlowLayout());
+		jFrame.getContentPane().setLayout(new GridLayout(0, 1));
 		
 		JPanel namePanel = new JPanel();
-		namePanel.setPreferredSize(new Dimension(INPUT_WIDTH, INPUT_HEIGHT));
 		
 		JTextField name = new JTextField();
-		name.setPreferredSize(new Dimension(INPUT_WIDTH, INPUT_HEIGHT));
+		name.setFont(font);
 		name.setName("form:name");
 
 		JTextField surname = new JTextField();
-		surname.setPreferredSize(new Dimension(INPUT_WIDTH, INPUT_HEIGHT));
+		surname.setFont(font);
 		surname.setName("form:surname");
 
 		JTextField phone = new JTextField();
-		phone.setPreferredSize(new Dimension(INPUT_WIDTH, INPUT_HEIGHT));
+		phone.setFont(font);
 		phone.setName("form:phone");
 		
 		JLabel nameLabel = new JLabel("Імя:");
+		nameLabel.setFont(font);
+		
 		JLabel surnameLabel = new JLabel("Прізвище:");
+		surnameLabel.setFont(font);
+		
 		JLabel phoneLabel = new JLabel("Телефон:");
+		phoneLabel.setFont(font);
 
 		JLabel nameError = new JLabel();
+		nameError.setFont(font);
 		nameError.setName("error:name");
 		nameError.setForeground(Color.RED);
 
 		JLabel surnameError = new JLabel();
+		surnameError.setFont(font);
 		surnameError.setName("error:surname");
 		surnameError.setForeground(Color.RED);
 
 		JLabel phoneError = new JLabel();
+		phoneError.setFont(font);
 		phoneError.setForeground(Color.RED);
 		phoneError.setName("error:phone");
 
-		JButton button = new JButton("Click");
+		JPanel buttonPanel = new JPanel();
+		
+		JButton button = new JButton("Додати");
+		button.setFont(font);
+		button.setPreferredSize(new Dimension(BUTTON_WIDTH, BUTTON_HEIGHT));
 		button.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
 
 				try {
-					List<ValidationError> errorsList = patientService.processAdding(jFrame);
-
-					if (errorsList.isEmpty()) {
-						System.out.println("Ама хасла!11");
-					}
-				} catch (Exception e228) {
-					e228.printStackTrace();
+					patientService.processAdding(jFrame);
+				} catch (NotFoundException notFoundException) {
+					notFoundException.printStackTrace();
 				}
 			}
 		});
@@ -99,7 +108,6 @@ public class AddPatientActivity implements Activity{
 		jFrame.add(name);
 		
 		JPanel surnamePanel = new JPanel();
-		surnamePanel.setPreferredSize(new Dimension(INPUT_WIDTH, INPUT_HEIGHT));
 		
 		surnamePanel.setLayout(new BorderLayout());
 		surnamePanel.add(surnameLabel, BorderLayout.WEST);
@@ -109,7 +117,6 @@ public class AddPatientActivity implements Activity{
 		jFrame.add(surname);
 		
 		JPanel phonePanel = new JPanel();
-		phonePanel.setPreferredSize(new Dimension(INPUT_WIDTH, INPUT_HEIGHT));
 		
 		phonePanel.setLayout(new BorderLayout());
 		phonePanel.add(phoneLabel, BorderLayout.WEST);
@@ -118,7 +125,15 @@ public class AddPatientActivity implements Activity{
 		jFrame.add(phonePanel);
 		jFrame.add(phone);
 		
-		jFrame.add(button);
+		jFrame.add(new JLabel());
+		jFrame.add(new JLabel());
+		jFrame.add(new JLabel());
+		jFrame.add(new JLabel());
+		jFrame.add(new JLabel());
+		jFrame.add(new JLabel());
+		
+		buttonPanel.add(button);
+		jFrame.add(buttonPanel);
 	}
 
 }
