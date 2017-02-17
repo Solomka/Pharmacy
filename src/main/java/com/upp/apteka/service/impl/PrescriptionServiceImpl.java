@@ -18,6 +18,7 @@ import com.upp.apteka.repository.PrescriptionRepository;
 import com.upp.apteka.service.DoctorService;
 import com.upp.apteka.service.PatientService;
 import com.upp.apteka.service.PrescriptionService;
+import com.upp.apteka.service.PurchaseService;
 
 @Service
 @Transactional
@@ -34,9 +35,11 @@ public class PrescriptionServiceImpl implements PrescriptionService {
 
 	@Autowired
 	private PatientService patientService;
+	
+	@Autowired
+	private PurchaseService purchaseService;
 
 	@Override
-
 	public List<Prescription> getAll(int offset, int limit) {
 		return prescriptionRepository.getAll(offset, limit);
 	}
@@ -59,6 +62,8 @@ public class PrescriptionServiceImpl implements PrescriptionService {
 
 	//@Override
 	public boolean delete(Long key) {
+		if(purchaseService.findByPrescription(key).size() != 0)
+			return false;
 		return prescriptionRepository.delete(key);
 	}
 

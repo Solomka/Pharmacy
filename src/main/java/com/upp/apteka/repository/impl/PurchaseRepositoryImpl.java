@@ -115,4 +115,13 @@ public class PurchaseRepositoryImpl extends AHibernateRepository<Purchase, Long>
 		return criteria;
 	}
 
+	@SuppressWarnings("unchecked")
+	@Override
+	public List<Purchase> findByPrescription(Long id) {
+		Criteria criteria = createEntityCriteria();
+		criteria.add(Restrictions.eq("id_prescr", id));
+		
+		return criteria.list();
+	}
+
 }

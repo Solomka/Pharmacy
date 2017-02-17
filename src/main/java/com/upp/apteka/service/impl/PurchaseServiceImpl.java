@@ -179,4 +179,9 @@ public class PurchaseServiceImpl implements PurchaseService {
 		return purchaseRepository.delete(key);
 	}
 
+	@Override
+	public List<Purchase> findByPrescription(Long id) {
+		return purchaseRepository.findByPrescription(id);
+	}
+
 }

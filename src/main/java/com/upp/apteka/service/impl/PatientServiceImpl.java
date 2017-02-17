@@ -25,42 +25,46 @@ public class PatientServiceImpl implements PatientService {
 	@Autowired
 	private ApplicationContext applicationContext;
 
-	//@Override
+	// @Override
 	public List<Patient> getAll(int offset, int limit) {
 		return patientRepository.getAll(offset, limit);
 	}
 
-	//@Override
+	// @Override
 	public Long create(Patient patient) {
 		return patientRepository.create(patient);
 	}
 
-	//@Override
+	// @Override
 	public Patient read(Long key) {
 		return patientRepository.read(key);
 	}
 
-	//@Override
+	// @Override
 	public void update(Patient patient) {
 		patientRepository.update(patient);
 	}
 
-	//@Override
+	// @Override
 	public boolean delete(Long key) {
+		Patient patient = read(key);
+
+		if (patient.getPurchases().size() != 0 || patient.getPrescriptions().size() != 0)
+			return false;
 		return patientRepository.delete(key);
 	}
 
-	//@Override
+	// @Override
 	public List<Patient> findByQuery(String query, boolean or) {
 		return patientRepository.findByQuery(query, or);
 	}
 
-	//@Override
+	// @Override
 	public List<Patient> findByQuery(String query, int offset, int limit, boolean or) {
 		return patientRepository.findByQuery(query, offset, limit, or);
 	}
 
-	//@Override
+	// @Override
 	public List<ValidationError> processAdding(Container container) throws NotFoundException {
 		PatientDto patientDto = applicationContext.getBean(PatientDto.class);
 		patientDto.readFromContext(container);
@@ -76,7 +80,7 @@ public class PatientServiceImpl implements PatientService {
 		return errors;
 	}
 
-	//@Override
+	// @Override
 	public List<ValidationError> processEditing(Container container, Long id) throws NotFoundException {
 		PatientDto patientDto = applicationContext.getBean(PatientDto.class);
 		patientDto.readFromContext(container);
@@ -88,7 +92,7 @@ public class PatientServiceImpl implements PatientService {
 
 		Patient patient = new Patient(patientDto);
 		patient.setId(id);
-		
+
 		if (errors.isEmpty())
 			update(patient);
 

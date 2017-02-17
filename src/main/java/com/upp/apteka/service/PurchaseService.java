@@ -20,4 +20,6 @@ public interface PurchaseService {
 	void update(Purchase purchase);
 
 	boolean delete(Long key);
+	
+	List<Purchase> findByPrescription(Long id);
 }
