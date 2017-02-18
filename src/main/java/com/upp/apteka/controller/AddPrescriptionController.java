@@ -15,7 +15,7 @@ public class AddPrescriptionController implements SwingController{
 	private ApplicationContext appContext;
 	
 	public void switchToActivity(Map<String, Object> params){
-		Activity activity = (Activity) appContext.getBean("addPrescriptionActivity");
+		Activity activity = (Activity) appContext.getBean("addPrescriptionActivity");		
 		activity.showActivity(null);
 
 	}

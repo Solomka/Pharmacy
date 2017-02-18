@@ -31,11 +31,15 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Scope;
 import org.springframework.stereotype.Component;
 
+import com.upp.apteka.bo.Prescription;
+import com.upp.apteka.bo.PrescriptionMedicine;
 import com.upp.apteka.component.combobox.searchable.SearchableComboBox;
 import com.upp.apteka.component.combobox.searchable.SearchableItem;
 import com.upp.apteka.config.Mapper;
 import com.upp.apteka.dto.ChooseMedicineDto;
 import com.upp.apteka.service.PrescriptionService;
+import com.upp.apteka.service.converter.SearchableDoctor;
+import com.upp.apteka.service.converter.SearchablePatient;
 import com.upp.apteka.service.searchable.SearchableDoctorService;
 import com.upp.apteka.service.searchable.SearchableMedicineService;
 import com.upp.apteka.service.searchable.SearchablePatientService;
@@ -60,7 +64,7 @@ public class AddPrescriptionActivity implements Activity {
 
 	@Autowired
 	private JFrame jFrame;
-	
+
 	@Autowired
 	private Mapper mapper;
 
@@ -76,6 +80,14 @@ public class AddPrescriptionActivity implements Activity {
 	private DefaultListModel<SearchableItem> defaultListModel;
 
 	private static final int WINDOW_BORDER = 20;
+
+	@Autowired
+	private SearchablePatient searchablePatient;
+
+	@Autowired
+	private SearchableDoctor searchableDoctor;
+
+	private Prescription editPrescription;
 
 	public void showActivity(Map<String, Object> params) {
 
@@ -188,6 +200,33 @@ public class AddPrescriptionActivity implements Activity {
 		final JComboBox<SearchableItem> searchPatient = new SearchableComboBox(searchablePatientService);
 		final JComboBox<SearchableItem> searchMedicine = new SearchableComboBox(searchableMedicineService);
 
+		if (params != null)
+			editPrescription = (Prescription) params.get("prescription");
+
+		if (editPrescription != null) {
+			SearchableItem doctor = searchableDoctor.convert(editPrescription.getDoctor());
+			SearchableItem patient = searchablePatient.convert(editPrescription.getPatient());
+
+			searchDoctor.removeAllItems();
+			searchDoctor.addItem(doctor);
+
+			searchPatient.removeAllItems();
+			searchPatient.addItem(patient);
+
+			SimpleDateFormat dateFormat = new SimpleDateFormat(DATE_FORMAT);
+			txtDate.setText(dateFormat.format(editPrescription.getDate()));
+
+			for (PrescriptionMedicine pm : editPrescription.getPrescriptionMedicines()) {
+				ChooseMedicineDto dto = new ChooseMedicineDto();
+				dto.setMedicineId(pm.getMedicine().getId());
+				dto.setQuantity(pm.getPackQuantity());
+				dto.setName(pm.getMedicine().getName() + " " + pm.getMedicine().getProducer());
+
+				addToSelectedItems(dto);
+				drawSelectedItems();
+			}
+		}
+
 		doctorPanel.add(doctorLabel);
 		doctorPanel.add(searchDoctor);
 
@@ -272,6 +311,9 @@ public class AddPrescriptionActivity implements Activity {
 		JButton submitButton = new JButton("Створити");
 		JButton resetButton = new JButton("Відновити");
 
+		if (editPrescription != null)
+			submitButton.setText("Редагувати");
+
 		proceedPanel.add(submitButton);
 		proceedPanel.add(resetButton);
 
@@ -295,19 +337,28 @@ public class AddPrescriptionActivity implements Activity {
 						Date sqlDate = new Date(date.getTime());
 
 						try {
-							prescriptionService.create(doctorId, patientId, sqlDate, selectedItems);
+
+							if (editPrescription == null)
+								prescriptionService.create(doctorId, patientId, sqlDate, selectedItems);
+							else
+								prescriptionService.update(editPrescription.getId(), doctorId, patientId, sqlDate,
+										selectedItems);
 						} catch (Exception addingError) {
+							addingError.printStackTrace();
 							JOptionPane.showMessageDialog(jFrame,
 									new String[] { "Сервіс тимчасово недоступний. Спробуйте, будь ласка, пізніше." },
 									"Помилка", JOptionPane.ERROR_MESSAGE);
 							return;
 						}
-						
+
 						mapper.changeActivity("addPrescription", null);
-						
-						JOptionPane.showMessageDialog(jFrame,
-			                    "Успішно додано рецепт!",
-			                    "Успішна операція", JOptionPane.INFORMATION_MESSAGE);
+
+						if (editPrescription == null)
+							JOptionPane.showMessageDialog(jFrame, "Успішно додано рецепт!", "Успішна операція",
+									JOptionPane.INFORMATION_MESSAGE);
+						else
+							JOptionPane.showMessageDialog(jFrame, "Успішно змінено рецепт!", "Успішна операція",
+									JOptionPane.INFORMATION_MESSAGE);
 
 					} catch (ParseException parseException) {
 						JOptionPane.showMessageDialog(jFrame, new String[] { "Некоректна дата!" }, "Помилка",

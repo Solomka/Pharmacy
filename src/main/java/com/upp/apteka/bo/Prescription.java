@@ -4,6 +4,7 @@ import java.io.Serializable;
 import java.sql.Date;
 import java.util.List;
 
+import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.FetchType;
@@ -16,6 +17,7 @@ import javax.persistence.OneToMany;
 import javax.persistence.Table;
 
 import org.hibernate.annotations.Cascade;
+
 
 @Entity
 @Table(name = "prescription")
@@ -39,8 +41,8 @@ public class Prescription implements Serializable{
 	@Column(name = "date", updatable = false, nullable = false)
 	private Date date;
 	
-	@OneToMany(fetch = FetchType.LAZY, mappedBy = "pk.prescription")
-	@Cascade({ org.hibernate.annotations.CascadeType.SAVE_UPDATE })
+	@OneToMany(cascade = {
+			CascadeType.ALL}, fetch = FetchType.LAZY, mappedBy = "pk.prescription", orphanRemoval = true)
 	private List<PrescriptionMedicine> prescriptionMedicines;
 	
 	public Prescription(){

@@ -35,7 +35,7 @@ public class PrescriptionServiceImpl implements PrescriptionService {
 
 	@Autowired
 	private PatientService patientService;
-	
+
 	@Autowired
 	private PurchaseService purchaseService;
 
@@ -44,35 +44,35 @@ public class PrescriptionServiceImpl implements PrescriptionService {
 		return prescriptionRepository.getAll(offset, limit);
 	}
 
-	//@Override
+	// @Override
 	public Long create(Prescription prescription) {
 		return prescriptionRepository.create(prescription);
 	}
 
-	//@Override
+	// @Override
 	public Prescription read(Long key) {
 		return prescriptionRepository.read(key);
 	}
 
-	//@Override
+	// @Override
 	public void update(Prescription prescription) {
 		prescriptionRepository.update(prescription);
 
 	}
 
-	//@Override
+	// @Override
 	public boolean delete(Long key) {
-		if(purchaseService.findByPrescription(key).size() != 0)
+		if (purchaseService.findByPrescription(key).size() != 0)
 			return false;
 		return prescriptionRepository.delete(key);
 	}
 
-	//@Override
+	// @Override
 	public List<Prescription> findByQuery(String query, Date start, Date finishDate, boolean or, Boolean sold) {
 		return prescriptionRepository.findByQuery(query, start, finishDate, or, sold);
 	}
 
-	//@Override
+	// @Override
 	public List<Prescription> findByQuery(String query, Date start, Date finishDate, int offset, int limit, boolean or,
 			Boolean sold) {
 		return prescriptionRepository.findByQuery(query, start, finishDate, offset, limit, or, sold);
@@ -109,6 +109,52 @@ public class PrescriptionServiceImpl implements PrescriptionService {
 		prescriptionRepository.update(prescription);
 
 		return id;
+	}
+
+	@Override
+	public void update(Long prescriptionId, Long doctorId, Long patientId, Date date, List<ChooseMedicineDto> dtos) {
+		Doctor doctor = doctorService.read(doctorId);
+		Patient patient = patientService.read(patientId);
+
+		Prescription prescription = prescriptionRepository.read(prescriptionId);
+		prescription.setId(prescriptionId);
+		prescription.setDate(date);
+		prescription.setDoctor(doctor);
+		prescription.setPatient(patient);
+
+		List<PrescriptionMedicine> set = prescription.getPrescriptionMedicines();
+
+		outer: for (int i = 0; i < set.size(); i++) {
+			for (ChooseMedicineDto cmd : dtos)
+				if (set.get(i).getMedicine().getId() == cmd.getMedicineId())
+					continue outer;
+
+			set.remove(i);
+			--i;
+		}
+
+		outer: for (ChooseMedicineDto cmd : dtos) {
+
+			for (PrescriptionMedicine pm : set) {
+				if (pm.getMedicine().getId() == cmd.getMedicineId()) {
+
+					if (cmd.getQuantity() > pm.getPackBought())
+						pm.setPackQuantity(cmd.getQuantity());
+					continue outer;
+				}
+			}
+
+			PrescriptionMedicine pm = new PrescriptionMedicine();
+
+			pm.setMedicine(medicineService.read(cmd.getMedicineId()));
+			pm.setPrescription(prescription);
+			pm.setPackQuantity(cmd.getQuantity());
+			pm.setPackBought(0);
+
+			set.add(pm);
+		}
+
+		prescriptionRepository.update(prescription);
 	}
 
 	@Override

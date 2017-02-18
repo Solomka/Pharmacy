@@ -25,6 +25,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Scope;
 import org.springframework.stereotype.Component;
 
+import com.upp.apteka.bo.Doctor;
 import com.upp.apteka.config.Mapper;
 import com.upp.apteka.service.DoctorService;
 import com.upp.apteka.validator.ValidationError;
@@ -48,6 +49,8 @@ public class AddDoctorActivity implements Activity {
 
 	@Autowired
 	private DoctorService doctorService;
+
+	private Doctor editDoctor;
 
 	public void showActivity(Map<String, Object> params) {
 
@@ -120,17 +123,40 @@ public class AddDoctorActivity implements Activity {
 		JButton button = new JButton("Додати");
 		button.setFont(font);
 		button.setPreferredSize(new Dimension(BUTTON_WIDTH, BUTTON_HEIGHT));
+
+		if (params != null)
+			editDoctor = (Doctor) params.get("doctor");
+
+		if (editDoctor != null) {
+			name.setText(editDoctor.getName());
+			surname.setText(editDoctor.getSurname());
+			occupation.setText(editDoctor.getOccupation());
+			standing.setText(String.valueOf(editDoctor.getStanding()));
+		}
+
 		button.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
 
 				try {
-					List<ValidationError> list = doctorService.processAdding(jFrame);
 
-					if (list.size() == 0) {
-						mapper.changeActivity("addDoctor", null);
+					if (editDoctor == null) {
+						List<ValidationError> list = doctorService.processAdding(jFrame);
 
-						JOptionPane.showMessageDialog(jFrame, "Успішно додано лікаря!", "Успішна операція",
-								JOptionPane.INFORMATION_MESSAGE);
+						if (list.size() == 0) {
+							mapper.changeActivity("addDoctor", null);
+
+							JOptionPane.showMessageDialog(jFrame, "Успішно додано лікаря!", "Успішна операція",
+									JOptionPane.INFORMATION_MESSAGE);
+						}
+					} else {
+						List<ValidationError> list = doctorService.processEditing(jFrame, editDoctor.getId());
+
+						if (list.size() == 0) {
+							mapper.changeActivity("addDoctor", null);
+
+							JOptionPane.showMessageDialog(jFrame, "Успішно змінено інформацію про лікаря!",
+									"Успішна операція", JOptionPane.INFORMATION_MESSAGE);
+						}
 					}
 				} catch (Exception addException) {
 					JOptionPane.showMessageDialog(jFrame,
