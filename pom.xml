@@ -180,5 +180,13 @@
 			<artifactId>aspectjweaver</artifactId>
 			<version>${aspectj.version}</version>
 		</dependency>
+		
+		<!-- https://mvnrepository.com/artifact/net.sourceforge.jdatepicker/jdatepicker -->
+		<dependency>
+    		<groupId>net.sourceforge.jdatepicker</groupId>
+    		<artifactId>jdatepicker</artifactId>
+    		<version>1.3.2</version>
+		</dependency>
+		
 	</dependencies>
 </project>

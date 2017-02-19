@@ -29,4 +29,6 @@ public interface PatientService {
 	boolean delete(Long key);
 	
 	boolean containsNumber(String number);
+	
+	int count(String query, boolean or);
 }

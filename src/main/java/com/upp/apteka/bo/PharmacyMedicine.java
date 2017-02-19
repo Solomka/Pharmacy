@@ -56,7 +56,7 @@ public class PharmacyMedicine implements Serializable {
 		return pharmacyMedicineID;
 	}
 
-	private void setPharmacyMedicineID(PharmacyMedicineID pharmacyMedicineID) {
+	public void setPharmacyMedicineID(PharmacyMedicineID pharmacyMedicineID) {
 		this.pharmacyMedicineID = pharmacyMedicineID;
 	}
 

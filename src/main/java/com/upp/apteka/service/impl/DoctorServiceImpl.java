@@ -46,6 +46,10 @@ public class DoctorServiceImpl implements DoctorService{
 
 	//@Override
 	public boolean delete(Long key) {
+		Doctor doctor = read(key);
+		
+		if(doctor.getPrescriptions().size() != 0)
+			return false;
 		return doctorRepository.delete(key);
 	}
 
@@ -94,5 +98,10 @@ public class DoctorServiceImpl implements DoctorService{
 			update(doctor);
 
 		return errors;
+	}
+
+	//@Override
+	public int count(String query, boolean or) {
+		return doctorRepository.count(query, or);
 	}
 }

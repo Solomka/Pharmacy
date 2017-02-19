@@ -7,7 +7,11 @@ import java.awt.event.KeyListener;
 import java.util.List;
 
 import javax.swing.JComboBox;
+import javax.swing.JFrame;
+import javax.swing.JOptionPane;
 import javax.swing.text.JTextComponent;
+
+import org.springframework.beans.factory.annotation.Autowired;
 
 public class SearchableComboBox extends JComboBox<SearchableItem> {
 
@@ -15,6 +19,9 @@ public class SearchableComboBox extends JComboBox<SearchableItem> {
 	private static final int DELAY = 3000;
 
 	private SearchableService searchableService;
+	
+	@Autowired
+	private JFrame jFrame;
 
 	public SearchableComboBox(SearchableService searchableService) {
 
@@ -59,16 +66,21 @@ public class SearchableComboBox extends JComboBox<SearchableItem> {
 						if (currentValue.equals(newValue)) {
 							SearchableComboBox.this.removeAllItems();
 
-							List<SearchableItem> items = SearchableComboBox.this.searchableService
-									.getSearchableItems(currentValue);
+							try {
+								List<SearchableItem> items = SearchableComboBox.this.searchableService
+										.getSearchableItems(currentValue);
 
-							for (SearchableItem item : items)
-								SearchableComboBox.this.addItem(item);
+								for (SearchableItem item : items)
+									SearchableComboBox.this.addItem(item);
 
-							if (items.isEmpty()) {
-								SearchableComboBox.this.setBackground(Color.RED);
-								((JTextComponent) ((JComboBox<?>) ((Component) e.getSource()).getParent()).getEditor()
-										.getEditorComponent()).setText(null);
+								if (items.isEmpty()) {
+									SearchableComboBox.this.setBackground(Color.RED);
+									((JTextComponent) ((JComboBox<?>) ((Component) e.getSource()).getParent())
+											.getEditor().getEditorComponent()).setText(null);
+								}
+							} catch (Exception e) {
+								JOptionPane.showMessageDialog(jFrame, new String[] { "Сервіс тимчасово недоступний. Спробуйте, будь ласка, пізніше." }, "Помилка",
+										JOptionPane.ERROR_MESSAGE);
 							}
 						}
 					}

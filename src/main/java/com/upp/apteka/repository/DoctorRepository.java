@@ -11,4 +11,6 @@ public interface DoctorRepository extends IRepository<Doctor, Long>{
 	
 	List<Doctor> findByQuery(String surname, int offset, int limit, boolean or);
 
+	int count(String query, boolean or);
+
 }

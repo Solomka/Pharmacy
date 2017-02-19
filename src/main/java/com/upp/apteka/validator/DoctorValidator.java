@@ -39,6 +39,7 @@ public class DoctorValidator implements Validator {
 		calendar.setTime(date);
 		int year = calendar.get(Calendar.YEAR);
 
+		
 		if (doctorDto.getStanding() < 1900 || doctorDto.getStanding() > year)
 			errors.add(new ValidationError("error:standing", "Неправильний рік початку роботи."));
 

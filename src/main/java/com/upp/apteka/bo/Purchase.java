@@ -3,6 +3,7 @@ package com.upp.apteka.bo;
 import java.sql.Date;
 import java.util.List;
 
+import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.FetchType;
@@ -25,20 +26,17 @@ public class Purchase {
 
 	@Column(name = "date", updatable = false, nullable = false)
 	private Date date;
-	
-	@ManyToOne(optional = false)
-	@JoinColumn(name = "id_patient", nullable = false, updatable = false)
-	private Patient patient;
-	
-	@ManyToOne(optional = false)
-	@JoinColumn(name = "id_prescr", nullable = false, updatable = false)
+
+	@ManyToOne
+	@JoinColumn(name = "id_prescr", nullable = false)
 	private Prescription prescription;
-	
-	@ManyToOne(optional = false)
-	@JoinColumn(name = "id_pharmacy", nullable = false, updatable = false)
+
+	@ManyToOne
+	@JoinColumn(name = "id_pharmacy", nullable = false)
 	private Pharmacy pharmacy;
-	
-	@OneToMany(fetch = FetchType.LAZY, mappedBy = "purchMedicine.purchase")
+
+	@OneToMany(cascade = {
+			CascadeType.ALL }, fetch = FetchType.LAZY, mappedBy = "purchMedicine.purchase", orphanRemoval = true)
 	private List<PurchaseMedicine> purchaseMedicines;
 
 	public Long getId() {
@@ -57,14 +55,6 @@ public class Purchase {
 		this.date = date;
 	}
 
-	public Patient getPatient() {
-		return patient;
-	}
-
-	public void setPatient(Patient patient) {
-		this.patient = patient;
-	}
-
 	public Prescription getPrescription() {
 		return prescription;
 	}
@@ -80,7 +70,7 @@ public class Purchase {
 	public void setPharmacy(Pharmacy pharmacy) {
 		this.pharmacy = pharmacy;
 	}
-	
+
 	public List<PurchaseMedicine> getPurchaseMedicines() {
 		return purchaseMedicines;
 	}

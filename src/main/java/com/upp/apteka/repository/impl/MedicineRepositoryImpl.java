@@ -3,7 +3,6 @@ package com.upp.apteka.repository.impl;
 import java.util.ArrayList;
 import java.util.List;
 
-import org.apache.log4j.Logger;
 import org.hibernate.Criteria;
 import org.hibernate.Query;
 import org.hibernate.criterion.Disjunction;
@@ -14,6 +13,7 @@ import org.springframework.stereotype.Repository;
 import org.springframework.transaction.annotation.Transactional;
 
 import com.mysql.jdbc.StringUtils;
+
 import com.upp.apteka.bo.Medicine;
 import com.upp.apteka.bo.PharmacyMedicine;
 import com.upp.apteka.repository.MedicineRepository;
@@ -22,8 +22,6 @@ import com.upp.apteka.utils.repository.AHibernateRepository;
 @Repository("medicineRepository")
 @Transactional
 public class MedicineRepositoryImpl extends AHibernateRepository<Medicine, Long> implements MedicineRepository {
-
-	private static final Logger LOGGER = Logger.getLogger(MedicineRepositoryImpl.class.getName());
 
 	@SuppressWarnings("unchecked")
 	public List<Medicine> getAll(int offset, int limit) {
@@ -43,6 +41,9 @@ public class MedicineRepositoryImpl extends AHibernateRepository<Medicine, Long>
 	}
 
 	public void update(Medicine medicine) {
+
+		for (PharmacyMedicine pharmacyMedicine : medicine.getPharmacyMedicines())
+			getSession().update(pharmacyMedicine);
 
 		updateEntity(medicine);
 
@@ -83,7 +84,7 @@ public class MedicineRepositoryImpl extends AHibernateRepository<Medicine, Long>
 	}
 
 	@SuppressWarnings("unchecked")
-	// @Override
+	//@Override
 	public List<Medicine> findByNameOrProducer(String query) {
 		Criteria criteria = createEntityCriteria();
 

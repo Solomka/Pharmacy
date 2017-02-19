@@ -2,11 +2,9 @@ package com.upp.apteka.repository.impl;
 
 import java.util.List;
 
-import org.apache.log4j.Logger;
 import org.hibernate.Query;
 import org.hibernate.criterion.Order;
 import org.springframework.stereotype.Repository;
-import org.springframework.transaction.annotation.Transactional;
 
 import com.upp.apteka.bo.Pharmacy;
 import com.upp.apteka.repository.PharmacyRepository;
@@ -14,8 +12,6 @@ import com.upp.apteka.utils.repository.AHibernateRepository;
 
 @Repository("pharmacyRepository")
 public class PharmacyRepositoryImpl extends AHibernateRepository<Pharmacy, Long> implements PharmacyRepository {
-
-	private static final Logger LOGGER = Logger.getLogger(PharmacyRepositoryImpl.class.getName());
 
 	@SuppressWarnings("unchecked")
 	public List<Pharmacy> getAll(int offset, int limit) {

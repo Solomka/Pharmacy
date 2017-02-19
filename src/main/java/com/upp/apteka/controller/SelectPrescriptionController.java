@@ -9,15 +9,14 @@ import org.springframework.stereotype.Component;
 
 import com.upp.apteka.activity.Activity;
 
-@Component("addDoctor")
-public class AddDoctorController implements SwingController{
-	
+@Component("selectPrescription")
+public class SelectPrescriptionController implements SwingController {
+
 	@Autowired
 	private ApplicationContext appContext;
-	
-	public void switchToActivity(Map<String, Object> params){
-		Activity addDoctorActivity = (Activity) appContext.getBean("addDoctorActivity");
-		addDoctorActivity.showActivity(new HashMap<String, Object>());
 
+	public void switchToActivity(Map<String, Object> params) {
+		Activity spa = (Activity) appContext.getBean("selectPrescriptionActivity");
+		spa.showActivity(new HashMap<String, Object>());
 	}
 }

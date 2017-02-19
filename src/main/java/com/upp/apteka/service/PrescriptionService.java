@@ -23,4 +23,8 @@ public interface PrescriptionService {
 	void update(Prescription prescription);
 
 	boolean delete(Long key);
+	
+	List<Prescription> getUnboughtPrescriptions(Long customerId);
+	
+	void update(Long prescriptionId, Long doctorId, Long patientId, Date date, List<ChooseMedicineDto> dtos);
 }

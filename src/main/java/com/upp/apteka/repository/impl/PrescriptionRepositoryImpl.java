@@ -4,7 +4,6 @@ import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 
-import org.apache.log4j.Logger;
 import org.hibernate.Criteria;
 import org.hibernate.criterion.Conjunction;
 import org.hibernate.criterion.Disjunction;
@@ -12,13 +11,13 @@ import org.hibernate.criterion.Restrictions;
 import org.springframework.stereotype.Repository;
 import com.mysql.jdbc.StringUtils;
 import com.upp.apteka.bo.Prescription;
+import com.upp.apteka.bo.PrescriptionMedicine;
 import com.upp.apteka.repository.PrescriptionRepository;
 import com.upp.apteka.utils.repository.AHibernateRepository;
 
 @Repository
 public class PrescriptionRepositoryImpl extends AHibernateRepository<Prescription, Long>
 		implements PrescriptionRepository {
-	private static final Logger LOGGER = Logger.getLogger(PharmacyRepositoryImpl.class.getName());
 
 	private final String patientRestriction = "(id_patient IN (SELECT id FROM patient WHERE UPPER(name) LIKE UPPER('%?%') OR UPPER(surname) LIKE UPPER('%?%') OR phone LIKE '%?%'))";
 	private final String doctorRestriction = "(id_doctor IN (SELECT id FROM doctor WHERE UPPER(name) LIKE UPPER('%?%') OR UPPER(surname) LIKE UPPER('%?%')))";
@@ -42,6 +41,13 @@ public class PrescriptionRepositoryImpl extends AHibernateRepository<Prescriptio
 	}
 
 	public void update(Prescription prescription) {
+
+		for (PrescriptionMedicine prescriptionMedicine : prescription.getPrescriptionMedicines()){
+			System.out.println(prescriptionMedicine.getPackBought());
+			getSession().update(prescriptionMedicine);
+			
+		}
+
 		updateEntity(prescription);
 
 	}
@@ -120,6 +126,16 @@ public class PrescriptionRepositoryImpl extends AHibernateRepository<Prescriptio
 
 		criteria.add(conjunction);
 		return criteria;
+	}
+
+	@SuppressWarnings("unchecked")
+	//@Override
+	public List<Prescription> getUnboughtPrescriptions(Long customerId) {
+		Criteria criteria = createEntityCriteria();
+		criteria.add(Restrictions.sqlRestriction("id_patient = " + customerId));
+		criteria.add(Restrictions.sqlRestriction(ACTUAL));
+
+		return (List<Prescription>) criteria.list();
 	}
 
 }

@@ -47,6 +47,10 @@ public class PatientServiceImpl implements PatientService {
 
 	// @Override
 	public boolean delete(Long key) {
+		Patient patient = read(key);
+
+		if (patient.getPrescriptions().size() != 0)
+			return false;
 		return patientRepository.delete(key);
 	}
 
@@ -98,6 +102,11 @@ public class PatientServiceImpl implements PatientService {
 	// @Override
 	public boolean containsNumber(String number) {
 		return patientRepository.containsNumber(number);
+	}
+
+	//@Override
+	public int count(String query, boolean or) {
+		return patientRepository.count(query, or);
 	}
 
 }

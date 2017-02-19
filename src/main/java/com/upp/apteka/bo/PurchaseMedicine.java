@@ -57,4 +57,11 @@ public class PurchaseMedicine {
 	public void setPackQuantity(int packQuantity) {
 		this.packQuantity = packQuantity;
 	}
+
+	@Override
+	public String toString() {
+		return "PurchaseMedicine [purchMedicine=" + purchMedicine + ", packQuantity=" + packQuantity + "]";
+	}
+	
+	
 }
