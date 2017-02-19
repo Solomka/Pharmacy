@@ -22,10 +22,14 @@ import org.springframework.context.annotation.PropertySource;
 import org.springframework.core.env.Environment;
 import org.springframework.jdbc.datasource.DriverManagerDataSource;
 
+import com.upp.apteka.bo.Pharmacy;
+import com.upp.apteka.service.PharmacyService;
+
 @Configuration
 @ComponentScan(basePackages = "com.upp.apteka")
 @EnableAspectJAutoProxy
 @PropertySource("classpath:jdbc.properties")
+@PropertySource("classpath:pharmacy.properties")
 @Import({ HibernateConfig.class })
 public class AppConfig {
 
@@ -34,9 +38,12 @@ public class AppConfig {
 	
 	@Autowired
 	private Mapper mapper;
+	
+	@Autowired
+	private PharmacyService pharmacyService;
 
 	@Bean
-	DataSource getDataSource() {
+	public DataSource getDataSource() {
 		DriverManagerDataSource dataSource = new DriverManagerDataSource();
 		dataSource.setDriverClassName(environment.getRequiredProperty("jdbc.driverClassName"));
 		dataSource.setUrl(environment.getRequiredProperty("jdbc.databaseurl"));
@@ -48,8 +55,8 @@ public class AppConfig {
 	}
 	
 	@Bean
-	public Long pharmacyId(){
-		return 9L;
+	public Pharmacy pharmacyId(){
+		return pharmacyService.getPharmacy(Long.valueOf(environment.getRequiredProperty("pharmacy.id")));
 	}
 
 	@Bean
@@ -115,7 +122,7 @@ public class AppConfig {
 		test.add(addPurchase);
 		
 		menuBar.add(test);
-		
+
 		dispatcherFrame.setJMenuBar(menuBar);
 
 		return dispatcherFrame;

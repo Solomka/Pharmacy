@@ -52,7 +52,7 @@ public class DeliveryMedicine implements Serializable {
 		return deliveryMedicineID;
 	}
 
-	private void setDeliveryMedicineID(DeliveryMedicineID deliveryMedicineID) {
+	public void setDeliveryMedicineID(DeliveryMedicineID deliveryMedicineID) {
 		this.deliveryMedicineID = deliveryMedicineID;
 	}
 

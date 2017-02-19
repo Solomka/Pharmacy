@@ -44,35 +44,35 @@ public class PrescriptionServiceImpl implements PrescriptionService {
 		return prescriptionRepository.getAll(offset, limit);
 	}
 
-	// @Override
+	@Override
 	public Long create(Prescription prescription) {
 		return prescriptionRepository.create(prescription);
 	}
 
-	// @Override
+	@Override
 	public Prescription read(Long key) {
 		return prescriptionRepository.read(key);
 	}
 
-	// @Override
+	@Override
 	public void update(Prescription prescription) {
 		prescriptionRepository.update(prescription);
 
 	}
 
-	// @Override
+	@Override
 	public boolean delete(Long key) {
 		if (purchaseService.findByPrescription(key).size() != 0)
 			return false;
 		return prescriptionRepository.delete(key);
 	}
 
-	// @Override
+	@Override
 	public List<Prescription> findByQuery(String query, Date start, Date finishDate, boolean or, Boolean sold) {
 		return prescriptionRepository.findByQuery(query, start, finishDate, or, sold);
 	}
 
-	// @Override
+	@Override
 	public List<Prescription> findByQuery(String query, Date start, Date finishDate, int offset, int limit, boolean or,
 			Boolean sold) {
 		return prescriptionRepository.findByQuery(query, start, finishDate, offset, limit, or, sold);
@@ -129,8 +129,10 @@ public class PrescriptionServiceImpl implements PrescriptionService {
 				if (set.get(i).getMedicine().getId() == cmd.getMedicineId())
 					continue outer;
 
-			set.remove(i);
-			--i;
+			if (set.get(i).getPackBought() == 0) {
+				set.remove(i);
+				--i;
+			}
 		}
 
 		outer: for (ChooseMedicineDto cmd : dtos) {

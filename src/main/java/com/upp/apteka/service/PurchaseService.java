@@ -7,7 +7,6 @@ import com.upp.apteka.bo.Patient;
 import com.upp.apteka.bo.Pharmacy;
 import com.upp.apteka.bo.Prescription;
 import com.upp.apteka.bo.Purchase;
-import com.upp.apteka.component.buy.form.BuyInputForm;
 import com.upp.apteka.dto.PurchaseMedicineDto;
 
 public interface PurchaseService {

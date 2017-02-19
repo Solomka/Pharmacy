@@ -37,7 +37,6 @@ import com.upp.apteka.component.buy.form.BuyInputForm;
 import com.upp.apteka.config.Mapper;
 import com.upp.apteka.dto.PurchaseMedicineDto;
 import com.upp.apteka.layout.ModifiedFlowLayout;
-import com.upp.apteka.service.PharmacyService;
 import com.upp.apteka.service.PurchaseService;
 
 @Component("addPurchaseActivity")
@@ -50,15 +49,12 @@ public class AddPurchaseActivity implements Activity {
 	@Autowired
 	private PurchaseService purchaseService;
 
-	@Autowired
-	private PharmacyService pharmacyService;
-
 	private List<BuyInputForm> forms;
 
 	private JLabel totalPriceLabel;
-
+	
 	@Autowired
-	private Long pharmacyId;
+	private Pharmacy pharmacy;
 
 	@Autowired
 	private Mapper mapper;
@@ -80,8 +76,6 @@ public class AddPurchaseActivity implements Activity {
 
 		frame.setContentPane(new JPanel());
 		frame.setLayout(new BorderLayout());
-
-		final Pharmacy pharmacy = pharmacyService.getPharmacy(pharmacyId);
 
 		JPanel contentPanel = new JPanel();
 		contentPanel
