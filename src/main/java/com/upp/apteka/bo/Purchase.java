@@ -27,16 +27,12 @@ public class Purchase {
 	@Column(name = "date", updatable = false, nullable = false)
 	private Date date;
 
-	@ManyToOne(optional = false)
-	@JoinColumn(name = "id_patient", nullable = false, updatable = false)
-	private Patient patient;
-
-	@ManyToOne(optional = false)
-	@JoinColumn(name = "id_prescr", nullable = false, updatable = false)
+	@ManyToOne
+	@JoinColumn(name = "id_prescr", nullable = false)
 	private Prescription prescription;
 
-	@ManyToOne(optional = false)
-	@JoinColumn(name = "id_pharmacy", nullable = false, updatable = false)
+	@ManyToOne
+	@JoinColumn(name = "id_pharmacy", nullable = false)
 	private Pharmacy pharmacy;
 
 	@OneToMany(cascade = {
@@ -57,14 +53,6 @@ public class Purchase {
 
 	public void setDate(Date date) {
 		this.date = date;
-	}
-
-	public Patient getPatient() {
-		return patient;
-	}
-
-	public void setPatient(Patient patient) {
-		this.patient = patient;
 	}
 
 	public Prescription getPrescription() {

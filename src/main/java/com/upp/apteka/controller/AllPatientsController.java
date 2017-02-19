@@ -39,7 +39,7 @@ public class AllPatientsController implements SwingController {
 
 		int maxNumber = patientService.count(query, false);
 
-		if (maxNumber % PATIENTS_PER_PAGE == 0)
+		if (maxNumber % PATIENTS_PER_PAGE == 0 && maxNumber != 0)
 			maxNumber = maxNumber / PATIENTS_PER_PAGE;
 		else
 			maxNumber = maxNumber / PATIENTS_PER_PAGE + 1;

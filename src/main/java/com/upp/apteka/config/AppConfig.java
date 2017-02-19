@@ -134,7 +134,22 @@ public class AppConfig {
 			}
 		});
 		
+		JMenuItem allPurchases = new JMenuItem("Переглянути покупки");
+		allPurchases.addActionListener(new ActionListener() {
+
+			@Override
+			public void actionPerformed(ActionEvent arg0) {
+
+				Map<String, Object> params = new HashMap<>();
+				params.put("current", 1);
+
+				mapper.changeActivity("allPurchases", params);
+
+			}
+		});
+		
 		viewMenu.add(allPatients);
+		viewMenu.add(allPurchases);
 
 		addMenu.add(addDoctor);
 		addMenu.add(addPatient);

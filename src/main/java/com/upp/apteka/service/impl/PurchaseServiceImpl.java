@@ -198,11 +198,10 @@ public class PurchaseServiceImpl implements PurchaseService {
 	}
 
 	@Override
-	public void create(Patient patient, Pharmacy pharmacy, Prescription prescription,
+	public Long create(Patient patient, Pharmacy pharmacy, Prescription prescription,
 			List<PurchaseMedicineDto> purchaseMedicinesDto) {
 		Purchase purchase = new Purchase();
 		purchase.setDate(new Date(System.currentTimeMillis()));
-		purchase.setPatient(prescription.getPatient());
 		purchase.setPharmacy(pharmacy);
 		purchase.setPrescription(prescription);
 
@@ -225,6 +224,8 @@ public class PurchaseServiceImpl implements PurchaseService {
 		purchaseRepository.update(purchase);
 
 		cleanUpBeforeCreate(purchase);
+		
+		return id;
 	}
 
 	@Override
@@ -234,7 +235,6 @@ public class PurchaseServiceImpl implements PurchaseService {
 		cleanUpBeforeDelete(purchase);
 		
 		purchase.setDate(new Date(System.currentTimeMillis()));
-		purchase.setPatient(prescription.getPatient());
 		purchase.setPharmacy(pharmacy);
 
 		List<PurchaseMedicine> purchaseMedicines = purchase.getPurchaseMedicines();
@@ -267,5 +267,11 @@ public class PurchaseServiceImpl implements PurchaseService {
 		cleanUpBeforeCreate(purchase);
 		purchaseRepository.update(purchase);
 	}
+
+	@Override
+	public int count(String query, Date start, Date finish, boolean or, Long number) {
+		return purchaseRepository.count(query, start, finish, or, number);
+	}
+
 
 }

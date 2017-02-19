@@ -49,7 +49,7 @@ public class PatientServiceImpl implements PatientService {
 	public boolean delete(Long key) {
 		Patient patient = read(key);
 
-		if (patient.getPurchases().size() != 0 || patient.getPrescriptions().size() != 0)
+		if (patient.getPrescriptions().size() != 0)
 			return false;
 		return patientRepository.delete(key);
 	}

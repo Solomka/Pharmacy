@@ -71,9 +71,6 @@ public class AddPurchaseActivity implements Activity {
 		prescription = (Prescription) params.get("prescription");
 		editPurchase = (Purchase) params.get("purchase");
 
-		if (editPurchase != null)
-			prescription = editPurchase.getPrescription();
-
 		frame.setContentPane(new JPanel());
 		frame.setLayout(new BorderLayout());
 
@@ -211,12 +208,13 @@ public class AddPurchaseActivity implements Activity {
 
 				}
 
+				Long id = null;
 				if (purchaseMedicinesDto.size() > 0) {
 
 					try {
 
 						if (editPurchase == null)
-							purchaseService.create(prescription.getPatient(), pharmacy, prescription,
+							id = purchaseService.create(prescription.getPatient(), pharmacy, prescription,
 									purchaseMedicinesDto);
 						else {
 							purchaseService.update(editPurchase.getId(), prescription.getPatient(), pharmacy,
@@ -236,7 +234,7 @@ public class AddPurchaseActivity implements Activity {
 					mapper.changeActivity("addPurchase", newParams);
 
 					if (editPurchase == null)
-						JOptionPane.showMessageDialog(frame, "Успішно здійснено покупку!", "Успішна операція",
+						JOptionPane.showMessageDialog(frame, "Успішно здійснено покупку! Ваш номер: " + id, "Успішна операція",
 								JOptionPane.INFORMATION_MESSAGE);
 					else
 						JOptionPane.showMessageDialog(frame, "Успішно відредаговано покупку!", "Успішна операція",

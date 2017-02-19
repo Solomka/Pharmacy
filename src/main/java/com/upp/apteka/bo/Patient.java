@@ -37,9 +37,6 @@ public class Patient implements Serializable{
 	@OneToMany(fetch = FetchType.LAZY, mappedBy = "patient")
 	private Set<Prescription> prescriptions;
 	
-	@OneToMany(fetch = FetchType.LAZY, mappedBy = "patient")
-	private Set<Purchase> purchases;
-	
 	public Patient(PatientDto patientDto){
 		this.name = patientDto.getName();
 		this.surname = patientDto.getSurname();
@@ -96,14 +93,6 @@ public class Patient implements Serializable{
 
 	public void setPrescriptions(Set<Prescription> prescriptions) {
 		this.prescriptions = prescriptions;
-	}
-	
-	public Set<Purchase> getPurchases() {
-		return purchases;
-	}
-
-	public void setPurchases(Set<Purchase> purchases) {
-		this.purchases = purchases;
 	}
 	
 	@Override
