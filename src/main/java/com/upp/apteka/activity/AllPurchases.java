@@ -170,10 +170,15 @@ public class AllPurchases implements Activity {
 		
 		JPanel datePanel = new JPanel();
 		datePanel.setLayout(new FlowLayout());
-		datePanel.add(new JLabel("Початок: "));
+		
+		JLabel startLabel = new JLabel("Початок: ");
+		startLabel.setFont(font);
+		datePanel.add(startLabel);
 		datePanel.add(startDatePicker);
 		
-		datePanel.add(new JLabel("Кінець: "));
+		JLabel endLabel = new JLabel("Кінець: ");
+		endLabel.setFont(font);
+		datePanel.add(endLabel);
 		datePanel.add(endDatePicker);
 		
 		JPanel topPanel = new JPanel();
@@ -261,6 +266,28 @@ public class AllPurchases implements Activity {
 				}
 			}
 		});
+		
+		JButton viewButton = new JButton("Деталі");
+		viewButton.setPreferredSize(new Dimension(PAGINATION_BUTTON_WIDTH, PAGINATION_BUTTON_HEIGHT));
+		viewButton.addActionListener(new ActionListener() {
+
+			@Override
+			public void actionPerformed(ActionEvent e) {
+				int selectedRow = purchasesTable.getSelectedRow();
+
+				if (selectedRow != -1) {
+					Long id = purchases.get(selectedRow).getId();
+
+					Map<String, Object> params = new HashMap<String, Object>();
+					params.put("id", id);
+
+					mapper.changeActivity("viewPurchase", params);
+				} else {
+					JOptionPane.showMessageDialog(jFrame, new String[] { "Виберіть спочатку покупку!" }, "Помилка",
+							JOptionPane.ERROR_MESSAGE);
+				}
+			}
+		});
 
 		JButton removeButton = new JButton("Видалити");
 		removeButton.setPreferredSize(new Dimension(PAGINATION_BUTTON_WIDTH, PAGINATION_BUTTON_HEIGHT));
@@ -321,6 +348,7 @@ public class AllPurchases implements Activity {
 		paginationPanel.add(prevButton, BorderLayout.WEST);
 		paginationPanel.add(editButton, BorderLayout.WEST);
 		paginationPanel.add(removeButton, BorderLayout.WEST);
+		paginationPanel.add(viewButton, BorderLayout.WEST);
 
 		jFrame.add(paginationPanel, BorderLayout.SOUTH);
 	}

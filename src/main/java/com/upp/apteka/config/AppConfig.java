@@ -69,7 +69,7 @@ public class AppConfig {
 
 		dispatcherFrame.setTitle("Аптека");
 		dispatcherFrame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-		dispatcherFrame.setMinimumSize(new Dimension(650, 700));
+		dispatcherFrame.setMinimumSize(new Dimension(750, 700));
 		// dispatcherFrame.setResizable(false);
 		dispatcherFrame.setLocationRelativeTo(null);
 		UIManager.setLookAndFeel(UIManager.getSystemLookAndFeelClassName());
