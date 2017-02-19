@@ -10,6 +10,7 @@ import java.text.DateFormat;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
@@ -200,8 +201,7 @@ public class AddPrescriptionActivity implements Activity {
 		final JComboBox<SearchableItem> searchPatient = new SearchableComboBox(searchablePatientService);
 		final JComboBox<SearchableItem> searchMedicine = new SearchableComboBox(searchableMedicineService);
 
-		if (params != null)
-			editPrescription = (Prescription) params.get("prescription");
+		editPrescription = (Prescription) params.get("prescription");
 
 		if (editPrescription != null) {
 			SearchableItem doctor = searchableDoctor.convert(editPrescription.getDoctor());
@@ -351,7 +351,7 @@ public class AddPrescriptionActivity implements Activity {
 							return;
 						}
 
-						mapper.changeActivity("addPrescription", null);
+						mapper.changeActivity("addPrescription", new HashMap<String, Object>());
 
 						if (editPrescription == null)
 							JOptionPane.showMessageDialog(jFrame, "Успішно додано рецепт!", "Успішна операція",

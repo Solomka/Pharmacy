@@ -8,6 +8,7 @@ import java.awt.GridLayout;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.util.Calendar;
+import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
@@ -124,12 +125,11 @@ public class AddDoctorActivity implements Activity {
 		button.setFont(font);
 		button.setPreferredSize(new Dimension(BUTTON_WIDTH, BUTTON_HEIGHT));
 
-		if (params != null)
-			editDoctor = (Doctor) params.get("doctor");
+		editDoctor = (Doctor) params.get("doctor");
 
 		if (editDoctor != null) {
 			button.setText("Редагувати");
-			
+
 			name.setText(editDoctor.getName());
 			surname.setText(editDoctor.getSurname());
 			occupation.setText(editDoctor.getOccupation());
@@ -145,7 +145,7 @@ public class AddDoctorActivity implements Activity {
 						List<ValidationError> list = doctorService.processAdding(jFrame);
 
 						if (list.size() == 0) {
-							mapper.changeActivity("addDoctor", null);
+							mapper.changeActivity("addDoctor", new HashMap<String, Object>());
 
 							JOptionPane.showMessageDialog(jFrame, "Успішно додано лікаря!", "Успішна операція",
 									JOptionPane.INFORMATION_MESSAGE);
@@ -154,7 +154,7 @@ public class AddDoctorActivity implements Activity {
 						List<ValidationError> list = doctorService.processEditing(jFrame, editDoctor.getId());
 
 						if (list.size() == 0) {
-							mapper.changeActivity("addDoctor", null);
+							mapper.changeActivity("addDoctor", new HashMap<String, Object>());
 
 							JOptionPane.showMessageDialog(jFrame, "Успішно змінено інформацію про лікаря!",
 									"Успішна операція", JOptionPane.INFORMATION_MESSAGE);

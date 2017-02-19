@@ -27,4 +27,6 @@ public interface DoctorService {
 	void update(Doctor doctor);
 
 	boolean delete(Long key);
+	
+	int count(String query, boolean or);
 }

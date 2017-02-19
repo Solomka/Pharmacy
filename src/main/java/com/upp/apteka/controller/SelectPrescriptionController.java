@@ -1,5 +1,6 @@
 package com.upp.apteka.controller;
 
+import java.util.HashMap;
 import java.util.Map;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -16,6 +17,6 @@ public class SelectPrescriptionController implements SwingController {
 
 	public void switchToActivity(Map<String, Object> params) {
 		Activity spa = (Activity) appContext.getBean("selectPrescriptionActivity");
-		spa.showActivity(null);
+		spa.showActivity(new HashMap<String, Object>());
 	}
 }

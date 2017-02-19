@@ -104,4 +104,9 @@ public class PatientServiceImpl implements PatientService {
 		return patientRepository.containsNumber(number);
 	}
 
+	@Override
+	public int count(String query, boolean or) {
+		return patientRepository.count(query, or);
+	}
+
 }

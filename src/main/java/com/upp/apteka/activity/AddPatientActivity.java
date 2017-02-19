@@ -7,6 +7,7 @@ import java.awt.Font;
 import java.awt.GridLayout;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
@@ -121,7 +122,7 @@ public class AddPatientActivity implements Activity {
 						List<ValidationError> list = patientService.processAdding(jFrame);
 
 						if (list.size() == 0) {
-							mapper.changeActivity("addPatient", null);
+							mapper.changeActivity("addPatient", new HashMap<String, Object>());
 
 							JOptionPane.showMessageDialog(jFrame, "Успішно додано пацієнта!", "Успішна операція",
 									JOptionPane.INFORMATION_MESSAGE);
@@ -130,7 +131,7 @@ public class AddPatientActivity implements Activity {
 						List<ValidationError> list = patientService.processEditing(jFrame, editPatient.getId());
 
 						if (list.size() == 0) {
-							mapper.changeActivity("addPatient", null);
+							mapper.changeActivity("addPatient", new HashMap<String, Object>());
 
 							JOptionPane.showMessageDialog(jFrame, "Успішно змінено інформацію про пацієнта!",
 									"Успішна операція", JOptionPane.INFORMATION_MESSAGE);
@@ -140,6 +141,7 @@ public class AddPatientActivity implements Activity {
 					JOptionPane.showMessageDialog(jFrame,
 							new String[] { "Сервіс тимчасово недоступний. Спробуйте, будь ласка, пізніше." }, "Помилка",
 							JOptionPane.ERROR_MESSAGE);
+					addingException.printStackTrace();
 					return;
 				}
 			}
