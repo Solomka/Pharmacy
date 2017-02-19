@@ -128,6 +128,8 @@ public class AddDoctorActivity implements Activity {
 			editDoctor = (Doctor) params.get("doctor");
 
 		if (editDoctor != null) {
+			button.setText("Редагувати");
+			
 			name.setText(editDoctor.getName());
 			surname.setText(editDoctor.getSurname());
 			occupation.setText(editDoctor.getOccupation());

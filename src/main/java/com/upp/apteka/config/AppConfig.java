@@ -49,7 +49,7 @@ public class AppConfig {
 	
 	@Bean
 	public Long pharmacyId(){
-		return 8L;
+		return 9L;
 	}
 
 	@Bean

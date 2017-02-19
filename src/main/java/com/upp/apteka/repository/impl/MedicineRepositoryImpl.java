@@ -44,6 +44,9 @@ public class MedicineRepositoryImpl extends AHibernateRepository<Medicine, Long>
 
 	public void update(Medicine medicine) {
 
+		for(PharmacyMedicine pharmacyMedicine: medicine.getPharmacyMedicines())
+			getSession().update(pharmacyMedicine);
+		
 		updateEntity(medicine);
 
 	}

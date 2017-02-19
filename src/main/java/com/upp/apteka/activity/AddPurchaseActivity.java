@@ -10,7 +10,6 @@ import java.awt.event.KeyEvent;
 import java.awt.event.KeyListener;
 import java.math.BigDecimal;
 import java.math.RoundingMode;
-import java.sql.Date;
 import java.text.NumberFormat;
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -36,8 +35,8 @@ import com.upp.apteka.bo.Purchase;
 import com.upp.apteka.bo.PurchaseMedicine;
 import com.upp.apteka.component.buy.form.BuyInputForm;
 import com.upp.apteka.config.Mapper;
+import com.upp.apteka.dto.PurchaseMedicineDto;
 import com.upp.apteka.layout.ModifiedFlowLayout;
-import com.upp.apteka.service.MedicineService;
 import com.upp.apteka.service.PharmacyService;
 import com.upp.apteka.service.PurchaseService;
 
@@ -52,13 +51,10 @@ public class AddPurchaseActivity implements Activity {
 	private PurchaseService purchaseService;
 
 	@Autowired
-	private MedicineService medicineService;
-
-	@Autowired
 	private PharmacyService pharmacyService;
 
 	private List<BuyInputForm> forms;
-	
+
 	private JLabel totalPriceLabel;
 
 	@Autowired
@@ -67,13 +63,20 @@ public class AddPurchaseActivity implements Activity {
 	@Autowired
 	private Mapper mapper;
 
+	private Purchase editPurchase;
+	private Prescription prescription;
+
 	private static final int WINDOW_BORDER = 20;
 	private static final int SUBMIT_WIDTH = 100;
 	private static final int SUBMIT_HEIGHT = 35;
 
 	public void showActivity(final Map<String, Object> params) {
 
-		final Prescription prescription = (Prescription) params.get("prescription");
+		prescription = (Prescription) params.get("prescription");
+		editPurchase = (Purchase) params.get("purchase");
+
+		if (editPurchase != null)
+			prescription = editPurchase.getPrescription();
 
 		frame.setContentPane(new JPanel());
 		frame.setLayout(new BorderLayout());
@@ -107,28 +110,45 @@ public class AddPurchaseActivity implements Activity {
 
 		contentPanel.add(mainPanel, BorderLayout.NORTH);
 
-		outer: for (PrescriptionMedicine pm : prescription.getPrescriptionMedicines()) {
-			List<PharmacyMedicine> pharmacyMedicines = pm.getMedicine().getPharmacyMedicines();
+		List<PurchaseMedicine> purchaseMedicines = new ArrayList<>();
 
-			for (PharmacyMedicine pharmMedicine : pharmacyMedicines) {
-				if (pharmMedicine.getPharmacy().getId() == pharmacy.getId()) {
-					BuyInputForm buy = new BuyInputForm(pm.getMedicine().getId(),
-							pm.getMedicine().getName() + " " + pm.getMedicine().getProducer(), pm.getPackBought(),
-							pm.getPackQuantity(), pharmMedicine.getPackQuantity(), pharmMedicine.getPackPrice());
+		System.out.println(editPurchase);
+		if (editPurchase != null)
+			purchaseMedicines = editPurchase.getPurchaseMedicines();
+
+		System.out.println(purchaseMedicines);
+
+		outer: for (PrescriptionMedicine prescriptionMedicine : prescription.getPrescriptionMedicines()) {
+			List<PharmacyMedicine> pharmacyMedicines = prescriptionMedicine.getMedicine().getPharmacyMedicines();
+
+			for (PharmacyMedicine pharmacyMedicine : pharmacyMedicines) {
+				if (pharmacyMedicine.getPharmacy().getId() == pharmacy.getId()) {
+
+					int bought = 0;
+
+					for (PurchaseMedicine purchaseMedicine : purchaseMedicines)
+						if (purchaseMedicine.getMedicine().getId() == pharmacyMedicine.getMedicine().getId())
+							bought = purchaseMedicine.getPackQuantity();
+
+					BuyInputForm buy = new BuyInputForm(prescriptionMedicine.getMedicine().getId(),
+							prescriptionMedicine.getMedicine().getName() + " "
+									+ prescriptionMedicine.getMedicine().getProducer(),
+							prescriptionMedicine.getPackBought() - bought, prescriptionMedicine.getPackQuantity(),
+							pharmacyMedicine.getPackQuantity() + bought, pharmacyMedicine.getPackPrice());
+
+					if (bought != 0)
+						buy.getNumberField().setText(String.valueOf(bought));
 					forms.add(buy);
 
 					buy.getNumberField().addKeyListener(new KeyListener() {
 
 						@Override
 						public void keyTyped(KeyEvent e) {
-							// TODO Auto-generated method stub
-
 						}
 
 						@Override
 						public void keyReleased(KeyEvent e) {
 							updatePrice();
-								
 						}
 
 						@Override
@@ -138,11 +158,15 @@ public class AddPurchaseActivity implements Activity {
 					continue outer;
 				}
 			}
-			forms.add(new BuyInputForm(pm.getMedicine().getId(),
-					pm.getMedicine().getName() + " " + pm.getMedicine().getProducer(), pm.getPackBought(),
-					pm.getPackQuantity(), 0, new BigDecimal(-1)));
+			forms.add(new BuyInputForm(prescriptionMedicine.getMedicine().getId(),
+					prescriptionMedicine.getMedicine().getName() + " "
+							+ prescriptionMedicine.getMedicine().getProducer(),
+					prescriptionMedicine.getPackBought(), prescriptionMedicine.getPackQuantity(), 0,
+					new BigDecimal(-1)));
 
 		}
+
+		updatePrice();
 
 		JPanel parentPanel = new JPanel();
 		parentPanel.setBorder(BorderFactory.createEmptyBorder(0, 2, 0, 2));
@@ -165,6 +189,10 @@ public class AddPurchaseActivity implements Activity {
 
 		JPanel submitPanel = new JPanel();
 		JButton submit = new JButton("Купити");
+
+		if (editPurchase != null)
+			submit.setText("Редагувати");
+
 		submit.setPreferredSize(new Dimension(SUBMIT_WIDTH, SUBMIT_HEIGHT));
 		submitPanel.add(submit);
 
@@ -172,33 +200,34 @@ public class AddPurchaseActivity implements Activity {
 
 			@Override
 			public void actionPerformed(ActionEvent e) {
-				List<PurchaseMedicine> purchaseMedicines = new ArrayList<>();
+
+				List<PurchaseMedicineDto> purchaseMedicinesDto = new ArrayList<>();
 
 				for (BuyInputForm bif : forms) {
 
 					Integer value = bif.getNumber();
 
 					if (value != null && value > 0) {
-						PurchaseMedicine purchaseMedicine = new PurchaseMedicine();
-						purchaseMedicine.setMedicine(medicineService.getMedicine(bif.getMedicineId()));
-						purchaseMedicine.setPackQuantity(value);
+						PurchaseMedicineDto purchaseMedicineDto = new PurchaseMedicineDto();
+						purchaseMedicineDto.setMedicineId(bif.getMedicineId());
+						purchaseMedicineDto.setQuantity(value);
 
-						purchaseMedicines.add(purchaseMedicine);
+						purchaseMedicinesDto.add(purchaseMedicineDto);
 					}
 
 				}
 
-				Purchase purchase = new Purchase();
-				purchase.setDate(new Date(System.currentTimeMillis()));
-				purchase.setPatient(prescription.getPatient());
-				purchase.setPharmacy(pharmacy);
-				purchase.setPrescription(prescription);
-				purchase.setPurchaseMedicines(purchaseMedicines);
-
-				if (purchaseMedicines.size() > 0) {
+				if (purchaseMedicinesDto.size() > 0) {
 
 					try {
-						purchaseService.create(purchase);
+
+						if (editPurchase == null)
+							purchaseService.create(prescription.getPatient(), pharmacy, prescription,
+									purchaseMedicinesDto);
+						else {
+							purchaseService.update(editPurchase.getId(), prescription.getPatient(), pharmacy,
+									prescription, purchaseMedicinesDto);
+						}
 					} catch (Exception addingException) {
 						addingException.printStackTrace();
 						JOptionPane.showMessageDialog(frame,
@@ -209,12 +238,16 @@ public class AddPurchaseActivity implements Activity {
 
 					Map<String, Object> newParams = new HashMap<String, Object>();
 					newParams.put("prescriptionId", prescription.getId());
-					
+
 					mapper.changeActivity("addPurchase", newParams);
 
-					JOptionPane.showMessageDialog(frame, "Успішно здійснено покупку!", "Успішна операція",
-							JOptionPane.INFORMATION_MESSAGE);
-				}else{
+					if (editPurchase == null)
+						JOptionPane.showMessageDialog(frame, "Успішно здійснено покупку!", "Успішна операція",
+								JOptionPane.INFORMATION_MESSAGE);
+					else
+						JOptionPane.showMessageDialog(frame, "Успішно відредаговано покупку!", "Успішна операція",
+								JOptionPane.INFORMATION_MESSAGE);
+				} else {
 					updatePrice();
 				}
 			}
@@ -243,15 +276,15 @@ public class AddPurchaseActivity implements Activity {
 
 			}
 
-			NumberFormat nf= NumberFormat.getInstance();
+			NumberFormat nf = NumberFormat.getInstance();
 			nf.setMaximumFractionDigits(2);
 			nf.setMinimumFractionDigits(2);
 			nf.setRoundingMode(RoundingMode.HALF_UP);
-			
+
 			totalPriceLabel.setText("<html><b>Вартість</b>: " + nf.format(totalPrice));
 		} finally {
 		}
-		
+
 	}
 
 }

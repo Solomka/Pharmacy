@@ -1,17 +1,22 @@
 package com.upp.apteka.service.impl;
 
-import java.util.Date;
+import java.sql.Date;
+import java.util.ArrayList;
 import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import com.upp.apteka.bo.Medicine;
+import com.upp.apteka.bo.Patient;
+import com.upp.apteka.bo.Pharmacy;
 import com.upp.apteka.bo.PharmacyMedicine;
 import com.upp.apteka.bo.Prescription;
 import com.upp.apteka.bo.PrescriptionMedicine;
 import com.upp.apteka.bo.Purchase;
 import com.upp.apteka.bo.PurchaseMedicine;
+import com.upp.apteka.dto.PurchaseMedicineDto;
 import com.upp.apteka.repository.PurchaseRepository;
 import com.upp.apteka.service.MedicineService;
 import com.upp.apteka.service.PrescriptionService;
@@ -48,6 +53,12 @@ public class PurchaseServiceImpl implements PurchaseService {
 	// @Override
 	@Transactional
 	public Long create(Purchase purchase) {
+
+		cleanUpBeforeCreate(purchase);
+		return purchaseRepository.create(purchase);
+	}
+
+	private void cleanUpBeforeCreate(Purchase purchase) {
 		List<PurchaseMedicine> purchMedicines = purchase.getPurchaseMedicines();
 		Prescription prescription = purchase.getPrescription();
 
@@ -60,7 +71,7 @@ public class PurchaseServiceImpl implements PurchaseService {
 
 					if (prescrMedicine.getPackBought() > prescrMedicine.getPackQuantity())
 						throw new IllegalArgumentException("Чітер. Занадто багато лікарств. Наркоман, напевно!");
-				
+
 					List<PharmacyMedicine> pharmacyMedicines = prescrMedicine.getMedicine().getPharmacyMedicines();
 
 					for (PharmacyMedicine pm : pharmacyMedicines)
@@ -78,8 +89,6 @@ public class PurchaseServiceImpl implements PurchaseService {
 		}
 
 		prescriptionService.update(prescription);
-
-		return purchaseRepository.create(purchase);
 	}
 
 	// @Override
@@ -123,8 +132,7 @@ public class PurchaseServiceImpl implements PurchaseService {
 				if (prescrMedicine.getMedicine().getId() == purchMedicine.getMedicine().getId()) {
 					prescrMedicine.setPackBought(prescrMedicine.getPackBought() + purchMedicine.getPackQuantity());
 
-					if (prescrMedicine.getPackBought()> prescrMedicine
-							.getPackQuantity())
+					if (prescrMedicine.getPackBought() > prescrMedicine.getPackQuantity())
 						throw new IllegalArgumentException("Чітер. Занадто багато лікарств. Наркоман, напевно!");
 
 					List<PharmacyMedicine> pharmacyMedicines = prescrMedicine.getMedicine().getPharmacyMedicines();
@@ -152,35 +160,112 @@ public class PurchaseServiceImpl implements PurchaseService {
 	@Transactional
 	public boolean delete(Long key) {
 		Purchase purchase = read(key);
-		List<PurchaseMedicine> purchMedicines = purchase.getPurchaseMedicines();
+		cleanUpBeforeDelete(purchase);
+		return purchaseRepository.delete(key);
+	}
+
+	private void cleanUpBeforeDelete(Purchase purchase) {
+		List<PurchaseMedicine> purchaseMedicines = purchase.getPurchaseMedicines();
 		Prescription prescription = purchase.getPrescription();
 
-		List<PrescriptionMedicine> prescrMedicines = prescription.getPrescriptionMedicines();
+		List<PrescriptionMedicine> prescriptionMedicines = prescription.getPrescriptionMedicines();
 
-		outer: for (PrescriptionMedicine prescrMedicine : prescrMedicines) {
-			for (PurchaseMedicine purchMedicine : purchMedicines)
-				if (prescrMedicine.getMedicine().getId() == purchMedicine.getMedicine().getId()) {
-					prescrMedicine.setPackBought(prescrMedicine.getPackBought() - purchMedicine.getPackQuantity());
+		outer: for (PrescriptionMedicine prescriptionMedicine : prescriptionMedicines) {
+			for (PurchaseMedicine purchaseMedicine : purchaseMedicines)
+				if (prescriptionMedicine.getMedicine().getId() == purchaseMedicine.getMedicine().getId()) {
+					prescriptionMedicine.setPackBought(prescriptionMedicine.getPackBought() - purchaseMedicine.getPackQuantity());
 
-					List<PharmacyMedicine> pharmacyMedicines = prescrMedicine.getMedicine().getPharmacyMedicines();
+					Medicine medicine = prescriptionMedicine.getMedicine();
+					List<PharmacyMedicine> pharmacyMedicines = medicine.getPharmacyMedicines();
 
-					for (PharmacyMedicine pm : pharmacyMedicines)
-						if (pm.getPharmacy().getId() == purchase.getPharmacy().getId())
-							pm.setPackQuantity(pm.getPackQuantity() + purchMedicine.getPackQuantity());
+					for (PharmacyMedicine pharmacyMedicine : pharmacyMedicines)
+						if (pharmacyMedicine.getPharmacy().getId() == purchase.getPharmacy().getId())
+							pharmacyMedicine.setPackQuantity(pharmacyMedicine.getPackQuantity() + purchaseMedicine.getPackQuantity());
 
-					medicineService.updateMedicine(prescrMedicine.getMedicine());
+					medicineService.updateMedicine(medicine);
 
 					continue outer;
 				}
 		}
 
 		prescriptionService.update(prescription);
-		return purchaseRepository.delete(key);
+		System.out.println(prescription.getPrescriptionMedicines());
 	}
 
 	@Override
 	public List<Purchase> findByPrescription(Long id) {
 		return purchaseRepository.findByPrescription(id);
+	}
+
+	@Override
+	public void create(Patient patient, Pharmacy pharmacy, Prescription prescription,
+			List<PurchaseMedicineDto> purchaseMedicinesDto) {
+		Purchase purchase = new Purchase();
+		purchase.setDate(new Date(System.currentTimeMillis()));
+		purchase.setPatient(prescription.getPatient());
+		purchase.setPharmacy(pharmacy);
+		purchase.setPrescription(prescription);
+
+		Long id = purchaseRepository.create(purchase);
+		purchase.setId(id);
+
+		List<PurchaseMedicine> purchaseMedicines = new ArrayList<>();
+
+		for (PurchaseMedicineDto purchaseMedicineDto : purchaseMedicinesDto) {
+			PurchaseMedicine purchaseMedicine = new PurchaseMedicine();
+			purchaseMedicine.setMedicine(medicineService.getMedicine(purchaseMedicineDto.getMedicineId()));
+			purchaseMedicine.setPackQuantity(purchaseMedicineDto.getQuantity());
+			purchaseMedicine.setPurchase(purchase);
+
+			purchaseMedicines.add(purchaseMedicine);
+
+		}
+
+		purchase.setPurchaseMedicines(purchaseMedicines);
+		purchaseRepository.update(purchase);
+
+		cleanUpBeforeCreate(purchase);
+	}
+
+	@Override
+	public void update(Long id, Patient patient, Pharmacy pharmacy, Prescription prescription,
+			List<PurchaseMedicineDto> purchaseMedicinesDto) {
+		Purchase purchase = purchaseRepository.read(id);
+		cleanUpBeforeDelete(purchase);
+		
+		purchase.setDate(new Date(System.currentTimeMillis()));
+		purchase.setPatient(prescription.getPatient());
+		purchase.setPharmacy(pharmacy);
+
+		List<PurchaseMedicine> purchaseMedicines = purchase.getPurchaseMedicines();
+
+		outer: for (PurchaseMedicineDto purchaseMedicineDto : purchaseMedicinesDto) {
+
+			for (PurchaseMedicine purchaseMedicine : purchaseMedicines)
+				if (purchaseMedicine.getMedicine().getId() == purchaseMedicineDto.getMedicineId()) {
+					purchaseMedicine.setPackQuantity(purchaseMedicineDto.getQuantity());
+					continue outer;
+				}
+
+			PurchaseMedicine missedPurchaseMedicine = new PurchaseMedicine();
+			missedPurchaseMedicine.setMedicine(medicineService.getMedicine(purchaseMedicineDto.getMedicineId()));
+			missedPurchaseMedicine.setPurchase(purchase);
+			missedPurchaseMedicine.setPackQuantity(purchaseMedicineDto.getQuantity());
+
+			purchaseMedicines.add(missedPurchaseMedicine);
+		}
+
+		outer: for (int i = 0; i < purchaseMedicines.size(); i++) {
+			for (PurchaseMedicineDto purchaseMedicineDto : purchaseMedicinesDto)
+				if (purchaseMedicineDto.getMedicineId() == purchaseMedicines.get(i).getMedicine().getId())
+					continue outer;
+
+			purchaseMedicines.remove(i);
+			--i;
+		}
+
+		cleanUpBeforeCreate(purchase);
+		purchaseRepository.update(purchase);
 	}
 
 }

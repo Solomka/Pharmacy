@@ -11,6 +11,7 @@ import org.hibernate.criterion.Restrictions;
 import org.springframework.stereotype.Repository;
 import com.mysql.jdbc.StringUtils;
 import com.upp.apteka.bo.Prescription;
+import com.upp.apteka.bo.PrescriptionMedicine;
 import com.upp.apteka.repository.PrescriptionRepository;
 import com.upp.apteka.utils.repository.AHibernateRepository;
 
@@ -40,6 +41,13 @@ public class PrescriptionRepositoryImpl extends AHibernateRepository<Prescriptio
 	}
 
 	public void update(Prescription prescription) {
+
+		for (PrescriptionMedicine prescriptionMedicine : prescription.getPrescriptionMedicines()){
+			System.out.println(prescriptionMedicine.getPackBought());
+			getSession().update(prescriptionMedicine);
+			
+		}
+
 		updateEntity(prescription);
 
 	}
@@ -126,7 +134,7 @@ public class PrescriptionRepositoryImpl extends AHibernateRepository<Prescriptio
 		Criteria criteria = createEntityCriteria();
 		criteria.add(Restrictions.sqlRestriction("id_patient = " + customerId));
 		criteria.add(Restrictions.sqlRestriction(ACTUAL));
-		
+
 		return (List<Prescription>) criteria.list();
 	}
 

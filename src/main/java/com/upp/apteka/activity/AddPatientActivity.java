@@ -104,6 +104,9 @@ public class AddPatientActivity implements Activity {
 			editPatient = (Patient) params.get("patient");
 
 		if (editPatient != null) {
+			
+			button.setText("Редагувати");
+			
 			name.setText(editPatient.getName());
 			surname.setText(editPatient.getSurname());
 			phone.setText(editPatient.getPhone());
