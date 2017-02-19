@@ -20,7 +20,6 @@ public class PurchaseMedicine {
 	
 	private PurchaseMedicineID purchMedicine = new PurchaseMedicineID();
 	
-	@Column(name = "pack_quantity", nullable = false)
 	private int packQuantity;
 	
 	@EmbeddedId
@@ -50,6 +49,7 @@ public class PurchaseMedicine {
 		getPurchMedicine().setPurchase(purchase);
 	}
 
+	@Column(name = "pack_quantity", nullable = false)
 	public int getPackQuantity() {
 		return packQuantity;
 	}
@@ -57,4 +57,11 @@ public class PurchaseMedicine {
 	public void setPackQuantity(int packQuantity) {
 		this.packQuantity = packQuantity;
 	}
+
+	@Override
+	public String toString() {
+		return "PurchaseMedicine [purchMedicine=" + purchMedicine + ", packQuantity=" + packQuantity + "]";
+	}
+	
+	
 }

@@ -127,7 +127,9 @@ public class DoctorDto {
 			this.surname = surname.getText();
 
 			try {
-				this.standing = Integer.parseInt(standing.getText());
+				String text = standing.getText().replace(" ", "");
+				this.standing = Integer.parseInt(text);
+				
 			} catch (Exception e) {
 				this.standing = 0;
 			}

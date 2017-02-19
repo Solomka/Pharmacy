@@ -1,5 +1,7 @@
 package com.upp.apteka;
 
+import java.awt.event.WindowEvent;
+import java.awt.event.WindowListener;
 import java.io.FileNotFoundException;
 import java.io.IOException;
 
@@ -9,21 +11,45 @@ import org.springframework.context.ApplicationContext;
 import org.springframework.context.annotation.AnnotationConfigApplicationContext;
 
 import com.upp.apteka.config.AppConfig;
-import com.upp.apteka.controller.SwingController;
 
 public class App {
+
 	public static void main(String[] args) throws FileNotFoundException, IOException, ClassNotFoundException {
 
-		@SuppressWarnings("resource")
-		// AnnotationConfigApplicationContext ctx = new
-		// AnnotationConfigApplicationContext(AppConfig.class);
-		ApplicationContext ctx = new AnnotationConfigApplicationContext(AppConfig.class);
+		final ApplicationContext ctx = new AnnotationConfigApplicationContext(AppConfig.class);
 		JFrame dispatcherFrame = ctx.getBean(JFrame.class);
-		dispatcherFrame.setVisible(true);
+		dispatcherFrame.addWindowListener(new WindowListener() {
 
-		// on the same frame put all addDoctor activity view elements
-		SwingController helloController = ctx.getBean("addDoctor", SwingController.class);
-		helloController.switchToActivity(null);
+			//@Override
+			public void windowOpened(WindowEvent e) {
+			}
+
+			//@Override
+			public void windowIconified(WindowEvent e) {
+			}
+
+			//@Override
+			public void windowDeiconified(WindowEvent e) {
+			}
+
+			//@Override
+			public void windowDeactivated(WindowEvent e) {
+			}
+
+			//@Override
+			public void windowClosing(WindowEvent e) {
+			}
+
+			//@Override
+			public void windowClosed(WindowEvent e) {
+				((AnnotationConfigApplicationContext) ctx).close();
+			}
+
+			//@Override
+			public void windowActivated(WindowEvent e) {
+			}
+		});
+		dispatcherFrame.setVisible(true);
 
 	}
 }

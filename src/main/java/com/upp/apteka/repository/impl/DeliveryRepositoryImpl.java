@@ -3,7 +3,6 @@ package com.upp.apteka.repository.impl;
 import java.sql.Date;
 import java.util.List;
 
-import org.apache.log4j.Logger;
 import org.hibernate.Criteria;
 import org.hibernate.Query;
 import org.hibernate.criterion.Order;
@@ -12,14 +11,11 @@ import org.springframework.stereotype.Repository;
 
 import com.upp.apteka.bo.Delivery;
 import com.upp.apteka.bo.DeliveryMedicine;
-import com.upp.apteka.bo.PharmacyMedicine;
 import com.upp.apteka.repository.DeliveryRepository;
 import com.upp.apteka.utils.repository.AHibernateRepository;
 
 @Repository("deliveryRepository")
 public class DeliveryRepositoryImpl extends AHibernateRepository<Delivery, Long> implements DeliveryRepository {
-	
-	private static final Logger LOGGER = Logger.getLogger(DeliveryRepositoryImpl.class.getName());
 
 	@SuppressWarnings("unchecked")
 	public List<Delivery> getAll(int offset, int limit) {

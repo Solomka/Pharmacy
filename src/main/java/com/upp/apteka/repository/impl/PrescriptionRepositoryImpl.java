@@ -9,18 +9,16 @@ import org.hibernate.criterion.Conjunction;
 import org.hibernate.criterion.Disjunction;
 import org.hibernate.criterion.Restrictions;
 import org.springframework.stereotype.Repository;
-import org.springframework.transaction.annotation.Transactional;
-
 import com.mysql.jdbc.StringUtils;
 import com.upp.apteka.bo.Prescription;
+import com.upp.apteka.bo.PrescriptionMedicine;
 import com.upp.apteka.repository.PrescriptionRepository;
 import com.upp.apteka.utils.repository.AHibernateRepository;
 
 @Repository
-@Transactional
 public class PrescriptionRepositoryImpl extends AHibernateRepository<Prescription, Long>
 		implements PrescriptionRepository {
-	
+
 	private final String patientRestriction = "(id_patient IN (SELECT id FROM patient WHERE UPPER(name) LIKE UPPER('%?%') OR UPPER(surname) LIKE UPPER('%?%') OR phone LIKE '%?%'))";
 	private final String doctorRestriction = "(id_doctor IN (SELECT id FROM doctor WHERE UPPER(name) LIKE UPPER('%?%') OR UPPER(surname) LIKE UPPER('%?%')))";
 	private final String pharmacyRestriction = "(EXISTS (SELECT * FROM purchase WHERE id_prescr = id AND id_pharmacy IN (SELECT id FROM pharmacy WHERE UPPER(name) LIKE UPPER('%?%'))))";
@@ -43,6 +41,13 @@ public class PrescriptionRepositoryImpl extends AHibernateRepository<Prescriptio
 	}
 
 	public void update(Prescription prescription) {
+
+		for (PrescriptionMedicine prescriptionMedicine : prescription.getPrescriptionMedicines()){
+			System.out.println(prescriptionMedicine.getPackBought());
+			getSession().update(prescriptionMedicine);
+			
+		}
+
 		updateEntity(prescription);
 
 	}
@@ -52,13 +57,13 @@ public class PrescriptionRepositoryImpl extends AHibernateRepository<Prescriptio
 	}
 
 	@SuppressWarnings("unchecked")
-	//@Override
+	// @Override
 	public List<Prescription> findByQuery(String query, Date start, Date finish, boolean or, Boolean sold) {
 		return createSearchCriteria(query, start, finish, or, sold).list();
 	}
 
 	@SuppressWarnings("unchecked")
-	//@Override
+	// @Override
 	public List<Prescription> findByQuery(String query, Date start, Date finish, int offset, int limit, boolean or,
 			Boolean sold) {
 		Criteria criteria = createSearchCriteria(query, start, finish, or, sold);
@@ -121,6 +126,16 @@ public class PrescriptionRepositoryImpl extends AHibernateRepository<Prescriptio
 
 		criteria.add(conjunction);
 		return criteria;
+	}
+
+	@SuppressWarnings("unchecked")
+	//@Override
+	public List<Prescription> getUnboughtPrescriptions(Long customerId) {
+		Criteria criteria = createEntityCriteria();
+		criteria.add(Restrictions.sqlRestriction("id_patient = " + customerId));
+		criteria.add(Restrictions.sqlRestriction(ACTUAL));
+
+		return (List<Prescription>) criteria.list();
 	}
 
 }

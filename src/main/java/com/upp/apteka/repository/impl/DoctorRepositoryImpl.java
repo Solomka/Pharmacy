@@ -6,6 +6,8 @@ import java.util.List;
 import org.hibernate.Criteria;
 import org.hibernate.criterion.Conjunction;
 import org.hibernate.criterion.Disjunction;
+import org.hibernate.criterion.MatchMode;
+import org.hibernate.criterion.Projections;
 import org.hibernate.criterion.Restrictions;
 import org.springframework.stereotype.Repository;
 import org.springframework.transaction.annotation.Transactional;
@@ -42,11 +44,16 @@ public class DoctorRepositoryImpl extends AHibernateRepository<Doctor, Long> imp
 	}
 
 	@SuppressWarnings("unchecked")
-	//@Override
+	// @Override
 	public List<Doctor> findByQuery(String query, boolean or) {
 
+		Criteria criteria = prepare(query, or);
+		return criteria.list();
+	}
+
+	private Criteria prepare(String query, boolean or) {
 		if (query == null)
-			throw new NullPointerException("Surname can not be null");
+			query = "";
 
 		String[] names = query.split(" ");
 		Criteria criteria = createEntityCriteria();
@@ -55,60 +62,40 @@ public class DoctorRepositoryImpl extends AHibernateRepository<Doctor, Long> imp
 
 		for (String name : names)
 			if (!StringUtils.isEmptyOrWhitespaceOnly(name))
-				restrictions.add(Restrictions.or(Restrictions.ilike("surname", name), Restrictions.ilike("name", name),
-						Restrictions.ilike("occupation", name)));
+				restrictions.add(Restrictions.or(Restrictions.ilike("surname", name, MatchMode.ANYWHERE),
+						Restrictions.ilike("name", name, MatchMode.ANYWHERE),
+						Restrictions.ilike("occupation", name, MatchMode.ANYWHERE)));
 
-		if (or && restrictions.size() > 0){
+		if (or && restrictions.size() > 0) {
 			Disjunction disjunction = Restrictions.disjunction();
-			
-			for(Disjunction dis: restrictions)
+
+			for (Disjunction dis : restrictions)
 				disjunction.add(dis);
-			
+
 			criteria.add(disjunction);
-		}else if (restrictions.size() > 0){
+		} else if (restrictions.size() > 0) {
 			Conjunction conjunction = Restrictions.conjunction();
-			
-			for(Disjunction dis: restrictions)
+
+			for (Disjunction dis : restrictions)
 				conjunction.add(dis);
-			
+
 			criteria.add(conjunction);
 		}
-		return criteria.list();
+
+		return criteria;
 	}
 
 	@SuppressWarnings("unchecked")
-	//@Override
+	// @Override
 	public List<Doctor> findByQuery(String query, int offset, int limit, boolean or) {
 
-		if (query == null)
-			throw new NullPointerException("Surname can not be null");
-
-		String[] names = query.split(" ");
-		Criteria criteria = createEntityCriteria().setFirstResult(offset).setMaxResults(limit);
-
-		List<Disjunction> restrictions = new ArrayList<Disjunction>();
-
-		for (String name : names)
-			if (!StringUtils.isEmptyOrWhitespaceOnly(name))
-				restrictions.add(Restrictions.or(Restrictions.ilike("surname", name), Restrictions.ilike("name", name),
-						Restrictions.ilike("occupation", name)));
-
-		if (or && restrictions.size() > 0){
-			Disjunction disjunction = Restrictions.disjunction();
-			
-			for(Disjunction dis: restrictions)
-				disjunction.add(dis);
-			
-			criteria.add(disjunction);
-		}else if (restrictions.size() > 0){
-			Conjunction conjunction = Restrictions.conjunction();
-			
-			for(Disjunction dis: restrictions)
-				conjunction.add(dis);
-			
-			criteria.add(conjunction);
-		}
+		Criteria criteria = prepare(query, or).setFirstResult(offset).setMaxResults(limit);
 		return criteria.list();
+	}
+
+	//@Override
+	public int count(String query, boolean or) {
+		return ((Number) prepare(query, or).setProjection(Projections.rowCount()).uniqueResult()).intValue();
 	}
 
 }

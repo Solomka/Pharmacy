@@ -10,4 +10,8 @@ public interface PatientRepository extends IRepository<Patient, Long>{
 	List<Patient> findByQuery(String surname, boolean or);
 	
 	List<Patient> findByQuery(String surname, int offset, int limit, boolean or);
+	
+	boolean containsNumber(String number);
+	
+	int count(String query, boolean or);
 }
