@@ -309,13 +309,11 @@ public class AddPrescriptionActivity implements Activity {
 
 		JPanel proceedPanel = new JPanel();
 		JButton submitButton = new JButton("Створити");
-		JButton resetButton = new JButton("Відновити");
 
 		if (editPrescription != null)
 			submitButton.setText("Редагувати");
 
 		proceedPanel.add(submitButton);
-		proceedPanel.add(resetButton);
 
 		jFrame.add(proceedPanel, BorderLayout.SOUTH);
 
