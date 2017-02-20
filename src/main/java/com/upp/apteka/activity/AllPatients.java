@@ -185,7 +185,7 @@ public class AllPatients implements Activity {
 			prevButton.setEnabled(false);
 
 		JPanel goPanel = new JPanel();
-		JTextField goTo = new JTextField(10);
+		final JTextField goTo = new JTextField(10);
 		goPanel.setLayout(new GridLayout(0, 1));
 		goPanel.setPreferredSize(new Dimension(PAGINATION_BUTTON_WIDTH, PAGINATION_BUTTON_HEIGHT));
 		goPanel.setBorder(BorderFactory.createEmptyBorder(1, 1, 1, 1));
@@ -243,7 +243,29 @@ public class AllPatients implements Activity {
 
 		JButton goButton = new JButton("Перейти");
 		goButton.setPreferredSize(new Dimension(PAGINATION_BUTTON_WIDTH, PAGINATION_BUTTON_HEIGHT));
-
+		goButton.addActionListener(new ActionListener() {
+			
+			//@Override
+			public void actionPerformed(ActionEvent e) {
+				try{
+					int page = Integer.valueOf(goTo.getText());
+					
+					if(page > lastPage)
+						page = lastPage;
+					
+					if(page < 0)
+						page = 0;
+					
+					params.put("current", page);
+					mapper.changeActivity("allPatients", params);
+				}catch(Exception ex){
+					JOptionPane.showMessageDialog(jFrame, new String[] { "Числа нормальні треба вводити!" }, "Помилка",
+							JOptionPane.ERROR_MESSAGE);
+				}
+				
+			}
+		});
+		
 		paginationPanel.setLayout(new FlowLayout());
 		paginationPanel.add(nextButton, BorderLayout.WEST);
 		paginationPanel.add(goPanel, BorderLayout.WEST);
