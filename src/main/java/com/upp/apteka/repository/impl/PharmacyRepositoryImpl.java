@@ -2,8 +2,10 @@ package com.upp.apteka.repository.impl;
 
 import java.util.List;
 
+import org.hibernate.Criteria;
 import org.hibernate.Query;
 import org.hibernate.criterion.Order;
+import org.hibernate.criterion.Restrictions;
 import org.springframework.stereotype.Repository;
 
 import com.upp.apteka.bo.Pharmacy;
@@ -57,5 +59,11 @@ public class PharmacyRepositoryImpl extends AHibernateRepository<Pharmacy, Long>
 		return (List<Pharmacy>) criteria.list();
 		*/
 
+	}
+
+	public boolean containsAddress(String address) {
+		Criteria criteria = createEntityCriteria();
+		criteria.add(Restrictions.eq("address", address));		
+		return !criteria.list().isEmpty();
 	}
 }

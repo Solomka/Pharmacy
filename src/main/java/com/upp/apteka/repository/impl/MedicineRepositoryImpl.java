@@ -13,7 +13,6 @@ import org.springframework.stereotype.Repository;
 import org.springframework.transaction.annotation.Transactional;
 
 import com.mysql.jdbc.StringUtils;
-
 import com.upp.apteka.bo.Medicine;
 import com.upp.apteka.bo.PharmacyMedicine;
 import com.upp.apteka.repository.MedicineRepository;
@@ -84,7 +83,7 @@ public class MedicineRepositoryImpl extends AHibernateRepository<Medicine, Long>
 	}
 
 	@SuppressWarnings("unchecked")
-	//@Override
+	// @Override
 	public List<Medicine> findByNameOrProducer(String query) {
 		Criteria criteria = createEntityCriteria();
 
@@ -111,6 +110,12 @@ public class MedicineRepositoryImpl extends AHibernateRepository<Medicine, Long>
 		}
 
 		return criteria.list();
+	}
+
+	public boolean containsNameProducerMedicine(String name, String producer) {
+		Criteria criteria = createEntityCriteria();
+		criteria.add(Restrictions.eq("name", name)).add(Restrictions.eqOrIsNull("producer", producer));
+		return !criteria.list().isEmpty();
 	}
 
 }
