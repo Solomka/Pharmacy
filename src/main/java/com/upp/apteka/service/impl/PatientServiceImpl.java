@@ -99,12 +99,12 @@ public class PatientServiceImpl implements PatientService {
 		return errors;
 	}
 
-	@Override
+	// @Override
 	public boolean containsNumber(String number) {
 		return patientRepository.containsNumber(number);
 	}
 
-	@Override
+	//@Override
 	public int count(String query, boolean or) {
 		return patientRepository.count(query, or);
 	}

@@ -95,13 +95,13 @@ public class AddPurchaseActivity implements Activity {
 		totalPriceLabel = new JLabel("<html><b>Вартість</b>: 0");
 		infoPanel.add(totalPriceLabel);
 
-		forms = new ArrayList<>();
+		forms = new ArrayList<BuyInputForm>();
 
 		mainPanel.add(infoPanel);
 
 		contentPanel.add(mainPanel, BorderLayout.NORTH);
 
-		List<PurchaseMedicine> purchaseMedicines = new ArrayList<>();
+		List<PurchaseMedicine> purchaseMedicines = new ArrayList<PurchaseMedicine>();
 
 		if (editPurchase != null)
 			purchaseMedicines = editPurchase.getPurchaseMedicines();
@@ -130,16 +130,16 @@ public class AddPurchaseActivity implements Activity {
 
 					buy.getNumberField().addKeyListener(new KeyListener() {
 
-						@Override
+						//@Override
 						public void keyTyped(KeyEvent e) {
 						}
 
-						@Override
+						//@Override
 						public void keyReleased(KeyEvent e) {
 							updatePrice();
 						}
 
-						@Override
+						//@Override
 						public void keyPressed(KeyEvent e) {
 						}
 					});
@@ -186,10 +186,10 @@ public class AddPurchaseActivity implements Activity {
 
 		submit.addActionListener(new ActionListener() {
 
-			@Override
+			//@Override
 			public void actionPerformed(ActionEvent e) {
 
-				List<PurchaseMedicineDto> purchaseMedicinesDto = new ArrayList<>();
+				List<PurchaseMedicineDto> purchaseMedicinesDto = new ArrayList<PurchaseMedicineDto>();
 
 				for (BuyInputForm bif : forms) {
 

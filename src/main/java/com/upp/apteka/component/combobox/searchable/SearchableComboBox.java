@@ -2,7 +2,6 @@ package com.upp.apteka.component.combobox.searchable;
 
 import java.awt.Color;
 import java.awt.Component;
-
 import java.awt.event.KeyEvent;
 import java.awt.event.KeyListener;
 import java.util.List;
@@ -31,15 +30,15 @@ public class SearchableComboBox extends JComboBox<SearchableItem> {
 
 		this.getEditor().getEditorComponent().addKeyListener(new KeyListener() {
 
-			@Override
+			// @Override
 			public void keyTyped(KeyEvent e) {
 			}
 
-			@Override
+			// @Override
 			public void keyReleased(KeyEvent e) {
 			}
 
-			@Override
+			// @Override
 			public void keyPressed(final KeyEvent e) {
 				final String currentValue = ((JTextComponent) ((JComboBox<?>) ((Component) e.getSource()).getParent())
 						.getEditor().getEditorComponent()).getText() + e.getKeyChar();

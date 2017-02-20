@@ -19,6 +19,8 @@ import javax.persistence.Table;
 
 import org.hibernate.annotations.Cascade;
 
+import com.upp.apteka.dto.MedicineDto;
+
 @Entity
 @Table(name = "medicine")
 public class Medicine implements Serializable {
@@ -58,10 +60,10 @@ public class Medicine implements Serializable {
 
 	@OneToMany(fetch = FetchType.LAZY, mappedBy = "purchMedicine.medicine")
 	private Set<PurchaseMedicine> purchaseMedicines;
-	
+
 	@OneToMany(fetch = FetchType.LAZY, mappedBy = "pk.medicine")
 	private Set<PrescriptionMedicine> prescriptionMedicines;
-	
+
 	public Medicine() {
 
 	}
@@ -83,6 +85,14 @@ public class Medicine implements Serializable {
 		this.producer = Objects.requireNonNull(producer, "producer can not be null");
 		this.boxPrice = Objects.requireNonNull(boxPrice, "boxPrice can not be null");
 		this.quantityPerBox = Objects.requireNonNull(quantityPerBox, "quantity per box can not be null");
+	}
+
+	public Medicine(MedicineDto medicineDto) {
+		this.name = medicineDto.getName();
+		this.producer = medicineDto.getProducer();
+		this.boxPrice = medicineDto.getBoxPrice();
+		this.quantityPerBox = medicineDto.getQuantityPerBox();
+
 	}
 
 	public Long getId() {
@@ -140,7 +150,7 @@ public class Medicine implements Serializable {
 	public void setDeliveryMedicines(List<DeliveryMedicine> deliveryMedicines) {
 		this.deliveryMedicines = deliveryMedicines;
 	}
-	
+
 	public Set<PrescriptionMedicine> getPrescriptionMedicines() {
 		return prescriptionMedicines;
 	}

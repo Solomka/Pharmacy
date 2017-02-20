@@ -121,7 +121,7 @@ public class PurchaseRepositoryImpl extends AHibernateRepository<Purchase, Long>
 	}
 
 	@SuppressWarnings("unchecked")
-	@Override
+	//@Override
 	public List<Purchase> findByPrescription(Long id) {
 		Criteria criteria = createEntityCriteria();
 		criteria.add(Restrictions.sqlRestriction("id_prescr = " + id));
@@ -129,7 +129,7 @@ public class PurchaseRepositoryImpl extends AHibernateRepository<Purchase, Long>
 		return criteria.list();
 	}
 
-	@Override
+	//@Override
 	public int count(String query, java.sql.Date start, java.sql.Date finish, boolean or, Long number) {
 		Criteria criteria = createSearchCriteria(query, start, finish, or, number);
 		return ((Number) criteria.setProjection(Projections.rowCount()).uniqueResult()).intValue();

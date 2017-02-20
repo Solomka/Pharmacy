@@ -23,7 +23,7 @@ public class AllPurchasesController implements SwingController {
 
 	private static final int PURCHASES_PER_PAGE = 20;
 
-	@Override
+	//@Override
 	public void switchToActivity(Map<String, Object> params) {
 		Activity allPurchasesActivity = (Activity) appContext.getBean("allPurchasesActivity");
 

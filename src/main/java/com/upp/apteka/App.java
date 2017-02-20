@@ -4,6 +4,10 @@ import java.awt.event.WindowEvent;
 import java.awt.event.WindowListener;
 import java.io.FileNotFoundException;
 import java.io.IOException;
+import java.math.BigDecimal;
+import java.text.DecimalFormat;
+import java.text.DecimalFormatSymbols;
+import java.text.ParseException;
 
 import javax.swing.JFrame;
 
@@ -20,36 +24,52 @@ public class App {
 		JFrame dispatcherFrame = ctx.getBean(JFrame.class);
 		dispatcherFrame.addWindowListener(new WindowListener() {
 
-			@Override
+			//@Override
 			public void windowOpened(WindowEvent e) {
 			}
 
-			@Override
+			//@Override
 			public void windowIconified(WindowEvent e) {
 			}
 
-			@Override
+			//@Override
 			public void windowDeiconified(WindowEvent e) {
 			}
 
-			@Override
+			//@Override
 			public void windowDeactivated(WindowEvent e) {
 			}
 
-			@Override
+			//@Override
 			public void windowClosing(WindowEvent e) {
 			}
 
-			@Override
+			//@Override
 			public void windowClosed(WindowEvent e) {
 				((AnnotationConfigApplicationContext) ctx).close();
 			}
 
-			@Override
+			//@Override
 			public void windowActivated(WindowEvent e) {
 			}
 		});
 		dispatcherFrame.setVisible(true);
+		
+		// Create a DecimalFormat that fits your requirements
+					DecimalFormatSymbols symbols = new DecimalFormatSymbols();
+					symbols.setGroupingSeparator(',');
+					symbols.setDecimalSeparator('.');
+					String pattern = "#,##0.0#";
+					DecimalFormat decimalFormat = new DecimalFormat(pattern, symbols);
+					decimalFormat.setParseBigDecimal(true);
+
+					// parse the string
+					try {
+						BigDecimal bigDecimal = (BigDecimal)decimalFormat.parse("10,692,467,440,017.120");
+					} catch (ParseException e1) {
+						// TODO Auto-generated catch block
+						e1.printStackTrace();
+					}
 
 	}
 }

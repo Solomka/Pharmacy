@@ -39,46 +39,46 @@ public class PrescriptionServiceImpl implements PrescriptionService {
 	@Autowired
 	private PurchaseService purchaseService;
 
-	@Override
+	// @Override
 	public List<Prescription> getAll(int offset, int limit) {
 		return prescriptionRepository.getAll(offset, limit);
 	}
 
-	@Override
+	// @Override
 	public Long create(Prescription prescription) {
 		return prescriptionRepository.create(prescription);
 	}
 
-	@Override
+	// @Override
 	public Prescription read(Long key) {
 		return prescriptionRepository.read(key);
 	}
 
-	@Override
+	// @Override
 	public void update(Prescription prescription) {
 		prescriptionRepository.update(prescription);
 
 	}
 
-	@Override
+	// @Override
 	public boolean delete(Long key) {
 		if (purchaseService.findByPrescription(key).size() != 0)
 			return false;
 		return prescriptionRepository.delete(key);
 	}
 
-	@Override
+	// @Override
 	public List<Prescription> findByQuery(String query, Date start, Date finishDate, boolean or, Boolean sold) {
 		return prescriptionRepository.findByQuery(query, start, finishDate, or, sold);
 	}
 
-	@Override
+	// @Override
 	public List<Prescription> findByQuery(String query, Date start, Date finishDate, int offset, int limit, boolean or,
 			Boolean sold) {
 		return prescriptionRepository.findByQuery(query, start, finishDate, offset, limit, or, sold);
 	}
 
-	@Override
+	// @Override
 	public Long create(Long doctorId, Long patientId, Date date, List<ChooseMedicineDto> dtos) {
 		Doctor doctor = doctorService.read(doctorId);
 		Patient patient = patientService.read(patientId);
@@ -92,7 +92,7 @@ public class PrescriptionServiceImpl implements PrescriptionService {
 
 		prescription.setId(id);
 
-		List<PrescriptionMedicine> set = new ArrayList<>();
+		List<PrescriptionMedicine> set = new ArrayList<PrescriptionMedicine>();
 
 		for (ChooseMedicineDto cmd : dtos) {
 			PrescriptionMedicine pm = new PrescriptionMedicine();
@@ -111,7 +111,7 @@ public class PrescriptionServiceImpl implements PrescriptionService {
 		return id;
 	}
 
-	@Override
+	// @Override
 	public void update(Long prescriptionId, Long doctorId, Long patientId, Date date, List<ChooseMedicineDto> dtos) {
 		Doctor doctor = doctorService.read(doctorId);
 		Patient patient = patientService.read(patientId);
@@ -159,7 +159,7 @@ public class PrescriptionServiceImpl implements PrescriptionService {
 		prescriptionRepository.update(prescription);
 	}
 
-	@Override
+	// @Override
 	public List<Prescription> getUnboughtPrescriptions(Long customerId) {
 		return prescriptionRepository.getUnboughtPrescriptions(customerId);
 	}

@@ -192,12 +192,12 @@ public class PurchaseServiceImpl implements PurchaseService {
 		System.out.println(prescription.getPrescriptionMedicines());
 	}
 
-	@Override
+	//@Override
 	public List<Purchase> findByPrescription(Long id) {
 		return purchaseRepository.findByPrescription(id);
 	}
 
-	@Override
+	//@Override
 	public Long create(Patient patient, Pharmacy pharmacy, Prescription prescription,
 			List<PurchaseMedicineDto> purchaseMedicinesDto) {
 		Purchase purchase = new Purchase();
@@ -208,7 +208,7 @@ public class PurchaseServiceImpl implements PurchaseService {
 		Long id = purchaseRepository.create(purchase);
 		purchase.setId(id);
 
-		List<PurchaseMedicine> purchaseMedicines = new ArrayList<>();
+		List<PurchaseMedicine> purchaseMedicines = new ArrayList<PurchaseMedicine>();
 
 		for (PurchaseMedicineDto purchaseMedicineDto : purchaseMedicinesDto) {
 			PurchaseMedicine purchaseMedicine = new PurchaseMedicine();
@@ -228,7 +228,7 @@ public class PurchaseServiceImpl implements PurchaseService {
 		return id;
 	}
 
-	@Override
+	//@Override
 	public void update(Long id, Patient patient, Pharmacy pharmacy, Prescription prescription,
 			List<PurchaseMedicineDto> purchaseMedicinesDto) {
 		Purchase purchase = purchaseRepository.read(id);
@@ -268,7 +268,7 @@ public class PurchaseServiceImpl implements PurchaseService {
 		purchaseRepository.update(purchase);
 	}
 
-	@Override
+	//@Override
 	public int count(String query, Date start, Date finish, boolean or, Long number) {
 		return purchaseRepository.count(query, start, finish, or, number);
 	}

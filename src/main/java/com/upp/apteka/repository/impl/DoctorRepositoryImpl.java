@@ -93,7 +93,7 @@ public class DoctorRepositoryImpl extends AHibernateRepository<Doctor, Long> imp
 		return criteria.list();
 	}
 
-	@Override
+	//@Override
 	public int count(String query, boolean or) {
 		return ((Number) prepare(query, or).setProjection(Projections.rowCount()).uniqueResult()).intValue();
 	}

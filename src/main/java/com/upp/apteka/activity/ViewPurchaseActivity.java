@@ -76,13 +76,13 @@ public class ViewPurchaseActivity implements Activity {
 		totalPriceLabel = new JLabel("<html><b>Вартість</b>: 0");
 		infoPanel.add(totalPriceLabel);
 
-		forms = new ArrayList<>();
+		forms = new ArrayList<BuyInputForm>();
 
 		mainPanel.add(infoPanel);
 
 		contentPanel.add(mainPanel, BorderLayout.NORTH);
 
-		List<PurchaseMedicine> purchaseMedicines = new ArrayList<>();
+		List<PurchaseMedicine> purchaseMedicines = new ArrayList<PurchaseMedicine>();
 
 		purchaseMedicines = viewPurchase.getPurchaseMedicines();
 

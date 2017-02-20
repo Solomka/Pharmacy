@@ -51,7 +51,7 @@ public class AllPrescriptions implements Activity {
 
 	private JTable prescriptionsTable;
 
-	private Object[] columnsHeader = new String[] { "Номер", "Дата", "Пацієнт", "Кількість ліків", "Лікар" };
+	private Object[] columnsHeader = new String[] { "Номер", "Дата", "Пацієнт", "Ліки", "Лікар" };
 
 	private JTextField queryField;
 

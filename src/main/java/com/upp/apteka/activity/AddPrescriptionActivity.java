@@ -92,7 +92,7 @@ public class AddPrescriptionActivity implements Activity {
 
 	public void showActivity(Map<String, Object> params) {
 
-		selectedItems = new ArrayList<>();
+		selectedItems = new ArrayList<ChooseMedicineDto>();
 
 		JPanel contentPanel = new JPanel();
 		contentPanel.setLayout(new BorderLayout());
@@ -154,8 +154,8 @@ public class AddPrescriptionActivity implements Activity {
 		medicinePanel.setLayout(new GridLayout(0, 1, 0, 5));
 		medicinePanel.setBorder(BorderFactory.createEmptyBorder(0, 0, 15, 0));
 
-		defaultListModel = new DefaultListModel<>();
-		list = new JList<>(defaultListModel);
+		defaultListModel = new DefaultListModel<SearchableItem>();
+		list = new JList<SearchableItem>(defaultListModel);
 		JScrollPane pane = new JScrollPane(list);
 
 		/**
@@ -251,7 +251,7 @@ public class AddPrescriptionActivity implements Activity {
 		addButton.setPreferredSize(new Dimension(BUTTON_WIDTH, BUTTON_HEIGHT));
 		addButton.addActionListener(new ActionListener() {
 
-			@Override
+			//@Override
 			public void actionPerformed(ActionEvent e) {
 				SearchableItem item = (SearchableItem) searchMedicine.getSelectedItem();
 
@@ -284,7 +284,7 @@ public class AddPrescriptionActivity implements Activity {
 		removeButton.setPreferredSize(new Dimension(BUTTON_WIDTH, BUTTON_HEIGHT));
 		removeButton.addActionListener(new ActionListener() {
 
-			@Override
+			//@Override
 			public void actionPerformed(ActionEvent e) {
 				SearchableItem item = (SearchableItem) list.getSelectedValue();
 
@@ -319,7 +319,7 @@ public class AddPrescriptionActivity implements Activity {
 
 		submitButton.addActionListener(new ActionListener() {
 
-			@Override
+			//@Override
 			public void actionPerformed(ActionEvent e) {
 				SearchableItem doctor = (SearchableItem) searchDoctor.getSelectedItem();
 				SearchableItem patient = (SearchableItem) searchPatient.getSelectedItem();

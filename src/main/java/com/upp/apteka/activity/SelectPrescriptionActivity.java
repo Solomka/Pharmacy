@@ -83,7 +83,7 @@ public class SelectPrescriptionActivity implements Activity {
 		listPanel.setBorder(BorderFactory.createEmptyBorder(LIST_BORDER_VERTICAL, LIST_BORDER_HORIZONTAL,
 				LIST_BORDER_VERTICAL, LIST_BORDER_HORIZONTAL));
 
-		final DefaultListModel<SearchableItem> model = new DefaultListModel<>();
+		final DefaultListModel<SearchableItem> model = new DefaultListModel<SearchableItem>();
 
 		final JList<SearchableItem> list = new JList<SearchableItem>(model);
 		list.setFont(font);
@@ -103,7 +103,7 @@ public class SelectPrescriptionActivity implements Activity {
 		selectPatientButton.setFont(font);
 		selectPatientButton.addActionListener(new ActionListener() {
 
-			@Override
+			//@Override
 			public void actionPerformed(ActionEvent e) {
 				SearchableItem item = (SearchableItem) searchableComboBox.getSelectedItem();
 
@@ -125,7 +125,7 @@ public class SelectPrescriptionActivity implements Activity {
 		chooseButton.setFont(font);
 		chooseButton.addActionListener(new ActionListener() {
 
-			@Override
+			//@Override
 			public void actionPerformed(ActionEvent e) {
 				SearchableItem item = list.getSelectedValue();
 

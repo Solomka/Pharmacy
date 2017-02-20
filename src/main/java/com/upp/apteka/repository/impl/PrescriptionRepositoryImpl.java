@@ -130,7 +130,7 @@ public class PrescriptionRepositoryImpl extends AHibernateRepository<Prescriptio
 	}
 
 	@SuppressWarnings("unchecked")
-	@Override
+	//@Override
 	public List<Prescription> getUnboughtPrescriptions(Long customerId) {
 		Criteria criteria = createEntityCriteria();
 		criteria.add(Restrictions.sqlRestriction("id_patient = " + customerId));

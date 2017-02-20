@@ -53,14 +53,14 @@ public class PatientRepositoryImpl extends AHibernateRepository<Patient, Long> i
 	}
 
 	@SuppressWarnings("unchecked")
-	@Override
+	//@Override
 	public List<Patient> findByQuery(String query, int offset, int limit, boolean or) {
 
 		Criteria criteria = prepare(query, or).setFirstResult(offset).setMaxResults(limit);
 		return criteria.list();
 	}
 
-	@Override
+	//@Override
 	public boolean containsNumber(String number) {
 		Criteria criteria = createEntityCriteria();
 
@@ -68,7 +68,7 @@ public class PatientRepositoryImpl extends AHibernateRepository<Patient, Long> i
 		return 1 == criteria.list().size();
 	}
 
-	@Override
+	//@Override
 	public int count(String query, boolean or) {
 		return ((Number) prepare(query, or).setProjection(Projections.rowCount()).uniqueResult()).intValue();
 	}

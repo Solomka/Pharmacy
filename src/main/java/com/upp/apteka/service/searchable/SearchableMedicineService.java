@@ -13,23 +13,23 @@ import com.upp.apteka.repository.MedicineRepository;
 import com.upp.apteka.service.converter.SearchableMedicine;
 
 @Service
-public class SearchableMedicineService implements SearchableService{
-	
+public class SearchableMedicineService implements SearchableService {
+
 	@Autowired
 	private MedicineRepository medicineService;
-	
+
 	@Autowired
 	private SearchableMedicine searchableMedicine;
 
-	@Override
+	// @Override
 	public List<SearchableItem> getSearchableItems(String query) {
 		List<Medicine> medicines = medicineService.findByNameOrProducer(query);
-		
-		List<SearchableItem> items = new ArrayList<>();
-		
-		for(Medicine medicine: medicines)
+
+		List<SearchableItem> items = new ArrayList<SearchableItem>();
+
+		for (Medicine medicine : medicines)
 			items.add(searchableMedicine.convert(medicine));
-		
+
 		return items;
 	}
 

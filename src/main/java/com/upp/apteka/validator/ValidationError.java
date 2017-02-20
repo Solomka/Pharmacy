@@ -27,4 +27,11 @@ public class ValidationError {
 		this.description = description;
 	}
 
+	@Override
+	public String toString() {
+		return "ValidationError [objectName=" + objectName + ", description=" + description + "]";
+	}
+	
+	
+
 }

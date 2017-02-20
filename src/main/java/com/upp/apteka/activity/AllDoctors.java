@@ -68,7 +68,7 @@ public class AllDoctors implements Activity {
 	private DoctorService doctorService;
 
 	@SuppressWarnings("unchecked")
-	@Override
+	// @Override
 	public void showActivity(final Map<String, Object> params) {
 
 		JPanel mainPanel = new JPanel();
@@ -79,8 +79,8 @@ public class AllDoctors implements Activity {
 		doctors = (List<Doctor>) params.get("doctors");
 		jFrame.setLayout(new BorderLayout());
 
-		lastPage = (int) params.get("last");
-		currentPage = (int) params.get("current");
+		lastPage = (Integer) params.get("last");
+		currentPage = (Integer) params.get("current");
 
 		JPanel searchPanel = new JPanel();
 		searchPanel.setLayout(new BorderLayout());
@@ -95,9 +95,9 @@ public class AllDoctors implements Activity {
 
 		queryButton.addActionListener(new ActionListener() {
 
-			@Override
+			// @Override
 			public void actionPerformed(ActionEvent e) {
-				Map<String, Object> params = new HashMap<>();
+				Map<String, Object> params = new HashMap<String, Object>();
 
 				params.put("current", currentPage);
 				params.put("query", queryField.getText());
@@ -151,9 +151,9 @@ public class AllDoctors implements Activity {
 
 		nextButton.addActionListener(new ActionListener() {
 
-			@Override
+			// @Override
 			public void actionPerformed(ActionEvent e) {
-				Map<String, Object> params = new HashMap<>();
+				Map<String, Object> params = new HashMap<String, Object>();
 
 				params.put("current", currentPage + 1);
 				params.put("query", query);
@@ -170,9 +170,9 @@ public class AllDoctors implements Activity {
 
 		prevButton.addActionListener(new ActionListener() {
 
-			@Override
+			// @Override
 			public void actionPerformed(ActionEvent e) {
-				Map<String, Object> params = new HashMap<>();
+				Map<String, Object> params = new HashMap<String, Object>();
 
 				params.put("current", currentPage - 1);
 				params.put("query", query);
@@ -196,7 +196,7 @@ public class AllDoctors implements Activity {
 
 		editButton.addActionListener(new ActionListener() {
 
-			@Override
+			// @Override
 			public void actionPerformed(ActionEvent e) {
 				int selectedRow = doctorsTable.getSelectedRow();
 
@@ -219,7 +219,7 @@ public class AllDoctors implements Activity {
 
 		removeButton.addActionListener(new ActionListener() {
 
-			@Override
+			// @Override
 			public void actionPerformed(ActionEvent e) {
 				int selectedRow = doctorsTable.getSelectedRow();
 
@@ -231,8 +231,9 @@ public class AllDoctors implements Activity {
 					if (success)
 						mapper.changeActivity("allDoctors", params);
 					else {
-						JOptionPane.showMessageDialog(jFrame, new String[] { "Він взагалі-то рецепти виписував. Так що ні-ні." },
-								"Помилка", JOptionPane.ERROR_MESSAGE);
+						JOptionPane.showMessageDialog(jFrame,
+								new String[] { "Він взагалі-то рецепти виписував. Так що ні-ні." }, "Помилка",
+								JOptionPane.ERROR_MESSAGE);
 					}
 				} else {
 					JOptionPane.showMessageDialog(jFrame, new String[] { "Виберіть спочатку лікаря!" }, "Помилка",
@@ -244,28 +245,28 @@ public class AllDoctors implements Activity {
 		JButton goButton = new JButton("Перейти");
 		goButton.setPreferredSize(new Dimension(PAGINATION_BUTTON_WIDTH, PAGINATION_BUTTON_HEIGHT));
 		goButton.addActionListener(new ActionListener() {
-			
-			@Override
+
+			// @Override
 			public void actionPerformed(ActionEvent e) {
-				try{
+				try {
 					int page = Integer.valueOf(goTo.getText());
-					
-					if(page > lastPage)
+
+					if (page > lastPage)
 						page = lastPage;
-					
-					if(page < 0)
+
+					if (page < 0)
 						page = 0;
-					
+
 					params.put("current", page);
 					mapper.changeActivity("allDoctors", params);
-				}catch(Exception ex){
+				} catch (Exception ex) {
 					JOptionPane.showMessageDialog(jFrame, new String[] { "Числа нормальні треба вводити!" }, "Помилка",
 							JOptionPane.ERROR_MESSAGE);
 				}
-				
+
 			}
 		});
-		
+
 		paginationPanel.setLayout(new FlowLayout());
 		paginationPanel.add(nextButton, BorderLayout.WEST);
 		paginationPanel.add(goPanel, BorderLayout.WEST);

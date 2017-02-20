@@ -15,5 +15,7 @@ public interface MedicineRepository extends IRepository<Medicine, Long> {
 	List<PharmacyMedicine> searchMedicineInPharmacies(String medicineName, int offset, int limit);
 
 	List<Medicine> findByNameOrProducer(String query);
+	
+	boolean containsNameProducerMedicine(String name, String producer);
 
 }

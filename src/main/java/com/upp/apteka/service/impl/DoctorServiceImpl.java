@@ -100,7 +100,7 @@ public class DoctorServiceImpl implements DoctorService{
 		return errors;
 	}
 
-	@Override
+	//@Override
 	public int count(String query, boolean or) {
 		return doctorRepository.count(query, or);
 	}

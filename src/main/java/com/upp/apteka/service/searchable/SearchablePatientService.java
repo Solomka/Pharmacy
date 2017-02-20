@@ -13,23 +13,23 @@ import com.upp.apteka.service.PatientService;
 import com.upp.apteka.service.converter.SearchablePatient;
 
 @Service
-public class SearchablePatientService implements SearchableService{
-	
+public class SearchablePatientService implements SearchableService {
+
 	@Autowired
 	private PatientService patientService;
-	
+
 	@Autowired
 	private SearchablePatient searchablePatient;
 
-	@Override
+	// @Override
 	public List<SearchableItem> getSearchableItems(String query) {
 		List<Patient> patients = patientService.findByQuery(query, true);
-		
-		List<SearchableItem> items = new ArrayList<>();
-		
-		for(Patient patient: patients)
+
+		List<SearchableItem> items = new ArrayList<SearchableItem>();
+
+		for (Patient patient : patients)
 			items.add(searchablePatient.convert(patient));
-		
+
 		return items;
 	}
 
