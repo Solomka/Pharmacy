@@ -1,6 +1,6 @@
 package com.upp.apteka.repository;
 
-import java.util.Date;
+import java.sql.Date;
 import java.util.List;
 
 import com.upp.apteka.bo.Prescription;
@@ -12,4 +12,6 @@ public interface PrescriptionRepository extends IRepository<Prescription, Long>{
 	List<Prescription> findByQuery(String query, Date start, Date finishDate, boolean or, Boolean sold);
 	
 	List<Prescription> findByQuery(String query, Date start, Date finishDate, int offset, int limit, boolean or, Boolean sold);
+
+	int count(String query, java.sql.Date startDate, java.sql.Date endDate, boolean b, Boolean sold);
 }

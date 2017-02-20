@@ -69,7 +69,7 @@ public class AppConfig {
 
 		dispatcherFrame.setTitle("Аптека");
 		dispatcherFrame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-		dispatcherFrame.setMinimumSize(new Dimension(750, 700));
+		dispatcherFrame.setMinimumSize(new Dimension(800, 700));
 		// dispatcherFrame.setResizable(false);
 		dispatcherFrame.setLocationRelativeTo(null);
 		UIManager.setLookAndFeel(UIManager.getSystemLookAndFeelClassName());
@@ -162,9 +162,24 @@ public class AppConfig {
 			}
 		});
 		
+		JMenuItem allPrescriptions = new JMenuItem("Переглянути рецепти");
+		allPrescriptions.addActionListener(new ActionListener() {
+
+			@Override
+			public void actionPerformed(ActionEvent arg0) {
+
+				Map<String, Object> params = new HashMap<>();
+				params.put("current", 1);
+
+				mapper.changeActivity("allPrescriptions", params);
+
+			}
+		});
+		
 		viewMenu.add(allPatients);
 		viewMenu.add(allDoctors);
 		viewMenu.add(allPurchases);
+		viewMenu.add(allPrescriptions);
 
 		addMenu.add(addDoctor);
 		addMenu.add(addPatient);

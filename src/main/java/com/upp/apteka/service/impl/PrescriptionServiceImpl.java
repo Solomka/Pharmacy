@@ -164,4 +164,9 @@ public class PrescriptionServiceImpl implements PrescriptionService {
 		return prescriptionRepository.getUnboughtPrescriptions(customerId);
 	}
 
+	@Override
+	public int count(String query, Date startDate, Date endDate, boolean b, Boolean sold) {
+		return prescriptionRepository.count(query, startDate, endDate, b, sold);
+	}
+
 }

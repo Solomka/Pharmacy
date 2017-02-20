@@ -16,35 +16,46 @@ import javax.persistence.ManyToOne;
 import javax.persistence.OneToMany;
 import javax.persistence.Table;
 
-
 @Entity
 @Table(name = "prescription")
-public class Prescription implements Serializable{
-	
+public class Prescription implements Serializable {
+
 	private static final long serialVersionUID = 7233245492808399625L;
 
 	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	@Column(name = "id", updatable = false, nullable = false)
 	private Long id;
-	
+
 	@ManyToOne(fetch = FetchType.LAZY)
 	@JoinColumn(name = "id_doctor", nullable = false)
 	private Doctor doctor;
-	
+
 	@ManyToOne(fetch = FetchType.LAZY)
 	@JoinColumn(name = "id_patient", nullable = false)
 	private Patient patient;
-	
+
 	@Column(name = "date", updatable = false, nullable = false)
 	private Date date;
-	
+
 	@OneToMany(cascade = {
-			CascadeType.ALL}, fetch = FetchType.LAZY, mappedBy = "pk.prescription", orphanRemoval = true)
+			CascadeType.ALL }, fetch = FetchType.LAZY, mappedBy = "pk.prescription", orphanRemoval = true)
 	private List<PrescriptionMedicine> prescriptionMedicines;
-	
-	public Prescription(){
-		
+
+	@OneToMany(cascade = {
+			CascadeType.ALL }, fetch = FetchType.LAZY, mappedBy = "prescription", orphanRemoval = true)
+	private List<Purchase> purchases;
+
+	public List<Purchase> getPurchases() {
+		return purchases;
+	}
+
+	public void setPurchases(List<Purchase> purchases) {
+		this.purchases = purchases;
+	}
+
+	public Prescription() {
+
 	}
 
 	public Prescription(Long id, Doctor doctor, Patient patient, Date date) {

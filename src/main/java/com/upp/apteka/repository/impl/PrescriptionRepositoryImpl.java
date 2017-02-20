@@ -1,12 +1,14 @@
 package com.upp.apteka.repository.impl;
 
 import java.util.ArrayList;
-import java.util.Date;
+import java.sql.Date;
 import java.util.List;
 
 import org.hibernate.Criteria;
 import org.hibernate.criterion.Conjunction;
 import org.hibernate.criterion.Disjunction;
+import org.hibernate.criterion.Order;
+import org.hibernate.criterion.Projections;
 import org.hibernate.criterion.Restrictions;
 import org.springframework.stereotype.Repository;
 import com.mysql.jdbc.StringUtils;
@@ -42,11 +44,9 @@ public class PrescriptionRepositoryImpl extends AHibernateRepository<Prescriptio
 
 	public void update(Prescription prescription) {
 
-		for (PrescriptionMedicine prescriptionMedicine : prescription.getPrescriptionMedicines()){
-			System.out.println(prescriptionMedicine.getPackBought());
+		for (PrescriptionMedicine prescriptionMedicine : prescription.getPrescriptionMedicines())
 			getSession().update(prescriptionMedicine);
-			
-		}
+		
 
 		updateEntity(prescription);
 
@@ -75,6 +75,7 @@ public class PrescriptionRepositoryImpl extends AHibernateRepository<Prescriptio
 	private Criteria createSearchCriteria(String query, Date start, Date finish, boolean or, Boolean sold) {
 		Criteria criteria = createEntityCriteria();
 
+		criteria.addOrder(Order.desc("id"));
 		Conjunction conjunction = Restrictions.conjunction();
 
 		// Додаємо до КНФ інформацію про дату, якщо вона вказана
@@ -136,6 +137,12 @@ public class PrescriptionRepositoryImpl extends AHibernateRepository<Prescriptio
 		criteria.add(Restrictions.sqlRestriction(ACTUAL));
 
 		return (List<Prescription>) criteria.list();
+	}
+
+	@Override
+	public int count(String query, Date startDate, Date endDate, boolean b, Boolean sold) {
+		return ((Number) createSearchCriteria(query, startDate, endDate, b, sold).setProjection(Projections.rowCount())
+				.uniqueResult()).intValue();
 	}
 
 }
