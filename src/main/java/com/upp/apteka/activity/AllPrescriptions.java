@@ -15,11 +15,13 @@ import java.util.List;
 import java.util.Map;
 
 import javax.swing.BorderFactory;
+import javax.swing.ButtonGroup;
 import javax.swing.JButton;
 import javax.swing.JFrame;
 import javax.swing.JLabel;
 import javax.swing.JOptionPane;
 import javax.swing.JPanel;
+import javax.swing.JRadioButton;
 import javax.swing.JScrollPane;
 import javax.swing.JTable;
 import javax.swing.JTextField;
@@ -29,17 +31,17 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Scope;
 import org.springframework.stereotype.Component;
 
-import com.upp.apteka.bo.Purchase;
+import com.upp.apteka.bo.Prescription;
 import com.upp.apteka.config.Mapper;
-import com.upp.apteka.service.PurchaseService;
+import com.upp.apteka.service.PrescriptionService;
 
 import net.sourceforge.jdatepicker.impl.JDatePanelImpl;
 import net.sourceforge.jdatepicker.impl.JDatePickerImpl;
 import net.sourceforge.jdatepicker.impl.UtilDateModel;
 
-@Component("allPurchasesActivity")
+@Component("allPrescriptionsActivity")
 @Scope("prototype")
-public class AllPurchases implements Activity {
+public class AllPrescriptions implements Activity {
 
 	@Autowired
 	private Mapper mapper;
@@ -47,9 +49,9 @@ public class AllPurchases implements Activity {
 	@Autowired
 	private JFrame jFrame;
 
-	private JTable purchasesTable;
+	private JTable prescriptionsTable;
 
-	private Object[] columnsHeader = new String[] { "Номер", "Дата", "Пацієнт", "Аптека", "Рецепт" };
+	private Object[] columnsHeader = new String[] { "Номер", "Дата", "Пацієнт", "Ліки", "Лікар" };
 
 	private JTextField queryField;
 
@@ -63,21 +65,27 @@ public class AllPurchases implements Activity {
 
 	private static final Font font = new Font("SansSerif", Font.PLAIN, 14);
 
-	private List<Purchase> purchases;
+	private List<Prescription> prescriptions;
 
 	private int lastPage;
 	private int currentPage;
-	
+
 	private Date startDate;
 	private Date endDate;
 
+	private Boolean sold;
+
 	private String query;
-	
+
 	private UtilDateModel endModel;
 	private UtilDateModel startModel;
 
+	private JRadioButton soldButton;
+	private JRadioButton availableButton;
+	private JRadioButton none;
+
 	@Autowired
-	private PurchaseService purchaseService;
+	private PrescriptionService prescriptionService;
 
 	@SuppressWarnings("unchecked")
 	//@Override
@@ -88,13 +96,14 @@ public class AllPurchases implements Activity {
 
 		jFrame.setContentPane(mainPanel);
 
-		purchases = (List<Purchase>) params.get("purchases");
+		prescriptions = (List<Prescription>) params.get("prescriptions");
 		jFrame.setLayout(new BorderLayout());
 
 		lastPage = (Integer) params.get("last");
 		currentPage = (Integer) params.get("current");
 		startDate = (Date) params.get("startDate");
 		endDate = (Date) params.get("endDate");
+		sold = (Boolean) params.get("sold");
 
 		JPanel searchPanel = new JPanel();
 		searchPanel.setLayout(new BorderLayout());
@@ -106,9 +115,31 @@ public class AllPurchases implements Activity {
 		JButton queryButton = new JButton("Шукати");
 		queryButton.setPreferredSize(new Dimension(BUTTON_WIDTH, BUTTON_HEIGHT));
 		queryField.setPreferredSize(new Dimension(BUTTON_WIDTH, BUTTON_HEIGHT - 5));
-		
+
 		startModel = new UtilDateModel();
 		endModel = new UtilDateModel();
+
+		soldButton = new JRadioButton("Sold");
+		availableButton = new JRadioButton("Active");
+		none = new JRadioButton("None");
+
+		final ButtonGroup bg = new ButtonGroup();
+
+		if (sold == null)
+			none.setSelected(true);
+		else if (sold)
+			soldButton.setSelected(true);
+		else
+			availableButton.setSelected(true);
+
+		bg.add(soldButton);
+		bg.add(availableButton);
+		bg.add(none);
+
+		JPanel groupPanel = new JPanel();
+		groupPanel.add(soldButton);
+		groupPanel.add(availableButton);
+		groupPanel.add(none);
 
 		queryButton.addActionListener(new ActionListener() {
 
@@ -117,13 +148,19 @@ public class AllPurchases implements Activity {
 				params.put("query", queryField.getText());
 				params.put("startDate", startModel.getValue());
 				params.put("endDate", endModel.getValue());
-				mapper.changeActivity("allPurchases", params);
+
+				if (soldButton.isSelected())
+					params.put("sold", true);
+				else if (availableButton.isSelected())
+					params.put("sold", false);
+				
+				mapper.changeActivity("allPrescriptions", params);
 			}
 		});
 
 		query = (String) params.get("query");
 		queryField.setText(query);
-		
+
 		fieldWrapper.setLayout(new GridLayout(0, 1));
 		fieldWrapper.setBorder(BorderFactory.createEmptyBorder(1, 1, 1, 1));
 		fieldWrapper.add(queryField);
@@ -144,8 +181,8 @@ public class AllPurchases implements Activity {
 		searchPanel.add(contPanel, BorderLayout.WEST);
 		searchPanel.add(fieldWrapper, BorderLayout.CENTER);
 		searchPanel.add(queryButton, BorderLayout.EAST);
-		
-		if(startDate != null && endDate != null){
+
+		if (startDate != null && endDate != null) {
 			Calendar cal = Calendar.getInstance();
 			cal.setTime(endDate);
 			int month = cal.get(Calendar.MONTH);
@@ -153,7 +190,7 @@ public class AllPurchases implements Activity {
 			int year = cal.get(Calendar.YEAR);
 			endModel.setDate(year, month, day);
 			endModel.setSelected(true);
-			
+
 			cal.setTime(startDate);
 			month = cal.get(Calendar.MONTH);
 			day = cal.get(Calendar.DAY_OF_MONTH);
@@ -167,40 +204,43 @@ public class AllPurchases implements Activity {
 
 		JDatePanelImpl endDatePanel = new JDatePanelImpl(endModel);
 		JDatePickerImpl endDatePicker = new JDatePickerImpl(endDatePanel);
-		
+
 		JPanel datePanel = new JPanel();
 		datePanel.setLayout(new FlowLayout());
-		
+
 		JLabel startLabel = new JLabel("Початок: ");
 		startLabel.setFont(font);
 		datePanel.add(startLabel);
 		datePanel.add(startDatePicker);
-		
+
 		JLabel endLabel = new JLabel("Кінець: ");
 		endLabel.setFont(font);
 		datePanel.add(endLabel);
 		datePanel.add(endDatePicker);
-		
+		datePanel.add(groupPanel);
+
 		JPanel topPanel = new JPanel();
 		topPanel.setLayout(new BorderLayout());
 		topPanel.add(datePanel, BorderLayout.NORTH);
 		topPanel.add(searchPanel, BorderLayout.SOUTH);
-		
+
 		jFrame.add(topPanel, BorderLayout.NORTH);
 
-		purchasesTable = new JTable(getData(purchases), columnsHeader);
-		purchasesTable.setSelectionMode(ListSelectionModel.SINGLE_SELECTION);
-		purchasesTable.setFont(font);
-		purchasesTable.setRowHeight(ROW_HEIGHT);
-		purchasesTable.setBorder(BorderFactory.createLineBorder(Color.GRAY));
-		purchasesTable.getTableHeader().setBorder(BorderFactory.createLineBorder(Color.GRAY));
-		
-		purchasesTable.getColumnModel().getColumn(0).setMaxWidth(50);
-		purchasesTable.getColumnModel().getColumn(0).setPreferredWidth(50);
-		purchasesTable.getColumnModel().getColumn(1).setMaxWidth(85);
-		purchasesTable.getColumnModel().getColumn(1).setPreferredWidth(85);
+		prescriptionsTable = new JTable(getData(prescriptions), columnsHeader);
+		prescriptionsTable.setSelectionMode(ListSelectionModel.SINGLE_SELECTION);
+		prescriptionsTable.setFont(font);
+		prescriptionsTable.setRowHeight(ROW_HEIGHT);
+		prescriptionsTable.setBorder(BorderFactory.createLineBorder(Color.GRAY));
+		prescriptionsTable.getTableHeader().setBorder(BorderFactory.createLineBorder(Color.GRAY));
 
-		JScrollPane scrollPane = new JScrollPane(purchasesTable);
+		prescriptionsTable.getColumnModel().getColumn(0).setMaxWidth(50);
+		prescriptionsTable.getColumnModel().getColumn(0).setPreferredWidth(50);
+		prescriptionsTable.getColumnModel().getColumn(1).setMaxWidth(85);
+		prescriptionsTable.getColumnModel().getColumn(1).setPreferredWidth(85);
+		prescriptionsTable.getColumnModel().getColumn(3).setMaxWidth(50);
+		prescriptionsTable.getColumnModel().getColumn(3).setPreferredWidth(50);
+
+		JScrollPane scrollPane = new JScrollPane(prescriptionsTable);
 		scrollPane.setBorder(BorderFactory.createLineBorder(jFrame.getBackground()));
 		jFrame.add(scrollPane, BorderLayout.CENTER);
 
@@ -215,7 +255,7 @@ public class AllPurchases implements Activity {
 			//@Override
 			public void actionPerformed(ActionEvent e) {
 				params.put("current", currentPage + 1);
-				mapper.changeActivity("allPurchases", params);
+				mapper.changeActivity("allPrescriptions", params);
 			}
 		});
 
@@ -230,7 +270,7 @@ public class AllPurchases implements Activity {
 			//@Override
 			public void actionPerformed(ActionEvent e) {
 				params.put("current", currentPage - 1);
-				mapper.changeActivity("allPurchases", params);
+				mapper.changeActivity("allPrescriptions", params);
 			}
 		});
 
@@ -251,38 +291,37 @@ public class AllPurchases implements Activity {
 
 			//@Override
 			public void actionPerformed(ActionEvent e) {
-				int selectedRow = purchasesTable.getSelectedRow();
+				int selectedRow = prescriptionsTable.getSelectedRow();
 
 				if (selectedRow != -1) {
-					Long id = purchases.get(selectedRow).getId();
+					Long id = prescriptions.get(selectedRow).getId();
 
 					Map<String, Object> params = new HashMap<String, Object>();
 					params.put("id", id);
 
-					mapper.changeActivity("addPurchase", params);
+					mapper.changeActivity("addPrescription", params);
 				} else {
 					JOptionPane.showMessageDialog(jFrame, new String[] { "Виберіть спочатку покупку!" }, "Помилка",
 							JOptionPane.ERROR_MESSAGE);
 				}
 			}
 		});
-		
+
 		JButton viewButton = new JButton("Деталі");
 		viewButton.setPreferredSize(new Dimension(PAGINATION_BUTTON_WIDTH, PAGINATION_BUTTON_HEIGHT));
 		viewButton.addActionListener(new ActionListener() {
 
 			//@Override
 			public void actionPerformed(ActionEvent e) {
-				int selectedRow = purchasesTable.getSelectedRow();
+				int selectedRow = prescriptionsTable.getSelectedRow();
 
 				if (selectedRow != -1) {
-					Long id = purchases.get(selectedRow).getId();
+					Long id = prescriptions.get(selectedRow).getId();
 
 					Map<String, Object> params = new HashMap<String, Object>();
 					params.put("id", id);
 
-					//TODO details
-					//mapper.changeActivity("viewPurchase", params);
+					mapper.changeActivity("viewPrescription", params);
 				} else {
 					JOptionPane.showMessageDialog(jFrame, new String[] { "Виберіть спочатку покупку!" }, "Помилка",
 							JOptionPane.ERROR_MESSAGE);
@@ -297,17 +336,17 @@ public class AllPurchases implements Activity {
 
 			//@Override
 			public void actionPerformed(ActionEvent e) {
-				int selectedRow = purchasesTable.getSelectedRow();
+				int selectedRow = prescriptionsTable.getSelectedRow();
 
 				if (selectedRow != -1) {
-					Long id = purchases.get(selectedRow).getId();
+					Long id = prescriptions.get(selectedRow).getId();
 
-					boolean success =  purchaseService.delete(id);
+					boolean success = prescriptionService.delete(id);
 
 					if (success)
-						mapper.changeActivity("allPurchases", params);
+						mapper.changeActivity("allPrescriptions", params);
 					else {
-						JOptionPane.showMessageDialog(jFrame, new String[] { "Щось пішло не так. Спробуйте пізніше." },
+						JOptionPane.showMessageDialog(jFrame, new String[] { "Є покупки, альо. Спробуйте пізніше." },
 								"Помилка", JOptionPane.ERROR_MESSAGE);
 					}
 				} else {
@@ -320,25 +359,25 @@ public class AllPurchases implements Activity {
 		JButton goButton = new JButton("Перейти");
 		goButton.setPreferredSize(new Dimension(PAGINATION_BUTTON_WIDTH, PAGINATION_BUTTON_HEIGHT));
 		goButton.addActionListener(new ActionListener() {
-			
+
 			//@Override
 			public void actionPerformed(ActionEvent e) {
-				try{
+				try {
 					int page = Integer.valueOf(goTo.getText());
-					
-					if(page > lastPage)
+
+					if (page > lastPage)
 						page = lastPage;
-					
-					if(page < 0)
+
+					if (page < 0)
 						page = 0;
-					
+
 					params.put("current", page);
-					mapper.changeActivity("allPurchases", params);
-				}catch(Exception ex){
+					mapper.changeActivity("allPrescriptions", params);
+				} catch (Exception ex) {
 					JOptionPane.showMessageDialog(jFrame, new String[] { "Числа нормальні треба вводити!" }, "Помилка",
 							JOptionPane.ERROR_MESSAGE);
 				}
-				
+
 			}
 		});
 
@@ -354,15 +393,17 @@ public class AllPurchases implements Activity {
 		jFrame.add(paginationPanel, BorderLayout.SOUTH);
 	}
 
-	private Object[][] getData(List<Purchase> purchases) {
-		Object[][] array = new Object[purchases.size()][columnsHeader.length];
+	private Object[][] getData(List<Prescription> prescriptions) {
+		Object[][] array = new Object[prescriptions.size()][columnsHeader.length];
 
-		for (int i = 0; i < purchases.size(); i++) {
-			array[i][0] = purchases.get(i).getId();
-			array[i][1] = purchases.get(i).getDate();
-			array[i][2] = purchases.get(i).getPrescription().getPatient().getSurname() + " " + purchases.get(i).getPrescription().getPatient().getName();
-			array[i][3] = purchases.get(i).getPharmacy().getName();
-			array[i][4] = purchases.get(i).getPrescription().getDate() + " " + purchases.get(i).getPrescription().getDoctor().getSurname();
+		for (int i = 0; i < prescriptions.size(); i++) {
+			array[i][0] = prescriptions.get(i).getId();
+			array[i][1] = prescriptions.get(i).getDate();
+			array[i][2] = prescriptions.get(i).getPatient().getSurname() + " "
+					+ prescriptions.get(i).getPatient().getName();
+			array[i][3] = prescriptions.get(i).getPrescriptionMedicines().size();
+			array[i][4] = prescriptions.get(i).getDoctor().getSurname() + " "
+					+ prescriptions.get(i).getDoctor().getName();
 		}
 
 		return array;

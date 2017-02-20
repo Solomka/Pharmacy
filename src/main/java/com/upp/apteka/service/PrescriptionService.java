@@ -27,4 +27,6 @@ public interface PrescriptionService {
 	List<Prescription> getUnboughtPrescriptions(Long customerId);
 	
 	void update(Long prescriptionId, Long doctorId, Long patientId, Date date, List<ChooseMedicineDto> dtos);
+
+	int count(String query, Date startDate, Date endDate, boolean b, Boolean sold);
 }
