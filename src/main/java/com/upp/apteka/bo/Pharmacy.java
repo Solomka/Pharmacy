@@ -16,6 +16,8 @@ import javax.persistence.Table;
 
 import org.hibernate.annotations.Cascade;
 
+import com.upp.apteka.dto.PharmacyDto;
+
 @Entity
 @Table(name = "pharmacy")
 public class Pharmacy implements Serializable {
@@ -54,7 +56,7 @@ public class Pharmacy implements Serializable {
 
 	@OneToMany(mappedBy = "pharmacy", cascade = CascadeType.REFRESH)
 	private List<Delivery> deliveries;
-	
+
 	@OneToMany(fetch = FetchType.LAZY, mappedBy = "pharmacy")
 	@Cascade({ org.hibernate.annotations.CascadeType.SAVE_UPDATE })
 	private List<Purchase> purchases;
@@ -80,6 +82,12 @@ public class Pharmacy implements Serializable {
 		this.address = Objects.requireNonNull(address, "address can not be null");
 		this.extra = Objects.requireNonNull(extra, "extra can not be null");
 
+	}
+
+	public Pharmacy(PharmacyDto pharmacyDto) {
+		this.name = pharmacyDto.getName();
+		this.address = pharmacyDto.getAddress();
+		this.extra = pharmacyDto.getExtra();
 	}
 
 	public Long getId() {
@@ -120,8 +128,8 @@ public class Pharmacy implements Serializable {
 
 	public void setPharmacyMedicines(List<PharmacyMedicine> pharmacyMedicines) {
 		this.pharmacyMedicines = pharmacyMedicines;
-	}	
-	
+	}
+
 	public List<Delivery> getDeliveries() {
 		return deliveries;
 	}
@@ -129,7 +137,7 @@ public class Pharmacy implements Serializable {
 	public void setDeliveries(List<Delivery> deliveries) {
 		this.deliveries = deliveries;
 	}
-	
+
 	public List<Purchase> getPurchases() {
 		return purchases;
 	}
