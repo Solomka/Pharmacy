@@ -139,7 +139,7 @@ public class PrescriptionRepositoryImpl extends AHibernateRepository<Prescriptio
 		return (List<Prescription>) criteria.list();
 	}
 
-	@Override
+	//@Override
 	public int count(String query, Date startDate, Date endDate, boolean b, Boolean sold) {
 		return ((Number) createSearchCriteria(query, startDate, endDate, b, sold).setProjection(Projections.rowCount())
 				.uniqueResult()).intValue();
