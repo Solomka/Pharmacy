@@ -170,10 +170,10 @@ public class AppConfig {
 		JMenuItem allDoctors = new JMenuItem("Переглянути лікарів");
 		allDoctors.addActionListener(new ActionListener() {
 
-			@Override
+			//@Override
 			public void actionPerformed(ActionEvent arg0) {
 
-				Map<String, Object> params = new HashMap<>();
+				Map<String, Object> params = new HashMap<String, Object>();
 				params.put("current", 1);
 
 				mapper.changeActivity("allDoctors", params);

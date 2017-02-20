@@ -271,7 +271,7 @@ public class AllPurchases implements Activity {
 		viewButton.setPreferredSize(new Dimension(PAGINATION_BUTTON_WIDTH, PAGINATION_BUTTON_HEIGHT));
 		viewButton.addActionListener(new ActionListener() {
 
-			@Override
+			//@Override
 			public void actionPerformed(ActionEvent e) {
 				int selectedRow = purchasesTable.getSelectedRow();
 
@@ -320,7 +320,7 @@ public class AllPurchases implements Activity {
 		goButton.setPreferredSize(new Dimension(PAGINATION_BUTTON_WIDTH, PAGINATION_BUTTON_HEIGHT));
 		goButton.addActionListener(new ActionListener() {
 			
-			@Override
+			//@Override
 			public void actionPerformed(ActionEvent e) {
 				try{
 					int page = Integer.valueOf(goTo.getText());

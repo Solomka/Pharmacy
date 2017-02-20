@@ -22,7 +22,7 @@ public class AllDoctorsController implements SwingController {
 
 	private static final int PATIENTS_PER_PAGE = 20;
 
-	@Override
+	//@Override
 	public void switchToActivity(Map<String, Object> params) {
 		System.out.println("Guf");
 		Activity addDoctorActivity = (Activity) appContext.getBean("allDoctorsActivity");
