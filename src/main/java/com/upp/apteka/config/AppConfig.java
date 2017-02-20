@@ -128,6 +128,16 @@ public class AppConfig {
 				
 			}
 		});
+		
+		JMenuItem addMedicine= new JMenuItem("Додати ліки");
+		addMedicine.addActionListener(new ActionListener() {
+			
+			public void actionPerformed(ActionEvent e) {
+				mapper.changeActivity("addMedicine", new HashMap<String, Object>());
+				
+			}
+		});
+		
 		/*
 		JMenuItem addDelivery = new JMenuItem("Додати поставку");
 		addPharmacy.addActionListener(new ActionListener() {
@@ -137,16 +147,7 @@ public class AppConfig {
 				
 			}
 		});
-		
-		JMenuItem addMedicine= new JMenuItem("Додати ліки");
-		addPharmacy.addActionListener(new ActionListener() {
-			
-			public void actionPerformed(ActionEvent e) {
-				mapper.changeActivity("addMedicine", new HashMap<String, Object>());
-				
-			}
-		});
-*/
+		*/
 		
 		//JManu for viewing
 		
@@ -192,10 +193,23 @@ public class AppConfig {
 			}
 		});
 		
+		JMenuItem allMedicines = new JMenuItem("Переглянути ліки");
+		allMedicines.addActionListener(new ActionListener() {
+			
+			public void actionPerformed(ActionEvent e) {
+				Map<String, Object> params = new HashMap<String, Object>();
+				params.put("currect", 1);
+				
+				mapper.changeActivity("allMedicines", params);
+				
+			}
+		});
+		
 		//JMenu for viewing
 		viewMenu.add(allPatients);
 		viewMenu.add(allPurchases);
 		viewMenu.add(allPharmacies);
+		viewMenu.add(allMedicines);
 
 		//JMenu for addition		
 		addMenu.add(addDoctor);
@@ -204,6 +218,7 @@ public class AppConfig {
 		addMenu.add(addPurchase);
 		addMenu.add(addPatient);
 		addMenu.add(addPharmacy);
+		addMenu.add(addMedicine);
 		
 
 		menuBar.add(addMenu);

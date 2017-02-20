@@ -109,9 +109,8 @@ public class PharmacyDto {
 
 			this.name = name.getText();
 			this.address = address.getText();
-			this.extra = Double.parseDouble(extra.getText());			
+			this.extra = Double.parseDouble(extra.getText());
 		} catch (Exception e) {
-			System.out.println("Extra " + extra);
 			logger.error("Невідповідність типу поля!");
 		}
 	}
