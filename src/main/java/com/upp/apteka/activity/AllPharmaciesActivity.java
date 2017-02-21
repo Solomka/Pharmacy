@@ -80,8 +80,9 @@ public class AllPharmaciesActivity implements Activity {
 
 		// get data from params
 		pharmacies = (List<Pharmacy>) params.get("pharmacies");
-		lastPage = (Integer) params.get("last");
+		lastPage = (Integer) params.get("last");		
 		currentPage = (Integer) params.get("current");
+		System.out.println("Swing current page: " + currentPage);
 		
 		/**
 		 * I'm LOCH

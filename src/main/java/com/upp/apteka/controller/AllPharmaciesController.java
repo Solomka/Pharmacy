@@ -28,8 +28,8 @@ public class AllPharmaciesController implements SwingController {
 		/**
 		 * I'm LOCH
 		 */
-		String strPage = params.get("сurrent").toString();
-		System.out.println("String page: " + strPage);
+		System.out.println("String page: " + params.get("сurrent").toString());
+		String strPage = params.get("сurrent").toString();		
 		int page = Integer.parseInt(strPage);
 		//int page = (Integer) params.get("current");
 		System.out.println("int page: " + page);
