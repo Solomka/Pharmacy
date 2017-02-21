@@ -23,7 +23,7 @@ public class PrescriptionRepositoryImpl extends AHibernateRepository<Prescriptio
 
 	private final String patientRestriction = "(id_patient IN (SELECT id FROM patient WHERE UPPER(name) LIKE UPPER('%?%') OR UPPER(surname) LIKE UPPER('%?%') OR phone LIKE '%?%'))";
 	private final String doctorRestriction = "(id_doctor IN (SELECT id FROM doctor WHERE UPPER(name) LIKE UPPER('%?%') OR UPPER(surname) LIKE UPPER('%?%')))";
-	private final String pharmacyRestriction = "(EXISTS (SELECT * FROM purchase WHERE id_prescr = id AND id_pharmacy IN (SELECT id FROM pharmacy WHERE UPPER(name) LIKE UPPER('%?%'))))";
+	private final String pharmacyRestriction = "(EXISTS (SELECT * FROM purchase WHERE id_prescr = {alias}.id AND id_pharmacy IN (SELECT id FROM pharmacy WHERE UPPER(name) LIKE UPPER('%?%'))))";
 	private final String medicineRestriction = "(EXISTS (SELECT * FROM prescr_medicine WHERE id_prescr = id AND id_medicine IN (SELECT id FROM medicine WHERE UPPER(name) LIKE UPPER('%?%'))))";
 
 	private final String SOLD = "(NOT EXISTS (SELECT * FROM prescr_medicine pm WHERE pack_bought < pack_quantity AND id_prescr = id))";

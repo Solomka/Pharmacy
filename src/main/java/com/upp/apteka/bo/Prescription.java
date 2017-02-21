@@ -16,6 +16,8 @@ import javax.persistence.ManyToOne;
 import javax.persistence.OneToMany;
 import javax.persistence.Table;
 
+import org.hibernate.annotations.Formula;
+
 @Entity
 @Table(name = "prescription")
 public class Prescription implements Serializable {
@@ -37,6 +39,9 @@ public class Prescription implements Serializable {
 
 	@Column(name = "date", updatable = false, nullable = false)
 	private Date date;
+
+	@Formula("(SELECT (NOT EXISTS (SELECT * FROM prescr_medicine pm WHERE pm.pack_bought < pm.pack_quantity AND pm.id_prescr = id)))")
+	private Boolean sold;
 
 	@OneToMany(cascade = {
 			CascadeType.ALL }, fetch = FetchType.LAZY, mappedBy = "pk.prescription", orphanRemoval = true)
@@ -64,6 +69,14 @@ public class Prescription implements Serializable {
 		this.doctor = doctor;
 		this.patient = patient;
 		this.date = date;
+	}
+	
+	public Boolean getSold() {
+		return sold;
+	}
+
+	public void setSold(Boolean sold) {
+		this.sold = sold;
 	}
 
 	public Long getId() {
