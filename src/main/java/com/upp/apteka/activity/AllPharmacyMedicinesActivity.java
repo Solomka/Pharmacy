@@ -12,6 +12,7 @@ import java.util.List;
 import java.util.Map;
 
 import javax.swing.BorderFactory;
+import javax.swing.BoxLayout;
 import javax.swing.JButton;
 import javax.swing.JFrame;
 import javax.swing.JLabel;
@@ -45,6 +46,7 @@ public class AllPharmacyMedicinesActivity implements Activity {
 	private Object[] columnsHeader = new String[] { "Назва", "Виробник", "Ціна за упаковку", "К-сть в аптеці", "Назва аптеки" };
 
 	private JTextField queryField;
+	private JTextField queryPmField;
 
 	private static final int BUTTON_HEIGHT = 20;
 	private static final int BUTTON_WIDTH = 120;
@@ -86,17 +88,37 @@ public class AllPharmacyMedicinesActivity implements Activity {
 		/*
 		 * find by any query panel
 		 */
+		
+		JPanel searchPanels = new JPanel();
+		searchPanels.setLayout(new BoxLayout(searchPanels, BoxLayout.PAGE_AXIS));
 
+		/*
+		 * search in pharmacy panel
+		 */
 		JPanel searchPanel = new JPanel();
 		searchPanel.setLayout(new BorderLayout());
 		searchPanel.setBorder(BorderFactory.createEmptyBorder(20, 20, 20, 20));
+		
+		/*
+		 * search in pharmacieS panel
+		 */
+		JPanel searchPmPanel = new JPanel();
+		searchPmPanel.setLayout(new BorderLayout());
+		searchPmPanel.setBorder(BorderFactory.createEmptyBorder(20, 20, 20, 20));
 
 		JPanel fieldWrapper = new JPanel();
+		JPanel fieldPmWrapper = new JPanel();
 		queryField = new JTextField();
+		queryPmField = new JTextField();
 
 		JButton queryButton = new JButton("Пошук у аптеці");
 		queryButton.setPreferredSize(new Dimension(BUTTON_WIDTH, BUTTON_HEIGHT));
+		
+		JButton queryPmButton = new JButton("Пошук по мережі");
+		queryButton.setPreferredSize(new Dimension(BUTTON_WIDTH, BUTTON_HEIGHT));
+		
 		queryField.setPreferredSize(new Dimension(BUTTON_WIDTH, BUTTON_HEIGHT - 5));
+		queryPmField.setPreferredSize(new Dimension(BUTTON_WIDTH, BUTTON_HEIGHT - 5));
 
 		/*
 		 * queryButton listener
@@ -111,6 +133,17 @@ public class AllPharmacyMedicinesActivity implements Activity {
 				mapper.changeActivity("allPharmacyMedicines", params);
 			}
 		});
+		
+		queryPmButton.addActionListener(new ActionListener() {
+
+			// @Override
+			public void actionPerformed(ActionEvent e) {
+				params.put("current", currentPage);
+				params.put("query", queryPmField.getText());
+
+				mapper.changeActivity("allPharmacyMedicines", params);
+			}
+		});
 
 		query = (String) params.get("query");
 		queryField.setText(query);
@@ -118,25 +151,57 @@ public class AllPharmacyMedicinesActivity implements Activity {
 		fieldWrapper.setLayout(new GridLayout(0, 1));
 		fieldWrapper.setBorder(BorderFactory.createEmptyBorder(1, 1, 1, 1));
 		fieldWrapper.add(queryField);
+		
+		fieldPmWrapper.setLayout(new GridLayout(0, 1));
+		fieldPmWrapper.setBorder(BorderFactory.createEmptyBorder(1, 1, 1, 1));
+		fieldPmWrapper.add(queryPmField);
 
 		JPanel contPanel = new JPanel();
 		contPanel.setLayout(new FlowLayout());
+		
+		JPanel cont2Panel = new JPanel();
+		cont2Panel.setLayout(new FlowLayout());
 
 		JPanel emptyPanel = new JPanel();
-		emptyPanel.setPreferredSize(new Dimension(30, BUTTON_HEIGHT));
+		emptyPanel.setPreferredSize(new Dimension(25, BUTTON_HEIGHT));
 		searchPanel.add(emptyPanel, BorderLayout.WEST);
-
+		
+		JPanel emptyPmPanel = new JPanel();
+		emptyPmPanel.setPreferredSize(new Dimension(30, BUTTON_HEIGHT));
+		JPanel emptyPmPanel2 = new JPanel();
+		emptyPmPanel2.setPreferredSize(new Dimension(30, BUTTON_HEIGHT));
+		JPanel emptyPmPanel3 = new JPanel();
+		emptyPmPanel3.setPreferredSize(new Dimension(30, BUTTON_HEIGHT));
+		JPanel emptyPmPanel4 = new JPanel();
+		
 		JLabel infoLabel = new JLabel("Сторінка: " + currentPage + "/" + lastPage);
 		infoLabel.setFont(font);
-
+		
+		JLabel info2Label = new JLabel();
+		info2Label.setText("Сторінка: " + currentPage + "/" + lastPage);
+		info2Label.setFont(font);
+		
 		contPanel.add(infoLabel);
 		contPanel.add(emptyPanel);
+		
+		cont2Panel.add(emptyPmPanel);
+		
+		cont2Panel.add(emptyPmPanel2);
+		cont2Panel.add(emptyPmPanel3);
+		cont2Panel.add(emptyPmPanel4);
+		
 
 		searchPanel.add(contPanel, BorderLayout.WEST);
 		searchPanel.add(fieldWrapper, BorderLayout.CENTER);
 		searchPanel.add(queryButton, BorderLayout.EAST);
+		
+		searchPmPanel.add(cont2Panel, BorderLayout.WEST);
+		searchPmPanel.add(fieldPmWrapper, BorderLayout.CENTER);
+		searchPmPanel.add(queryPmButton, BorderLayout.EAST);
 
-		jFrame.add(searchPanel, BorderLayout.NORTH);
+		searchPanels.add(searchPanel);
+		searchPanels.add(searchPmPanel);
+		jFrame.add(searchPanels, BorderLayout.NORTH);
 
 		/*
 		 * work with table
