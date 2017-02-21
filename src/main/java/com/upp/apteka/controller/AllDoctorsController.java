@@ -24,7 +24,7 @@ public class AllDoctorsController implements SwingController {
 
 	//@Override
 	public void switchToActivity(Map<String, Object> params) {
-		System.out.println("Guf");
+		//System.out.println("Guf");
 		Activity addDoctorActivity = (Activity) appContext.getBean("allDoctorsActivity");
 
 		String query = (String) params.get("query");

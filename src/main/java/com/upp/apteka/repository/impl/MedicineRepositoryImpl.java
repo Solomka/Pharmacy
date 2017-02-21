@@ -187,6 +187,7 @@ public class MedicineRepositoryImpl extends AHibernateRepository<Medicine, Long>
 		for (String sValue : searchValues) {
 			if (!StringUtils.isEmptyOrWhitespaceOnly(sValue)) {
 				Disjunction disj = Restrictions.disjunction();
+				//Match the pattern anywhere in the string
 				disj.add(Restrictions.ilike("name", sValue, MatchMode.ANYWHERE));
 				disj.add(Restrictions.ilike("producer", sValue, MatchMode.ANYWHERE));
 

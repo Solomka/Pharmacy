@@ -126,7 +126,7 @@ public class MedicineDto {
 	
 	@Override
 	public String toString() {
-		return "MedicineDto [id=" + id + ", name=" + name + ", producer=" + producer + ", boxPrice=" + boxPrice
+		return "MedicineDto [name=" + name + ", producer=" + producer + ", boxPrice=" + boxPrice
 				+ ", quantityPerBox=" + quantityPerBox + "]";
 	}
 

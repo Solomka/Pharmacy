@@ -36,7 +36,7 @@ public class PharmacyValidator implements Validator {
 			errors.add(new ValidationError("error:address", "Потрбіно вказати адресу."));
 		} else if (pharmacyDto.getAddress().length() > 255) {
 			errors.add(new ValidationError("error:address", "Занадто довга адреса"));
-		} else if (pharmacyService.containsAddress(pharmacyDto.getAddress())) {
+		} else if (pharmacyDto.getId() == null && pharmacyService.containsAddress(pharmacyDto.getAddress())) {
 			errors.add(new ValidationError("error:address", "Аптека з такою адресою уже існує"));
 		}
 

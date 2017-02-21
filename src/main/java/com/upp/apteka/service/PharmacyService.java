@@ -28,5 +28,11 @@ public interface PharmacyService {
 	List<ValidationError> processAdding(Container container) throws NotFoundException;
 
 	List<ValidationError> processEditing(Container container, Long id) throws NotFoundException;
+	
+	List<Pharmacy> findByQuery(String query, boolean or);
+
+	List<Pharmacy> findByQuery(String query, int offset, int limit, boolean or);
+
+	int count(String query, boolean or);
 
 }

@@ -21,11 +21,20 @@ public class PharmacyDto {
 	@Autowired
 	private FrameContext frameContext;
 
+	private Long id;
 	private String name;
 	private String address;
 	private double extra;
 
 	private final static Logger logger = Logger.getLogger(PharmacyDto.class.getName());
+
+	public Long getId() {
+		return id;
+	}
+
+	public void setId(Long id) {
+		this.id = id;
+	}
 
 	public String getName() {
 		return name;
