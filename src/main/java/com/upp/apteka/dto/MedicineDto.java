@@ -23,12 +23,23 @@ public class MedicineDto {
 	@Autowired
 	private FrameContext frameContext;
 
+	private Long id;
 	private String name;
 	private String producer;
 	private BigDecimal boxPrice;
 	private int quantityPerBox;
 
 	private final static Logger logger = Logger.getLogger(MedicineDto.class.getName());
+	
+	
+
+	public Long getId() {
+		return id;
+	}
+
+	public void setId(Long id) {
+		this.id = id;
+	}
 
 	public String getName() {
 		return name;
@@ -112,10 +123,11 @@ public class MedicineDto {
 		return true;
 	}
 
+	
 	@Override
 	public String toString() {
-		return "MedicineDto [name=" + name + ", producer=" + producer + ", boxPrice=" + boxPrice + ", quantityPerBox="
-				+ quantityPerBox + "]";
+		return "MedicineDto [id=" + id + ", name=" + name + ", producer=" + producer + ", boxPrice=" + boxPrice
+				+ ", quantityPerBox=" + quantityPerBox + "]";
 	}
 
 	public void readFromContext(Container container) {
@@ -132,7 +144,6 @@ public class MedicineDto {
 			// this.boxPrice = new BigDecimal(boxPrice.getText(),
 			// MathContext.DECIMAL64);
 			this.boxPrice = CValidationUtils.fromStringToBigDecimal(boxPrice.getText());
-			System.out.println("boxPrice: " + getBoxPrice().toString());
 			this.quantityPerBox = Integer.parseInt(quantityPerBox.getText());
 		} catch (Exception e) {
 			logger.error("Невідповідність типу поля!");

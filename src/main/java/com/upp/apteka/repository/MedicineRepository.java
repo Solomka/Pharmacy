@@ -18,4 +18,16 @@ public interface MedicineRepository extends IRepository<Medicine, Long> {
 	
 	boolean containsNameProducerMedicine(String name, String producer);
 
+	public int count();
+	
+	/*
+	 * queries for general medicines
+	 */
+	
+	List<Medicine> findByQuery(String query, boolean or);
+	
+	List<Medicine> findByQuery(String query, int offset, int limit, boolean or);
+	
+	int count(String query, boolean or);
+	
 }

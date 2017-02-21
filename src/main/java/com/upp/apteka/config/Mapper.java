@@ -14,19 +14,20 @@ import com.upp.apteka.controller.SwingController;
  */
 @Component
 public class Mapper {
-	
+
 	@Autowired
 	private ApplicationContext applicationContext;
-	
+
 	/**
-	 * method that returns appropriate view representation controller bean and invokes its 'showing activity class method'
+	 * method that returns appropriate view representation controller bean and
+	 * invokes its 'showing activity class method'
 	 * 
 	 * 1 controller per 1 showing activity
 	 * 
 	 * @param name
 	 * @param params
 	 */
-	public void changeActivity(String name, Map<String, Object> params){
+	public void changeActivity(String name, Map<String, Object> params) {
 		SwingController swingController = applicationContext.getBean(name, SwingController.class);
 		swingController.switchToActivity(params);
 	}

@@ -207,19 +207,14 @@ public class AppConfig {
 				mapper.changeActivity("allPrescriptions", params);
 
 			}
-		});
-		
-		viewMenu.add(allPatients);
-		viewMenu.add(allDoctors);
-		viewMenu.add(allPurchases);
-		viewMenu.add(allPrescriptions);
+		});		
 
 		JMenuItem allPharmacies = new JMenuItem("Переглянути аптеки");
 		allPharmacies.addActionListener(new ActionListener() {
 			
 			public void actionPerformed(ActionEvent e) {
 				Map<String, Object> params = new HashMap<String, Object>();
-				params.put("currect", 1);
+				params.put("сurrent", 1);
 				
 				mapper.changeActivity("allPharmacies", params);
 				
@@ -231,18 +226,20 @@ public class AppConfig {
 			
 			public void actionPerformed(ActionEvent e) {
 				Map<String, Object> params = new HashMap<String, Object>();
-				params.put("currect", 1);
+				params.put("сurrent", 1);
 				
 				mapper.changeActivity("allMedicines", params);
 				
 			}
 		});
 		
+	
 		//JMenu for viewing
 		viewMenu.add(allPatients);
 		viewMenu.add(allDoctors);
 		viewMenu.add(allPurchases);
 		viewMenu.add(allPharmacies);
+		viewMenu.add(allPrescriptions);
 		viewMenu.add(allMedicines);
 
 		//JMenu for addition		

@@ -33,6 +33,11 @@ public class Pharmacy implements Serializable {
 	 * object is not yet persisted by checking for id==null
 	 * 
 	 * If you use long, then id will always have a non-null value (initially 0)
+	 * 
+	 * Primitive data types cannot be null. Only Object data types can be null.
+		int, long, etc... can't be null.
+
+		If you use Long (wrapper class for long) then you can check for null's:
 	 */
 	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
