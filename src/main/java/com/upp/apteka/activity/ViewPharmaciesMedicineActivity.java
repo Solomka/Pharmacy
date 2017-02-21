@@ -31,9 +31,9 @@ import com.upp.apteka.bo.PharmacyMedicine;
 import com.upp.apteka.config.Mapper;
 import com.upp.apteka.service.MedicineService;
 
-@Component("allPharmacyMedicinesActivity")
+@Component("viewPharmaciesMedicineActivity")
 @Scope("prototype")
-public class AllPharmacyMedicinesActivity implements Activity {
+public class ViewPharmaciesMedicineActivity implements Activity {
 
 	@Autowired
 	private Mapper mapper;
@@ -43,7 +43,7 @@ public class AllPharmacyMedicinesActivity implements Activity {
 
 	private JTable medicinesTable;
 
-	private Object[] columnsHeader = new String[] { "Назва", "Виробник", "Ціна за упаковку", "К-сть в аптеці" };
+	private Object[] columnsHeader = new String[] { "Назва аптеки", "Назва", "Виробник", "Ціна за упаковку", "К-сть в аптеці" };
 
 	private JTextField queryField;
 	private JTextField queryPmField;
@@ -84,42 +84,23 @@ public class AllPharmacyMedicinesActivity implements Activity {
 		lastPage = (Integer) params.get("last");
 
 		currentPage = (Integer) params.get("current");
-
-		/*
-		 * find by any query panel
-		 */
-
-		JPanel searchPanels = new JPanel();
-		searchPanels.setLayout(new BoxLayout(searchPanels, BoxLayout.PAGE_AXIS));
-
+	
 		/*
 		 * search in pharmacy panel
 		 */
 		JPanel searchPanel = new JPanel();
 		searchPanel.setLayout(new BorderLayout());
-		searchPanel.setBorder(BorderFactory.createEmptyBorder(20, 20, 20, 20));
-
-		/*
-		 * search in pharmacieS panel
-		 */
-		JPanel searchPmPanel = new JPanel();
-		searchPmPanel.setLayout(new BorderLayout());
-		searchPmPanel.setBorder(BorderFactory.createEmptyBorder(20, 20, 20, 20));
+		searchPanel.setBorder(BorderFactory.createEmptyBorder(20, 20, 20, 20));		
 
 		JPanel fieldWrapper = new JPanel();
-		JPanel fieldPmWrapper = new JPanel();
-		queryField = new JTextField();
-		queryPmField = new JTextField();
+		
+		queryField = new JTextField();		
 
-		JButton queryButton = new JButton("Пошук у аптеці");
-		queryButton.setPreferredSize(new Dimension(BUTTON_WIDTH, BUTTON_HEIGHT));
-
-		JButton queryPmButton = new JButton("Пошук по мережі");
-		queryButton.setPreferredSize(new Dimension(BUTTON_WIDTH, BUTTON_HEIGHT));
-
+		JButton queryButton = new JButton("Пошук по мережі аптеці");
+		queryButton.setPreferredSize(new Dimension(BUTTON_WIDTH, BUTTON_HEIGHT));	
+		
 		queryField.setPreferredSize(new Dimension(BUTTON_WIDTH, BUTTON_HEIGHT - 5));
-		queryPmField.setPreferredSize(new Dimension(BUTTON_WIDTH, BUTTON_HEIGHT - 5));
-
+		
 		/*
 		 * queryButton listener
 		 */
@@ -130,77 +111,35 @@ public class AllPharmacyMedicinesActivity implements Activity {
 				params.put("current", currentPage);
 				params.put("query", queryField.getText());
 
-				mapper.changeActivity("allPharmacyMedicines", params);
-			}
-		});
-
-		queryPmButton.addActionListener(new ActionListener() {
-
-			// @Override
-			public void actionPerformed(ActionEvent e) {
-				params.put("current", currentPage);
-				params.put("query", queryPmField.getText());
-
 				mapper.changeActivity("viewPharmaciesMedicine", params);
 			}
-		});
+		});		
 
 		query = (String) params.get("query");
 		queryField.setText(query);
 
 		fieldWrapper.setLayout(new GridLayout(0, 1));
 		fieldWrapper.setBorder(BorderFactory.createEmptyBorder(1, 1, 1, 1));
-		fieldWrapper.add(queryField);
-
-		fieldPmWrapper.setLayout(new GridLayout(0, 1));
-		fieldPmWrapper.setBorder(BorderFactory.createEmptyBorder(1, 1, 1, 1));
-		fieldPmWrapper.add(queryPmField);
+		fieldWrapper.add(queryField);		
 
 		JPanel contPanel = new JPanel();
-		contPanel.setLayout(new FlowLayout());
-
-		JPanel cont2Panel = new JPanel();
-		cont2Panel.setLayout(new FlowLayout());
+		contPanel.setLayout(new FlowLayout());		
 
 		JPanel emptyPanel = new JPanel();
 		emptyPanel.setPreferredSize(new Dimension(25, BUTTON_HEIGHT));
-		searchPanel.add(emptyPanel, BorderLayout.WEST);
-
-		JPanel emptyPmPanel = new JPanel();
-		emptyPmPanel.setPreferredSize(new Dimension(30, BUTTON_HEIGHT));
-		JPanel emptyPmPanel2 = new JPanel();
-		emptyPmPanel2.setPreferredSize(new Dimension(30, BUTTON_HEIGHT));
-		JPanel emptyPmPanel3 = new JPanel();
-		emptyPmPanel3.setPreferredSize(new Dimension(30, BUTTON_HEIGHT));
-		JPanel emptyPmPanel4 = new JPanel();
-
+		searchPanel.add(emptyPanel, BorderLayout.WEST);	
+				
 		JLabel infoLabel = new JLabel("Сторінка: " + currentPage + "/" + lastPage);
-		infoLabel.setFont(font);
-
-		JLabel info2Label = new JLabel();
-		info2Label.setText("Сторінка: " + currentPage + "/" + lastPage);
-		info2Label.setFont(font);
-
+		infoLabel.setFont(font);		
+				
 		contPanel.add(infoLabel);
-		contPanel.add(emptyPanel);
-
-		cont2Panel.add(emptyPmPanel);
-
-		cont2Panel.add(emptyPmPanel2);
-		cont2Panel.add(emptyPmPanel3);
-		cont2Panel.add(emptyPmPanel4);
+		contPanel.add(emptyPanel);					
 
 		searchPanel.add(contPanel, BorderLayout.WEST);
 		searchPanel.add(fieldWrapper, BorderLayout.CENTER);
 		searchPanel.add(queryButton, BorderLayout.EAST);
-
-		searchPmPanel.add(cont2Panel, BorderLayout.WEST);
-		searchPmPanel.add(fieldPmWrapper, BorderLayout.CENTER);
-		searchPmPanel.add(queryPmButton, BorderLayout.EAST);
-
-		searchPanels.add(searchPanel);
-		searchPanels.add(searchPmPanel);
-		jFrame.add(searchPanels, BorderLayout.NORTH);
+		
+		jFrame.add(searchPanel, BorderLayout.NORTH);
 
 		/*
 		 * work with table
@@ -311,14 +250,16 @@ public class AllPharmacyMedicinesActivity implements Activity {
 		Object[][] array = new Object[medicines.size()][columnsHeader.length];
 
 		for (int i = 0; i < medicines.size(); i++) {
-			array[i][0] = medicines.get(i).getMedicine().getName();
-			array[i][1] = medicines.get(i).getMedicine().getProducer();
-			array[i][2] = medicines.get(i).getPackPrice().toString();
-			array[i][3] = medicines.get(i).getPackQuantity();
+			array[i][0] = medicines.get(i).getPharmacy().getName() + "(" + medicines.get(i).getPharmacy().getAddress() + ")";
+			array[i][1] = medicines.get(i).getMedicine().getName();
+			array[i][2] = medicines.get(i).getMedicine().getProducer();
+			array[i][3] = medicines.get(i).getPackPrice().toString();
+			array[i][4] = medicines.get(i).getPackQuantity();			
 		}
 
 		return array;
 
 	}
+
 
 }

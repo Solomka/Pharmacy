@@ -8,28 +8,27 @@ import org.springframework.context.ApplicationContext;
 import org.springframework.stereotype.Component;
 
 import com.upp.apteka.activity.Activity;
-import com.upp.apteka.bo.Medicine;
 import com.upp.apteka.bo.PharmacyMedicine;
 import com.upp.apteka.service.MedicineService;
 
-@Component("allPharmacyMedicines")
-public class AllPharmacyMedicinesController implements SwingController {
-	
+@Component("viewPharmaciesMedicine")
+public class ViewPharmaciesMedicineController implements SwingController {
+
 	@Autowired
 	private ApplicationContext appContext;
 
 	@Autowired
 	private MedicineService medicineService;
-	
+
 	private static final int MEDICINES_PER_PAGE = 20;
 
 	public void switchToActivity(Map<String, Object> params) {
-		
-		Activity allMedicinesActivity = (Activity) appContext.getBean("allPharmacyMedicinesActivity");
+
+		Activity allMedicinesActivity = (Activity) appContext.getBean("viewPharmaciesMedicineActivity");
 
 		// get search query if any
 		String query = (String) params.get("query");
-		
+
 		if (query == null)
 			query = "";
 
@@ -37,11 +36,10 @@ public class AllPharmacyMedicinesController implements SwingController {
 
 		// find medicines by query with offset and max
 		List<PharmacyMedicine> medicines = medicineService.findPMByQuery(query, (page - 1) * MEDICINES_PER_PAGE,
-				MEDICINES_PER_PAGE, false, true);
-
+				MEDICINES_PER_PAGE, false, false);
 
 		// find medicine by query result set size
-		int maxNumber = medicineService.countPM(query, false, true);
+		int maxNumber = medicineService.countPM(query, false, false);
 		System.out.println("result set size: " + maxNumber);
 
 		/*
@@ -64,7 +62,7 @@ public class AllPharmacyMedicinesController implements SwingController {
 		params.put("query", query);
 
 		allMedicinesActivity.showActivity(params);
-		
+
 	}
 
 }

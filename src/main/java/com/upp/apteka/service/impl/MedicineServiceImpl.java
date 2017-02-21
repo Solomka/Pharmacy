@@ -135,14 +135,14 @@ public class MedicineServiceImpl implements MedicineService {
 		return medicineRepository.count(query, or);
 	}
 
-	public List<PharmacyMedicine> findPMByQuery(String query, int offset, int limit, boolean or) {
-		
-		return medicineRepository.findPMByQuery(query, offset, limit, or);
+	public List<PharmacyMedicine> findPMByQuery(String query, int offset, int limit, boolean or, boolean currPharmacy) {
+
+		return medicineRepository.findPMByQuery(query, offset, limit, or, currPharmacy);
 	}
 
-	public int countPM(String query, boolean or) {
-		
-		return medicineRepository.countPM(query, or);
+	public int countPM(String query, boolean or, boolean currPharmacy) {
+
+		return medicineRepository.countPM(query, or, currPharmacy);
 	}
 
 }
