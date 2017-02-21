@@ -3,6 +3,7 @@ package com.upp.apteka.controller;
 import java.util.List;
 import java.util.Map;
 import java.util.Set;
+import java.util.Map.Entry;
 
 import org.hibernate.id.IntegralDataTypeHolder;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -25,36 +26,23 @@ public class AllMedicinesController implements SwingController {
 	private static final int MEDICINES_PER_PAGE = 20;
 
 	public void switchToActivity(Map<String, Object> params) {
+
 		Activity allMedicinesActivity = (Activity) appContext.getBean("allMedicinesActivity");
-		
+
 		// get search query if any
 		String query = (String) params.get("query");
+		
 		if (query == null)
 			query = "";
-		System.out.println("Query: " + query);
 
-		// get current page
-		System.out.println("CurrPage: " + params.get("сurrent"));
-		System.out.println("PS: " + params.size());
-		
-		/**
-		 * I'm LOCH
-		 */
-		String strPage = params.get("сurrent").toString();
-		System.out.println("String page: " + strPage);
-		int page = Integer.parseInt(strPage);
-		//int page = (Integer) params.get("current");
-		System.out.println("int page: " + page);
-		
-		System.out.println("we are here");
+		int page = (Integer) params.get("current");
 
 		// find medicines by query with offset and max
 		List<Medicine> medicines = medicineService.findByQuery(query, (page - 1) * MEDICINES_PER_PAGE,
 				MEDICINES_PER_PAGE, false);
 
-		params.clear();
 
-		// find patient by query result set size
+		// find medicine by query result set size
 		int maxNumber = medicineService.count(query, false);
 		System.out.println("result set size: " + maxNumber);
 
@@ -73,12 +61,12 @@ public class AllMedicinesController implements SwingController {
 		System.out.println("MaxNumber " + maxNumber);
 
 		params.put("last", maxNumber);
-		params.put("сurrent", page);
+		params.put("current", page);
 		params.put("medicines", medicines);
 		params.put("query", query);
 
 		allMedicinesActivity.showActivity(params);
-
+		
 	}
 
 }

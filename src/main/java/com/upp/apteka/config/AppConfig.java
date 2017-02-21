@@ -236,7 +236,7 @@ public class AppConfig {
 
 			public void actionPerformed(ActionEvent e) {
 				Map<String, Object> params = new HashMap<String, Object>();
-				params.put("сurrent", 1);
+				params.put("current", 1);
 
 				mapper.changeActivity("allPharmacies", params);
 
@@ -248,7 +248,7 @@ public class AppConfig {
 
 			public void actionPerformed(ActionEvent e) {
 				Map<String, Object> params = new HashMap<String, Object>();
-				params.put("сurrent", 1);
+				params.put("current", 1);
 
 				mapper.changeActivity("allMedicines", params);
 
