@@ -11,11 +11,13 @@ import org.hibernate.criterion.MatchMode;
 import org.hibernate.criterion.Order;
 import org.hibernate.criterion.Projections;
 import org.hibernate.criterion.Restrictions;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Repository;
 import org.springframework.transaction.annotation.Transactional;
 
 import com.mysql.jdbc.StringUtils;
 import com.upp.apteka.bo.Medicine;
+import com.upp.apteka.bo.Pharmacy;
 import com.upp.apteka.bo.PharmacyMedicine;
 import com.upp.apteka.repository.MedicineRepository;
 import com.upp.apteka.utils.repository.AHibernateRepository;
@@ -24,6 +26,12 @@ import com.upp.apteka.utils.repository.AHibernateRepository;
 @Transactional
 public class MedicineRepositoryImpl extends AHibernateRepository<Medicine, Long> implements MedicineRepository {
 
+	@Autowired
+	Pharmacy pharmacy;
+	
+	private final String medicineNameRestriction = "(id_medicine IN (SELECT id FROM medicine WHERE UPPER(name) LIKE UPPER('%?%')))";
+	private final String medicineProducerRestriction = "(id_medicine IN (SELECT id FROM medicine WHERE UPPER(producer) LIKE UPPER('%?%')))";
+	
 	@SuppressWarnings("unchecked")
 	public List<Medicine> getAll(int offset, int limit) {
 
@@ -151,9 +159,21 @@ public class MedicineRepositoryImpl extends AHibernateRepository<Medicine, Long>
 		Criteria criteria = prepareQueryStatement(query, or).setFirstResult(offset).setMaxResults(limit);
 		return (List<Medicine>) criteria.list();
 	}
+	
+	@SuppressWarnings("unchecked")
+	public List<PharmacyMedicine>findPMByQuery(String query, int offset, int limit, boolean or){
+		Criteria criteria = preparePMQueryStatement(query, or).setFirstResult(offset).setMaxResults(limit);
+		return (List<PharmacyMedicine>) criteria.list();
+		
+	}
 
 	public int count(String query, boolean or) {
 		return ((Number) prepareQueryStatement(query, or).setProjection(Projections.rowCount()).uniqueResult())
+				.intValue();
+	}
+	
+	public int countPM(String query, boolean or) {
+		return ((Number) preparePMQueryStatement(query, or).setProjection(Projections.rowCount()).uniqueResult())
 				.intValue();
 	}
 
@@ -220,6 +240,70 @@ public class MedicineRepositoryImpl extends AHibernateRepository<Medicine, Long>
 
 		}
 
+		return criteria;
+	}
+	
+	private Criteria preparePMQueryStatement(String query, boolean or) {
+
+		// check if query filter exists
+		if (query == null) {
+			query = "";
+		}
+
+		String[] searchValues = query.split(" ");
+
+		/*
+		 * execute basic getAll request with pagination 
+		 */
+
+		Criteria criteria = getSession().createCriteria(PharmacyMedicine.class);		
+		
+		//
+		
+		// add restrictions
+
+		List<Disjunction> restrictions = new ArrayList<Disjunction>();
+
+		for (String sValue : searchValues) {
+			if (!StringUtils.isEmptyOrWhitespaceOnly(sValue)) {
+				Disjunction disj = Restrictions.disjunction();
+				//Match the pattern anywhere in the string
+				disj.add(Restrictions.sqlRestriction(medicineNameRestriction.replace("?", sValue)));
+				disj.add(Restrictions.sqlRestriction(medicineProducerRestriction.replace("?", sValue)));
+
+				restrictions.add(disj);
+			}
+		}
+
+		/*
+		 * if any restriction exists
+		 */
+
+		if (or && restrictions.size() > 0) {
+
+			Disjunction disjunction = Restrictions.disjunction();
+
+			for (Disjunction disj : restrictions) {
+				disjunction.add(disj);
+
+			}
+
+			criteria.add(disjunction);
+		} else if (restrictions.size() > 0) {
+
+			Conjunction conjunction = Restrictions.conjunction();
+
+			for (Disjunction disj : restrictions) {
+				conjunction.add(disj);
+			}
+			criteria.add(conjunction);
+
+		}
+		
+		Conjunction idConjunction = Restrictions.conjunction();
+		idConjunction.add(Restrictions.eq("pharmacyMedicineID.pharmacy.id", pharmacy.getId()));
+		criteria.add(idConjunction);
+		
 		return criteria;
 	}
 

@@ -30,4 +30,12 @@ public interface MedicineRepository extends IRepository<Medicine, Long> {
 	
 	int count(String query, boolean or);
 	
+	/*
+	 * queries for pharmacyMedicines
+	 */
+	
+	List<PharmacyMedicine>findPMByQuery(String query, int offset, int limit, boolean or);
+	
+	public int countPM(String query, boolean or);
+	
 }
