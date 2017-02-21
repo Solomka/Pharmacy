@@ -27,6 +27,7 @@ public interface MedicineService {
 	List<PharmacyMedicine> getPharmacyMedicine(Long pharmacyId, String medicineName, int offset);
 
 	List<PharmacyMedicine> searchMedicineInPharmacies(String medicineName, int offset);
+	
 
 	List<ValidationError> processAdding(Container container) throws NotFoundException;
 

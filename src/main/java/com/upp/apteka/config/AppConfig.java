@@ -233,24 +233,35 @@ public class AppConfig {
 			}
 		});
 		
+		JMenuItem allPharmacyMedicines = new JMenuItem("Переглянути ліки аптеки");
+		allMedicines.addActionListener(new ActionListener() {
+			
+			public void actionPerformed(ActionEvent e) {
+				Map<String, Object> params = new HashMap<String, Object>();
+				params.put("сurrent", 1);
+				
+				mapper.changeActivity("allPharmacyMedicines", params);
+				
+			}
+		});
+		
 	
 		//JMenu for viewing
-		viewMenu.add(allPatients);
-		viewMenu.add(allDoctors);
-		viewMenu.add(allPurchases);
 		viewMenu.add(allPharmacies);
-		viewMenu.add(allPrescriptions);
 		viewMenu.add(allMedicines);
+		viewMenu.add(allPharmacyMedicines);
+		viewMenu.add(allDoctors);
+		viewMenu.add(allPatients);
+		viewMenu.add(allPrescriptions);		
+		viewMenu.add(allPurchases);		
 
-		//JMenu for addition		
+		//JMenu for addition
+		addMenu.add(addPharmacy);
+		addMenu.add(addMedicine);
 		addMenu.add(addDoctor);
 		addMenu.add(addPatient);
 		addMenu.add(addPrescription);
-		addMenu.add(addPurchase);
-		addMenu.add(addPatient);
-		addMenu.add(addPharmacy);
-		addMenu.add(addMedicine);
-		
+		addMenu.add(addPurchase);		
 
 		menuBar.add(addMenu);
 		menuBar.add(viewMenu);

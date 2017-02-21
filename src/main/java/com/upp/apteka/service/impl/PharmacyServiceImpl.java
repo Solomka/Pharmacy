@@ -83,6 +83,7 @@ public class PharmacyServiceImpl implements PharmacyService {
 	public List<ValidationError> processEditing(Container container, Long id) throws NotFoundException {
 		PharmacyDto pharmacyDto = applicationContext.getBean(PharmacyDto.class);
 		pharmacyDto.readFromContext(container);
+		pharmacyDto.setId(id);
 
 		PharmacyValidator pharmacyValidator = applicationContext.getBean(PharmacyValidator.class);
 
@@ -96,6 +97,21 @@ public class PharmacyServiceImpl implements PharmacyService {
 			updatePharmacy(pharmacy);
 
 		return errors;
+	}
+
+	public List<Pharmacy> findByQuery(String query, boolean or) {
+
+		return pharmacyRepository.findByQuery(query, or);
+	}
+
+	public List<Pharmacy> findByQuery(String query, int offset, int limit, boolean or) {
+
+		return pharmacyRepository.findByQuery(query, offset, limit, or);
+	}
+
+	public int count(String query, boolean or) {
+
+		return pharmacyRepository.count(query, or);
 	}
 
 }
