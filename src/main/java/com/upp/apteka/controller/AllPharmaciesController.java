@@ -25,11 +25,18 @@ public class AllPharmaciesController implements SwingController {
 	public void switchToActivity(Map<String, Object> params) {
 		Activity allPharmaciesActivity = (Activity) appContext.getBean("allPharmaciesActivity");
 
+		/**
+		 * I'm LOCH
+		 */
+		String strPage = params.get("сurrent").toString();
+		System.out.println("String page: " + strPage);
+		int page = Integer.parseInt(strPage);
+		//int page = (Integer) params.get("current");
+		System.out.println("int page: " + page);
+		
 		String query = (String) params.get("query");
 		if (query == null)
-			query = "";
-
-		int page = (Integer) params.get("current");
+			query = "";		
 
 		List<Pharmacy> pharmacies = pharmacyService.findByQuery(query, (page - 1) * PHARMACIES_PER_PAGE,
 				PHARMACIES_PER_PAGE, false);
