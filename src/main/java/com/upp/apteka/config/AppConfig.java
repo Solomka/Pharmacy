@@ -256,11 +256,11 @@ public class AppConfig {
 		});
 
 		JMenuItem allPharmacyMedicines = new JMenuItem("Переглянути ліки аптеки");
-		allMedicines.addActionListener(new ActionListener() {
+		allPharmacyMedicines.addActionListener(new ActionListener() {
 
 			public void actionPerformed(ActionEvent e) {
 				Map<String, Object> params = new HashMap<String, Object>();
-				params.put("сurrent", 1);
+				params.put("current", 1);
 
 				mapper.changeActivity("allPharmacyMedicines", params);
 

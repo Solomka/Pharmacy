@@ -68,7 +68,7 @@ public class AllMedicinesActivity implements Activity {
 	private MedicineService medicineService;
 
 	@SuppressWarnings("unchecked")
-	// @Override
+	//@Override
 	public void showActivity(final Map<String, Object> params) {
 
 		// add main panel

@@ -46,5 +46,13 @@ public interface MedicineService {
 	List<Medicine> findByQuery(String query, int offset, int limit, boolean or);
 	
 	int count(String query, boolean or);
+	
+	/*
+	 * queries for pharmacyMedicines
+	 */
+	
+	List<PharmacyMedicine>findPMByQuery(String query, int offset, int limit, boolean or, boolean currPharmacy);
+	
+	public int countPM(String query, boolean or, boolean currPharmacy);
 
 }
