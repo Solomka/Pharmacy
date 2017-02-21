@@ -1,16 +1,21 @@
 package com.upp.apteka.config;
 
+import java.awt.BorderLayout;
 import java.awt.Dimension;
+import java.awt.Font;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.util.HashMap;
 import java.util.Map;
 
 import javax.sql.DataSource;
+import javax.swing.BorderFactory;
 import javax.swing.JFrame;
+import javax.swing.JLabel;
 import javax.swing.JMenu;
 import javax.swing.JMenuBar;
 import javax.swing.JMenuItem;
+import javax.swing.JPanel;
 import javax.swing.UIManager;
 import javax.swing.UnsupportedLookAndFeelException;
 
@@ -72,18 +77,36 @@ public class AppConfig {
 		dispatcherFrame.setMinimumSize(new Dimension(800, 700));
 		// dispatcherFrame.setResizable(false);
 		dispatcherFrame.setLocationRelativeTo(null);
-		UIManager.setLookAndFeel(UIManager.getSystemLookAndFeelClassName());		
-		
+		UIManager.setLookAndFeel(UIManager.getSystemLookAndFeelClassName());
+
+		// add main panel
+		JPanel mainPanel = new JPanel();
+		mainPanel.setBorder(BorderFactory.createEmptyBorder(0, 20, 0, 20));
+		dispatcherFrame.setContentPane(mainPanel);
+		dispatcherFrame.setLayout(new BorderLayout());
+
+		JPanel infoPanel = new JPanel();
+		infoPanel.setLayout(new BorderLayout());
+		infoPanel.setBorder(BorderFactory.createEmptyBorder(20, 20, 20, 20));
+
+		JLabel infoLabel = new JLabel("Вітаємо у AIC аптеки \n " + pharmacyId().getName() + " (" + pharmacyId().getAddress() + ")");
+		infoLabel.setFont(new Font("Times New Roman", Font.PLAIN, 18));
+		infoLabel.setHorizontalAlignment(JLabel.CENTER);
+
+		infoPanel.add(infoLabel);
+		mainPanel.add(infoPanel);
+
+		// add main manu bar
 		JMenuBar menuBar = new JMenuBar();
-		
-		//JManu for addition
+
+		// JManu for addition
 
 		JMenu addMenu = new JMenu("Додавання");
 
 		JMenuItem addDoctor = new JMenuItem("Додати лікаря");
 		addDoctor.addActionListener(new ActionListener() {
 
-			//@Override
+			// @Override
 			public void actionPerformed(ActionEvent e) {
 				mapper.changeActivity("addDoctor", new HashMap<String, Object>());
 
@@ -93,7 +116,7 @@ public class AppConfig {
 		JMenuItem addPatient = new JMenuItem("Додати пацієнта");
 		addPatient.addActionListener(new ActionListener() {
 
-			//@Override
+			// @Override
 			public void actionPerformed(ActionEvent e) {
 				mapper.changeActivity("addPatient", new HashMap<String, Object>());
 
@@ -103,7 +126,7 @@ public class AppConfig {
 		JMenuItem addPrescription = new JMenuItem("Додати рецепт");
 		addPrescription.addActionListener(new ActionListener() {
 
-			//@Override
+			// @Override
 			public void actionPerformed(ActionEvent e) {
 				mapper.changeActivity("addPrescription", new HashMap<String, Object>());
 
@@ -113,50 +136,49 @@ public class AppConfig {
 		JMenuItem addPurchase = new JMenuItem("Додати покупку");
 		addPurchase.addActionListener(new ActionListener() {
 
-			//@Override
+			// @Override
 			public void actionPerformed(ActionEvent e) {
 				mapper.changeActivity("selectPrescription", new HashMap<String, Object>());
 
 			}
 		});
-		
+
 		JMenuItem addPharmacy = new JMenuItem("Додати аптеку");
 		addPharmacy.addActionListener(new ActionListener() {
-			
+
 			public void actionPerformed(ActionEvent e) {
 				mapper.changeActivity("addPharmacy", new HashMap<String, Object>());
-				
+
 			}
 		});
-		
-		JMenuItem addMedicine= new JMenuItem("Додати ліки");
+
+		JMenuItem addMedicine = new JMenuItem("Додати ліки");
 		addMedicine.addActionListener(new ActionListener() {
-			
+
 			public void actionPerformed(ActionEvent e) {
 				mapper.changeActivity("addMedicine", new HashMap<String, Object>());
-				
+
 			}
 		});
-		
+
 		/*
-		JMenuItem addDelivery = new JMenuItem("Додати поставку");
-		addPharmacy.addActionListener(new ActionListener() {
-			
-			public void actionPerformed(ActionEvent e) {
-				mapper.changeActivity("addDelivery", new HashMap<String, Object>());
-				
-			}
-		});
-		*/
-		
-		//JManu for viewing
-		
+		 * JMenuItem addDelivery = new JMenuItem("Додати поставку");
+		 * addPharmacy.addActionListener(new ActionListener() {
+		 * 
+		 * public void actionPerformed(ActionEvent e) {
+		 * mapper.changeActivity("addDelivery", new HashMap<String, Object>());
+		 * 
+		 * } });
+		 */
+
+		// JManu for viewing
+
 		JMenu viewMenu = new JMenu("Переглянути");
 
 		JMenuItem allPatients = new JMenuItem("Переглянути пацієнтів");
 		allPatients.addActionListener(new ActionListener() {
 
-			//@Override
+			// @Override
 			public void actionPerformed(ActionEvent arg0) {
 
 				Map<String, Object> params = new HashMap<String, Object>();
@@ -166,11 +188,11 @@ public class AppConfig {
 
 			}
 		});
-		
+
 		JMenuItem allDoctors = new JMenuItem("Переглянути лікарів");
 		allDoctors.addActionListener(new ActionListener() {
 
-			//@Override
+			// @Override
 			public void actionPerformed(ActionEvent arg0) {
 
 				Map<String, Object> params = new HashMap<String, Object>();
@@ -180,11 +202,11 @@ public class AppConfig {
 
 			}
 		});
-		
+
 		JMenuItem allPurchases = new JMenuItem("Переглянути покупки");
 		allPurchases.addActionListener(new ActionListener() {
 
-			//@Override
+			// @Override
 			public void actionPerformed(ActionEvent arg0) {
 
 				Map<String, Object> params = new HashMap<String, Object>();
@@ -194,11 +216,11 @@ public class AppConfig {
 
 			}
 		});
-		
+
 		JMenuItem allPrescriptions = new JMenuItem("Переглянути рецепти");
 		allPrescriptions.addActionListener(new ActionListener() {
 
-			//@Override
+			// @Override
 			public void actionPerformed(ActionEvent arg0) {
 
 				Map<String, Object> params = new HashMap<String, Object>();
@@ -207,61 +229,60 @@ public class AppConfig {
 				mapper.changeActivity("allPrescriptions", params);
 
 			}
-		});		
+		});
 
 		JMenuItem allPharmacies = new JMenuItem("Переглянути аптеки");
 		allPharmacies.addActionListener(new ActionListener() {
-			
+
 			public void actionPerformed(ActionEvent e) {
 				Map<String, Object> params = new HashMap<String, Object>();
 				params.put("сurrent", 1);
-				
+
 				mapper.changeActivity("allPharmacies", params);
-				
+
 			}
 		});
-		
+
 		JMenuItem allMedicines = new JMenuItem("Переглянути ліки");
 		allMedicines.addActionListener(new ActionListener() {
-			
+
 			public void actionPerformed(ActionEvent e) {
 				Map<String, Object> params = new HashMap<String, Object>();
 				params.put("сurrent", 1);
-				
+
 				mapper.changeActivity("allMedicines", params);
-				
+
 			}
 		});
-		
+
 		JMenuItem allPharmacyMedicines = new JMenuItem("Переглянути ліки аптеки");
 		allMedicines.addActionListener(new ActionListener() {
-			
+
 			public void actionPerformed(ActionEvent e) {
 				Map<String, Object> params = new HashMap<String, Object>();
 				params.put("сurrent", 1);
-				
+
 				mapper.changeActivity("allPharmacyMedicines", params);
-				
+
 			}
 		});
-		
-	
-		//JMenu for viewing
+
+		// JMenu for viewing
 		viewMenu.add(allPharmacies);
 		viewMenu.add(allMedicines);
 		viewMenu.add(allPharmacyMedicines);
 		viewMenu.add(allDoctors);
 		viewMenu.add(allPatients);
-		viewMenu.add(allPrescriptions);		
-		viewMenu.add(allPurchases);		
+		viewMenu.add(allPrescriptions);
+		viewMenu.add(allPurchases);
 
-		//JMenu for addition
+		// JMenu for addition
 		addMenu.add(addPharmacy);
 		addMenu.add(addMedicine);
 		addMenu.add(addDoctor);
 		addMenu.add(addPatient);
 		addMenu.add(addPrescription);
-		addMenu.add(addPurchase);		
+		addMenu.add(addPurchase);
 
 		menuBar.add(addMenu);
 		menuBar.add(viewMenu);
