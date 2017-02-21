@@ -117,7 +117,6 @@ public class AllPharmaciesActivity implements Activity {
 
 			// @Override
 			public void actionPerformed(ActionEvent e) {
-				Map<String, Object> params = new HashMap<String, Object>();
 
 				params.put("current", currentPage);
 				params.put("query", queryField.getText());
@@ -180,7 +179,6 @@ public class AllPharmaciesActivity implements Activity {
 
 			// @Override
 			public void actionPerformed(ActionEvent e) {
-				Map<String, Object> params = new HashMap<String, Object>();
 
 				System.out.println("Next CurrentPage in Swing: " + (currentPage + 1));
 				params.put("current", currentPage + 1);
@@ -206,7 +204,6 @@ public class AllPharmaciesActivity implements Activity {
 
 			// @Override
 			public void actionPerformed(ActionEvent e) {
-				Map<String, Object> params = new HashMap<String, Object>();
 
 				params.put("current", currentPage - 1);
 				System.out.println("Prev Current in Swing: " + params.get("current"));

@@ -81,18 +81,9 @@ public class AllMedicinesActivity implements Activity {
 		// get data from params
 		medicines = (List<Medicine>) params.get("medicines");
 		lastPage = (Integer) params.get("last");
-		//currentPage = (Integer) params.get("current");
 
-		/**
-		 * I'm LOCH
-		 */
-		String strPage = params.get("сurrent").toString();
-		System.out.println("Swing String page: " + strPage);
-		currentPage = Integer.parseInt(strPage);
-		System.out.println("Swing int page: " + currentPage);
-
-		// currentPage = (Integer) params.get("current");
-
+		currentPage = (Integer) params.get("current");
+		
 		/*
 		 * find by any query panel
 		 */
@@ -115,8 +106,6 @@ public class AllMedicinesActivity implements Activity {
 
 			// @Override
 			public void actionPerformed(ActionEvent e) {
-				Map<String, Object> params = new HashMap<String, Object>();
-
 				params.put("current", currentPage);
 				params.put("query", queryField.getText());
 
@@ -178,14 +167,7 @@ public class AllMedicinesActivity implements Activity {
 
 			// @Override
 			public void actionPerformed(ActionEvent e) {
-				Map<String, Object> params = new HashMap<String, Object>();
-
-				System.out.println("Next CurrentPage in Swing: " + (currentPage + 1));
 				params.put("current", (Integer) (currentPage + 1));
-				System.out.println("Next Current in Swing: " + params.get("current").toString());
-				params.put("query", query);
-				System.out.println(" Next Query in Swing: " + params.get("query"));
-
 				mapper.changeActivity("allMedicines", params);
 			}
 		});
@@ -204,13 +186,8 @@ public class AllMedicinesActivity implements Activity {
 
 			// @Override
 			public void actionPerformed(ActionEvent e) {
-				Map<String, Object> params = new HashMap<String, Object>();
 
-				params.put("current", currentPage - 1);
-				System.out.println("Prev Current in Swing: " + params.get("current"));
-				params.put("query", query);
-				System.out.println(" Prev Query in Swing: " + params.get("query"));
-
+				params.put("current", (Integer) (currentPage - 1));
 				mapper.changeActivity("allMedicines", params);
 			}
 		});
