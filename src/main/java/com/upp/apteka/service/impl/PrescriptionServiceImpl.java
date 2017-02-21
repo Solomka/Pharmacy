@@ -88,10 +88,6 @@ public class PrescriptionServiceImpl implements PrescriptionService {
 		prescription.setDoctor(doctor);
 		prescription.setPatient(patient);
 
-		Long id = prescriptionRepository.create(prescription);
-
-		prescription.setId(id);
-
 		List<PrescriptionMedicine> set = new ArrayList<PrescriptionMedicine>();
 
 		for (ChooseMedicineDto cmd : dtos) {
@@ -106,9 +102,7 @@ public class PrescriptionServiceImpl implements PrescriptionService {
 		}
 
 		prescription.setPrescriptionMedicines(set);
-		prescriptionRepository.update(prescription);
-
-		return id;
+		return prescriptionRepository.create(prescription);
 	}
 
 	// @Override

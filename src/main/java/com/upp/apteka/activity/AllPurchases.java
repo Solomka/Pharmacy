@@ -281,8 +281,7 @@ public class AllPurchases implements Activity {
 					Map<String, Object> params = new HashMap<String, Object>();
 					params.put("id", id);
 
-					//TODO details
-					//mapper.changeActivity("viewPurchase", params);
+					mapper.changeActivity("viewPurchase", params);
 				} else {
 					JOptionPane.showMessageDialog(jFrame, new String[] { "Виберіть спочатку покупку!" }, "Помилка",
 							JOptionPane.ERROR_MESSAGE);
