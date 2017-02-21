@@ -101,8 +101,8 @@ public class ViewPurchaseActivity implements Activity {
 					BuyInputForm buy = new BuyInputForm(prescriptionMedicine.getMedicine().getId(),
 							prescriptionMedicine.getMedicine().getName() + " "
 									+ prescriptionMedicine.getMedicine().getProducer(),
-							prescriptionMedicine.getPackBought() - bought, prescriptionMedicine.getPackQuantity(),
-							pharmacyMedicine.getPackQuantity() + bought, pharmacyMedicine.getPackPrice());
+							prescriptionMedicine.getPackBought(), prescriptionMedicine.getPackQuantity(),
+							pharmacyMedicine.getPackQuantity(), pharmacyMedicine.getPackPrice());
 
 					if (bought != 0)
 						buy.getNumberField().setText(String.valueOf(bought));
