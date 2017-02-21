@@ -11,7 +11,7 @@ import javassist.NotFoundException;
 
 public interface MedicineService {
 
-	List<Medicine> getAllMedicines(int offset);
+	List<Medicine> getAllMedicines(int offset, int limit);
 
 	Medicine getMedicine(Long medicineId);
 
@@ -33,5 +33,7 @@ public interface MedicineService {
 	List<ValidationError> processEditing(Container container, Long id) throws NotFoundException;
 	
 	boolean containsNameProducerMedicine(String name, String producer);
+	
+	int count();
 
 }

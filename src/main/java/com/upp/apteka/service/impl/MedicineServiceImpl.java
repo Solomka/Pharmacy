@@ -29,9 +29,9 @@ public class MedicineServiceImpl implements MedicineService {
 	@Autowired
 	MedicineRepository medicineRepository;
 
-	public List<Medicine> getAllMedicines(int offset) {
+	public List<Medicine> getAllMedicines(int offset, int limit) {
 
-		return medicineRepository.getAll(offset, Constants.LIMIT);
+		return medicineRepository.getAll(offset, limit);
 	}
 
 	public Medicine getMedicine(Long medicineId) {
@@ -109,6 +109,11 @@ public boolean containsNameProducerMedicine(String name, String producer) {
 			updateMedicine(medicine);
 
 		return errors;
+	}
+
+	public int count() {
+		// TODO Auto-generated method stub
+		return medicineRepository.count();
 	}
 
 	

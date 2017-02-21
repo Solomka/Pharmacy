@@ -8,6 +8,7 @@ import org.hibernate.Query;
 import org.hibernate.criterion.Disjunction;
 import org.hibernate.criterion.MatchMode;
 import org.hibernate.criterion.Order;
+import org.hibernate.criterion.Projections;
 import org.hibernate.criterion.Restrictions;
 import org.springframework.stereotype.Repository;
 import org.springframework.transaction.annotation.Transactional;
@@ -116,6 +117,17 @@ public class MedicineRepositoryImpl extends AHibernateRepository<Medicine, Long>
 		Criteria criteria = createEntityCriteria();
 		criteria.add(Restrictions.eq("name", name)).add(Restrictions.eqOrIsNull("producer", producer));
 		return !criteria.list().isEmpty();
+	}
+
+	public int count() {
+		
+		String hql = "SELECT COUNT(*) FROM Medicine";
+		Query query = createQuery(hql);		
+		// Used to specify that the query results will be a projection (scalar in nature).
+		//Criteria criteria = createEntityCriteria();
+		//return (Long)criteria.setProjection(Projections.rowCount()).uniqueResult();
+		return ((Long)query.iterate().next()).intValue();
+	
 	}
 
 }

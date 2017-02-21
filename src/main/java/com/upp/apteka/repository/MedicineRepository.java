@@ -18,4 +18,5 @@ public interface MedicineRepository extends IRepository<Medicine, Long> {
 	
 	boolean containsNameProducerMedicine(String name, String producer);
 
+	public int count();
 }
