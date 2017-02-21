@@ -82,18 +82,6 @@ public class AllPharmaciesActivity implements Activity {
 		pharmacies = (List<Pharmacy>) params.get("pharmacies");
 		lastPage = (Integer) params.get("last");		
 		currentPage = (Integer) params.get("current");
-		System.out.println("Swing current page: " + currentPage);
-		
-		/**
-		 * I'm LOCH
-		 */
-		
-		/*
-		String strPage = params.get("сurrent").toString();
-		System.out.println("Swing String page: " + strPage);
-		currentPage = Integer.parseInt(strPage);
-		System.out.println("Swing int page: " + currentPage);
-		 */
 		
 		/*
 		 * find by any query panel
@@ -180,12 +168,9 @@ public class AllPharmaciesActivity implements Activity {
 			// @Override
 			public void actionPerformed(ActionEvent e) {
 
-				System.out.println("Next CurrentPage in Swing: " + (currentPage + 1));
 				params.put("current", currentPage + 1);
-				System.out.println("Next Current in Swing: " + params.get("current"));
 				params.put("query", query);
-				System.out.println(" Next Query in Swing: " + params.get("query"));
-
+				
 				mapper.changeActivity("allPharmacies", params);
 			}
 		});
@@ -206,10 +191,8 @@ public class AllPharmaciesActivity implements Activity {
 			public void actionPerformed(ActionEvent e) {
 
 				params.put("current", currentPage - 1);
-				System.out.println("Prev Current in Swing: " + params.get("current"));
 				params.put("query", query);
-				System.out.println(" Prev Query in Swing: " + params.get("query"));
-
+				
 				mapper.changeActivity("allPharmacies", params);
 			}
 		});
