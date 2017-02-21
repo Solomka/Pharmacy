@@ -70,6 +70,9 @@ public class AddPurchaseActivity implements Activity {
 
 		prescription = (Prescription) params.get("prescription");
 		editPurchase = (Purchase) params.get("purchase");
+		
+		if(editPurchase != null)
+			pharmacy = editPurchase.getPharmacy();
 
 		frame.setContentPane(new JPanel());
 		frame.setLayout(new BorderLayout());
