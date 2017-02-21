@@ -153,6 +153,8 @@ public class AllPrescriptions implements Activity {
 					params.put("sold", true);
 				else if (availableButton.isSelected())
 					params.put("sold", false);
+				else
+					params.put("sold", null);
 
 				mapper.changeActivity("allPrescriptions", params);
 			}
