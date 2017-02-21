@@ -11,7 +11,7 @@ import javassist.NotFoundException;
 
 public interface MedicineService {
 
-	List<Medicine> getAllMedicines(int offset);
+	List<Medicine> getAllMedicines(int offset, int limit);
 
 	Medicine getMedicine(Long medicineId);
 
@@ -27,11 +27,24 @@ public interface MedicineService {
 	List<PharmacyMedicine> getPharmacyMedicine(Long pharmacyId, String medicineName, int offset);
 
 	List<PharmacyMedicine> searchMedicineInPharmacies(String medicineName, int offset);
+	
 
 	List<ValidationError> processAdding(Container container) throws NotFoundException;
 
 	List<ValidationError> processEditing(Container container, Long id) throws NotFoundException;
 	
 	boolean containsNameProducerMedicine(String name, String producer);
+	
+	int count();
+	
+	/*
+	 * queries for general medicines
+	 */
+	
+	List<Medicine> findByQuery(String query, boolean or);
+	
+	List<Medicine> findByQuery(String query, int offset, int limit, boolean or);
+	
+	int count(String query, boolean or);
 
 }

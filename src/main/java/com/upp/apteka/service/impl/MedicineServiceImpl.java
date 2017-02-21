@@ -29,9 +29,9 @@ public class MedicineServiceImpl implements MedicineService {
 	@Autowired
 	MedicineRepository medicineRepository;
 
-	public List<Medicine> getAllMedicines(int offset) {
+	public List<Medicine> getAllMedicines(int offset, int limit) {
 
-		return medicineRepository.getAll(offset, Constants.LIMIT);
+		return medicineRepository.getAll(offset, limit);
 	}
 
 	public Medicine getMedicine(Long medicineId) {
@@ -68,12 +68,11 @@ public class MedicineServiceImpl implements MedicineService {
 
 		return medicineRepository.searchMedicineInPharmacies(medicineName, offset, Constants.LIMIT);
 	}
-	
-public boolean containsNameProducerMedicine(String name, String producer) {
-		
+
+	public boolean containsNameProducerMedicine(String name, String producer) {
+
 		return medicineRepository.containsNameProducerMedicine(name, producer);
 	}
-
 
 	public List<ValidationError> processAdding(Container container) throws NotFoundException {
 		MedicineDto medicineDto = appContext.getBean(MedicineDto.class);
@@ -81,12 +80,11 @@ public boolean containsNameProducerMedicine(String name, String producer) {
 
 		MedicineValidator medicineValidator = appContext.getBean(MedicineValidator.class);
 
-		List<ValidationError> errors = medicineValidator.validate(medicineDto);		
-		
+		List<ValidationError> errors = medicineValidator.validate(medicineDto);
+
 		medicineDto.showErrors(errors, container);
 
 		if (errors.isEmpty()) {
-			System.err.println("No errors");
 			addMedicine(new Medicine(medicineDto));
 		}
 
@@ -96,6 +94,7 @@ public boolean containsNameProducerMedicine(String name, String producer) {
 	public List<ValidationError> processEditing(Container container, Long id) throws NotFoundException {
 		MedicineDto medicineDto = appContext.getBean(MedicineDto.class);
 		medicineDto.readFromContext(container);
+		medicineDto.setId(id);
 
 		MedicineValidator medicineValidator = appContext.getBean(MedicineValidator.class);
 
@@ -105,11 +104,35 @@ public boolean containsNameProducerMedicine(String name, String producer) {
 		Medicine medicine = new Medicine(medicineDto);
 		medicine.setId(id);
 
-		if (errors.isEmpty())
+		if (errors.isEmpty()) {
 			updateMedicine(medicine);
+		}
 
 		return errors;
 	}
 
-	
+	public int count() {
+
+		return medicineRepository.count();
+	}
+
+	/*
+	 * queries for general medicines
+	 */
+
+	public List<Medicine> findByQuery(String query, boolean or) {
+
+		return medicineRepository.findByQuery(query, or);
+	}
+
+	public List<Medicine> findByQuery(String query, int offset, int limit, boolean or) {
+
+		return medicineRepository.findByQuery(query, offset, limit, or);
+	}
+
+	public int count(String query, boolean or) {
+
+		return medicineRepository.count(query, or);
+	}
+
 }

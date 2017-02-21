@@ -88,7 +88,7 @@ public class AllPrescriptions implements Activity {
 	private PrescriptionService prescriptionService;
 
 	@SuppressWarnings("unchecked")
-	@Override
+	//@Override
 	public void showActivity(final Map<String, Object> params) {
 
 		JPanel mainPanel = new JPanel();
@@ -99,8 +99,8 @@ public class AllPrescriptions implements Activity {
 		prescriptions = (List<Prescription>) params.get("prescriptions");
 		jFrame.setLayout(new BorderLayout());
 
-		lastPage = (int) params.get("last");
-		currentPage = (int) params.get("current");
+		lastPage = (Integer) params.get("last");
+		currentPage = (Integer) params.get("current");
 		startDate = (Date) params.get("startDate");
 		endDate = (Date) params.get("endDate");
 		sold = (Boolean) params.get("sold");
@@ -143,7 +143,7 @@ public class AllPrescriptions implements Activity {
 
 		queryButton.addActionListener(new ActionListener() {
 
-			@Override
+			//@Override
 			public void actionPerformed(ActionEvent e) {
 				params.put("query", queryField.getText());
 				params.put("startDate", startModel.getValue());
@@ -254,7 +254,7 @@ public class AllPrescriptions implements Activity {
 
 		nextButton.addActionListener(new ActionListener() {
 
-			@Override
+			//@Override
 			public void actionPerformed(ActionEvent e) {
 				params.put("current", currentPage + 1);
 				mapper.changeActivity("allPrescriptions", params);
@@ -269,7 +269,7 @@ public class AllPrescriptions implements Activity {
 
 		prevButton.addActionListener(new ActionListener() {
 
-			@Override
+			//@Override
 			public void actionPerformed(ActionEvent e) {
 				params.put("current", currentPage - 1);
 				mapper.changeActivity("allPrescriptions", params);
@@ -291,7 +291,7 @@ public class AllPrescriptions implements Activity {
 
 		editButton.addActionListener(new ActionListener() {
 
-			@Override
+			//@Override
 			public void actionPerformed(ActionEvent e) {
 				int selectedRow = prescriptionsTable.getSelectedRow();
 
@@ -313,7 +313,7 @@ public class AllPrescriptions implements Activity {
 		viewButton.setPreferredSize(new Dimension(PAGINATION_BUTTON_WIDTH, PAGINATION_BUTTON_HEIGHT));
 		viewButton.addActionListener(new ActionListener() {
 
-			@Override
+			//@Override
 			public void actionPerformed(ActionEvent e) {
 				int selectedRow = prescriptionsTable.getSelectedRow();
 
@@ -336,7 +336,7 @@ public class AllPrescriptions implements Activity {
 
 		removeButton.addActionListener(new ActionListener() {
 
-			@Override
+			//@Override
 			public void actionPerformed(ActionEvent e) {
 				int selectedRow = prescriptionsTable.getSelectedRow();
 
@@ -362,7 +362,7 @@ public class AllPrescriptions implements Activity {
 		goButton.setPreferredSize(new Dimension(PAGINATION_BUTTON_WIDTH, PAGINATION_BUTTON_HEIGHT));
 		goButton.addActionListener(new ActionListener() {
 
-			@Override
+			//@Override
 			public void actionPerformed(ActionEvent e) {
 				try {
 					int page = Integer.valueOf(goTo.getText());

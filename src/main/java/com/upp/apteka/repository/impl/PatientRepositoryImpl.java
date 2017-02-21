@@ -72,15 +72,27 @@ public class PatientRepositoryImpl extends AHibernateRepository<Patient, Long> i
 	public int count(String query, boolean or) {
 		return ((Number) prepare(query, or).setProjection(Projections.rowCount()).uniqueResult()).intValue();
 	}
+	
+	/*
+	 * PREPARE QUERY STATEMENT
+	 */
 
 	private Criteria prepare(String query, boolean or) {
 		if (query == null)
 			query = "";
 
 		String[] names = query.split(" ");
+		for(int i = 0; i<names.length; ++i){
+			System.out.println("Prepare name: " + names[i]);
+		}
+		
+		/*
+		 * execute basic getAll with pagination request
+		 */
+		
 		Criteria criteria = createEntityCriteria();
-		criteria.addOrder(Order.asc("surname"));
-
+		criteria.addOrder(Order.asc("surname"));		
+		
 		List<Disjunction> restrictions = new ArrayList<Disjunction>();
 
 		for (String name : names)
@@ -88,8 +100,19 @@ public class PatientRepositoryImpl extends AHibernateRepository<Patient, Long> i
 				restrictions.add(Restrictions.or(Restrictions.ilike("surname", name, MatchMode.ANYWHERE),
 						Restrictions.ilike("name", name, MatchMode.ANYWHERE),
 						Restrictions.ilike("phone", name, MatchMode.ANYWHERE)));
+		
+		System.out.println("disjunctions set size: " + restrictions.size());
 
+		/*
+		 * if any restriction exists
+		 */
 		if (or && restrictions.size() > 0) {
+			
+			/*
+			 * Hibernate Disjunction, is used to add multiple condition in SQL query separated by OR clause within brackets. 
+			   To generate following query using Hibernate Criteria we need to use Disjunction.
+			*/
+			
 			Disjunction disjunction = Restrictions.disjunction();
 
 			for (Disjunction dis : restrictions)
@@ -97,6 +120,12 @@ public class PatientRepositoryImpl extends AHibernateRepository<Patient, Long> i
 
 			criteria.add(disjunction);
 		} else if (restrictions.size() > 0) {
+			
+			/* 
+			 * Hibernate Conjunction, is used to add multiple condition in SQL query separated by AND clause  within brackets. 
+			 * To generate following query using Hibernate Criteria we need to use Conjunction.
+			 */
+			
 			Conjunction conjunction = Restrictions.conjunction();
 
 			for (Disjunction dis : restrictions)

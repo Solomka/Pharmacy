@@ -43,7 +43,7 @@ public class ViewPrescriptionActivity implements Activity {
 	private static final int ROW_HEIGHT = 32;
 	private static final Font font = new Font("SansSerif", Font.PLAIN, 14);
 
-	@Override
+	//@Override
 	public void showActivity(Map<String, Object> params) {
 
 		prescription = (Prescription) params.get("prescription");

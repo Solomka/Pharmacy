@@ -77,11 +77,6 @@ public class AddPharmacyActivity implements Activity {
 		extra.setFont(font);
 		extra.setName("form:extra");
 
-		// don't allow to change pharmacy extra
-		if (editPharmacy != null) {
-			extra.setEnabled(false);
-		}
-
 		// init labels for textFields
 		JLabel nameLabel = new JLabel("Назва:");
 		nameLabel.setFont(font);
@@ -126,6 +121,10 @@ public class AddPharmacyActivity implements Activity {
 			name.setText(editPharmacy.getName());
 			address.setText(editPharmacy.getAddress());
 			extra.setText(String.valueOf(editPharmacy.getExtra()));
+
+			// don't allow to change pharmacy extra
+			extra.setEnabled(false);
+
 		}
 
 		button.addActionListener(new ActionListener() {

@@ -70,15 +70,9 @@ public class AddMedicineActivity implements Activity {
 		producer.setFont(font);
 		producer.setName("form:producer");
 
-		
 		JTextField boxPrice = new JTextField();
 		boxPrice.setFont(font);
 		boxPrice.setName("form:boxPrice");
-
-		// don't allow to change medicine boxPrice
-		if (editMedicine != null) {
-			boxPrice.setEnabled(false);
-		}
 
 		NumberFormatter nf2 = new NumberFormatter();
 		nf2.setMinimum(1);
@@ -134,12 +128,15 @@ public class AddMedicineActivity implements Activity {
 		editMedicine = (Medicine) params.get("medicine");
 
 		if (editMedicine != null) {
+
 			button.setText("Редагувати");
 
 			name.setText(editMedicine.getName());
 			producer.setText(editMedicine.getProducer());
-			boxPriceLabel.setText(String.valueOf(editMedicine.getBoxPrice()));
+			boxPrice.setText(String.valueOf(editMedicine.getBoxPrice()));
 			quantityPerBox.setText(String.valueOf(editMedicine.getQuantityPerBox()));
+
+			boxPrice.setEditable(false);
 		}
 
 		button.addActionListener(new ActionListener() {
@@ -147,10 +144,9 @@ public class AddMedicineActivity implements Activity {
 
 				try {
 
-					if (editMedicine == null) {						
+					if (editMedicine == null) {
 						List<ValidationError> list = medicineService.processAdding(jFrame);
 						if (list.size() == 0) {
-							System.out.println("We are here");
 							mapper.changeActivity("addMedicine", new HashMap<String, Object>());
 
 							JOptionPane.showMessageDialog(jFrame, "Успішно додано ліки!", "Успішна операція",
