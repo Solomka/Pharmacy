@@ -25,6 +25,7 @@ import javax.swing.ListSelectionModel;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Scope;
+import org.springframework.format.number.money.CurrencyUnitFormatter;
 import org.springframework.stereotype.Component;
 
 import com.upp.apteka.bo.Patient;
@@ -71,28 +72,36 @@ public class AllPatients implements Activity {
 	//@Override
 	public void showActivity(final Map<String, Object> params) {
 
+		//add main panel
 		JPanel mainPanel = new JPanel();
 		mainPanel.setBorder(BorderFactory.createEmptyBorder(0, 20, 0, 20));
 
 		jFrame.setContentPane(mainPanel);
-
-		patients = (List<Patient>) params.get("patients");
 		jFrame.setLayout(new BorderLayout());
-
+		
+		//get data from params
+		patients = (List<Patient>) params.get("patients");
 		lastPage = (Integer) params.get("last");
 		currentPage = (Integer) params.get("current");
 
+		/*
+		 * find by any query panel
+		 */
+		
 		JPanel searchPanel = new JPanel();
 		searchPanel.setLayout(new BorderLayout());
 		searchPanel.setBorder(BorderFactory.createEmptyBorder(20, 20, 20, 20));
 
 		JPanel fieldWrapper = new JPanel();
-		queryField = new JTextField();
+		queryField = new JTextField();		
 
 		JButton queryButton = new JButton("Шукати");
 		queryButton.setPreferredSize(new Dimension(BUTTON_WIDTH, BUTTON_HEIGHT));
 		queryField.setPreferredSize(new Dimension(BUTTON_WIDTH, BUTTON_HEIGHT - 5));
 
+		/*
+		 * queryButton listener
+		 */
 		queryButton.addActionListener(new ActionListener() {
 
 			//@Override
@@ -107,8 +116,8 @@ public class AllPatients implements Activity {
 		});
 
 		query = (String) params.get("query");
-		queryField.setText(query);
-
+		queryField.setText(query);		
+		
 		fieldWrapper.setLayout(new GridLayout(0, 1));
 		fieldWrapper.setBorder(BorderFactory.createEmptyBorder(1, 1, 1, 1));
 		fieldWrapper.add(queryField);
@@ -131,6 +140,10 @@ public class AllPatients implements Activity {
 		searchPanel.add(queryButton, BorderLayout.EAST);
 
 		jFrame.add(searchPanel, BorderLayout.NORTH);
+		
+		/*
+		 * work with table
+		 */
 
 		patientsTable = new JTable(getData(patients), columnsHeader);
 		patientsTable.setSelectionMode(ListSelectionModel.SINGLE_SELECTION);
@@ -149,14 +162,20 @@ public class AllPatients implements Activity {
 		JButton nextButton = new JButton("Далі");
 		nextButton.setPreferredSize(new Dimension(PAGINATION_BUTTON_WIDTH, PAGINATION_BUTTON_HEIGHT));
 
+		/*
+		 *next button listener
+		 */
 		nextButton.addActionListener(new ActionListener() {
 
 			//@Override
 			public void actionPerformed(ActionEvent e) {
 				Map<String, Object> params = new HashMap<String, Object>();
 
+				System.out.println("Next CurrentPage in Swing: " + (currentPage + 1));
 				params.put("current", currentPage + 1);
+				System.out.println("Next Current in Swing: " + params.get("current"));
 				params.put("query", query);
+				System.out.println(" Next Query in Swing: " + params.get("query"));
 
 				mapper.changeActivity("allPatients", params);
 			}
@@ -170,12 +189,18 @@ public class AllPatients implements Activity {
 
 		prevButton.addActionListener(new ActionListener() {
 
+			/*
+			 * prevButton listenter
+			 */
+			
 			//@Override
 			public void actionPerformed(ActionEvent e) {
 				Map<String, Object> params = new HashMap<String, Object>();
 
 				params.put("current", currentPage - 1);
+				System.out.println("Prev Current in Swing: " + params.get("current"));
 				params.put("query", query);
+				System.out.println(" Prev Query in Swing: " + params.get("query"));
 
 				mapper.changeActivity("allPatients", params);
 			}
@@ -194,8 +219,11 @@ public class AllPatients implements Activity {
 		JButton editButton = new JButton("Змінити");
 		editButton.setPreferredSize(new Dimension(PAGINATION_BUTTON_WIDTH, PAGINATION_BUTTON_HEIGHT));
 
+		/*
+		 * edit button listener
+		 */
 		editButton.addActionListener(new ActionListener() {
-
+			
 			//@Override
 			public void actionPerformed(ActionEvent e) {
 				int selectedRow = patientsTable.getSelectedRow();
@@ -217,6 +245,9 @@ public class AllPatients implements Activity {
 		JButton removeButton = new JButton("Видалити");
 		removeButton.setPreferredSize(new Dimension(PAGINATION_BUTTON_WIDTH, PAGINATION_BUTTON_HEIGHT));
 
+		/*
+		 * remove button listener
+		 */
 		removeButton.addActionListener(new ActionListener() {
 
 			//@Override
@@ -243,6 +274,10 @@ public class AllPatients implements Activity {
 
 		JButton goButton = new JButton("Перейти");
 		goButton.setPreferredSize(new Dimension(PAGINATION_BUTTON_WIDTH, PAGINATION_BUTTON_HEIGHT));
+		
+		/*
+		 * goButton listener
+		 */
 		goButton.addActionListener(new ActionListener() {
 			
 			//@Override
@@ -277,6 +312,10 @@ public class AllPatients implements Activity {
 		jFrame.add(paginationPanel, BorderLayout.SOUTH);
 	}
 
+	/*
+	 * table fill in
+	 */
+	
 	private Object[][] getData(List<Patient> patients) {
 		Object[][] array = new Object[patients.size()][columnsHeader.length];
 

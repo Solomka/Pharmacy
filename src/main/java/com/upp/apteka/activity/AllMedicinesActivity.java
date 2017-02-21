@@ -31,7 +31,6 @@ import com.upp.apteka.bo.Medicine;
 import com.upp.apteka.bo.Patient;
 import com.upp.apteka.config.Mapper;
 import com.upp.apteka.service.MedicineService;
-import com.upp.apteka.service.PatientService;
 
 @Component("allMedicinesActivity")
 @Scope("prototype")
@@ -70,34 +69,51 @@ public class AllMedicinesActivity implements Activity {
 	private MedicineService medicineService;
 
 	@SuppressWarnings("unchecked")
-	// @Override
+	//@Override
 	public void showActivity(final Map<String, Object> params) {
 
+		//add main panel
 		JPanel mainPanel = new JPanel();
 		mainPanel.setBorder(BorderFactory.createEmptyBorder(0, 20, 0, 20));
 
 		jFrame.setContentPane(mainPanel);
-
-		medicines = (List<Medicine>) params.get("medicines");
 		jFrame.setLayout(new BorderLayout());
-
+		
+		//get data from params
+		medicines = (List<Medicine>) params.get("medicines");
 		lastPage = (Integer) params.get("last");
-		currentPage = (Integer) params.get("current");
+		
+		/**
+		 * I'm LOCH
+		 */
+		String strPage = params.get("сurrent").toString();
+		System.out.println("Swing String page: " + strPage);
+		currentPage = Integer.parseInt(strPage);
+		System.out.println("Swing int page: " + currentPage);
+		
+		//currentPage = (Integer) params.get("current");
 
+		/*
+		 * find by any query panel
+		 */
+		
 		JPanel searchPanel = new JPanel();
 		searchPanel.setLayout(new BorderLayout());
 		searchPanel.setBorder(BorderFactory.createEmptyBorder(20, 20, 20, 20));
 
 		JPanel fieldWrapper = new JPanel();
-		queryField = new JTextField();
+		queryField = new JTextField();		
 
 		JButton queryButton = new JButton("Шукати");
 		queryButton.setPreferredSize(new Dimension(BUTTON_WIDTH, BUTTON_HEIGHT));
 		queryField.setPreferredSize(new Dimension(BUTTON_WIDTH, BUTTON_HEIGHT - 5));
 
+		/*
+		 * queryButton listener
+		 */
 		queryButton.addActionListener(new ActionListener() {
 
-			// @Override
+			//@Override
 			public void actionPerformed(ActionEvent e) {
 				Map<String, Object> params = new HashMap<String, Object>();
 
@@ -109,8 +125,8 @@ public class AllMedicinesActivity implements Activity {
 		});
 
 		query = (String) params.get("query");
-		queryField.setText(query);
-
+		queryField.setText(query);		
+		
 		fieldWrapper.setLayout(new GridLayout(0, 1));
 		fieldWrapper.setBorder(BorderFactory.createEmptyBorder(1, 1, 1, 1));
 		fieldWrapper.add(queryField);
@@ -133,6 +149,10 @@ public class AllMedicinesActivity implements Activity {
 		searchPanel.add(queryButton, BorderLayout.EAST);
 
 		jFrame.add(searchPanel, BorderLayout.NORTH);
+		
+		/*
+		 * work with table
+		 */
 
 		medicinesTable = new JTable(getData(medicines), columnsHeader);
 		medicinesTable.setSelectionMode(ListSelectionModel.SINGLE_SELECTION);
@@ -151,14 +171,20 @@ public class AllMedicinesActivity implements Activity {
 		JButton nextButton = new JButton("Далі");
 		nextButton.setPreferredSize(new Dimension(PAGINATION_BUTTON_WIDTH, PAGINATION_BUTTON_HEIGHT));
 
+		/*
+		 *next button listener
+		 */
 		nextButton.addActionListener(new ActionListener() {
 
-			// @Override
+			//@Override
 			public void actionPerformed(ActionEvent e) {
 				Map<String, Object> params = new HashMap<String, Object>();
 
-				params.put("current", currentPage + 1);
+				System.out.println("Next CurrentPage in Swing: " + (currentPage + 1));
+				params.put("current", (Integer)(currentPage + 1));
+				System.out.println("Next Current in Swing: " + params.get("current").toString());
 				params.put("query", query);
+				System.out.println(" Next Query in Swing: " + params.get("query"));
 
 				mapper.changeActivity("allMedicines", params);
 			}
@@ -172,12 +198,18 @@ public class AllMedicinesActivity implements Activity {
 
 		prevButton.addActionListener(new ActionListener() {
 
-			// @Override
+			/*
+			 * prevButton listenter
+			 */
+			
+			//@Override
 			public void actionPerformed(ActionEvent e) {
 				Map<String, Object> params = new HashMap<String, Object>();
 
 				params.put("current", currentPage - 1);
+				System.out.println("Prev Current in Swing: " + params.get("current"));
 				params.put("query", query);
+				System.out.println(" Prev Query in Swing: " + params.get("query"));
 
 				mapper.changeActivity("allMedicines", params);
 			}
@@ -196,9 +228,12 @@ public class AllMedicinesActivity implements Activity {
 		JButton editButton = new JButton("Змінити");
 		editButton.setPreferredSize(new Dimension(PAGINATION_BUTTON_WIDTH, PAGINATION_BUTTON_HEIGHT));
 
+		/*
+		 * edit button listener
+		 */
 		editButton.addActionListener(new ActionListener() {
-
-			// @Override
+			
+			//@Override
 			public void actionPerformed(ActionEvent e) {
 				int selectedRow = medicinesTable.getSelectedRow();
 
@@ -219,9 +254,12 @@ public class AllMedicinesActivity implements Activity {
 		JButton removeButton = new JButton("Видалити");
 		removeButton.setPreferredSize(new Dimension(PAGINATION_BUTTON_WIDTH, PAGINATION_BUTTON_HEIGHT));
 
+		/*
+		 * remove button listener
+		 */
 		removeButton.addActionListener(new ActionListener() {
 
-			// @Override
+			//@Override
 			public void actionPerformed(ActionEvent e) {
 				int selectedRow = medicinesTable.getSelectedRow();
 
@@ -233,7 +271,7 @@ public class AllMedicinesActivity implements Activity {
 					if (success)
 						mapper.changeActivity("allMedicines", params);
 					else {
-						JOptionPane.showMessageDialog(jFrame, new String[] { "Ці ліки продаються у багатьох аптеках. Так що ні-ні." },
+						JOptionPane.showMessageDialog(jFrame, new String[] { "Ліки є у багатьох аптеках. Так що ні-ні." },
 								"Помилка", JOptionPane.ERROR_MESSAGE);
 					}
 				} else {
@@ -245,29 +283,33 @@ public class AllMedicinesActivity implements Activity {
 
 		JButton goButton = new JButton("Перейти");
 		goButton.setPreferredSize(new Dimension(PAGINATION_BUTTON_WIDTH, PAGINATION_BUTTON_HEIGHT));
+		
+		/*
+		 * goButton listener
+		 */
 		goButton.addActionListener(new ActionListener() {
-
-			// @Override
+			
+			//@Override
 			public void actionPerformed(ActionEvent e) {
-				try {
+				try{
 					int page = Integer.valueOf(goTo.getText());
-
-					if (page > lastPage)
+					
+					if(page > lastPage)
 						page = lastPage;
-
-					if (page < 0)
+					
+					if(page < 0)
 						page = 0;
-
+					
 					params.put("current", page);
 					mapper.changeActivity("allMedicines", params);
-				} catch (Exception ex) {
+				}catch(Exception ex){
 					JOptionPane.showMessageDialog(jFrame, new String[] { "Числа нормальні треба вводити!" }, "Помилка",
 							JOptionPane.ERROR_MESSAGE);
 				}
-
+				
 			}
 		});
-
+		
 		paginationPanel.setLayout(new FlowLayout());
 		paginationPanel.add(nextButton, BorderLayout.WEST);
 		paginationPanel.add(goPanel, BorderLayout.WEST);
@@ -278,7 +320,11 @@ public class AllMedicinesActivity implements Activity {
 
 		jFrame.add(paginationPanel, BorderLayout.SOUTH);
 	}
-	
+
+	/*
+	 * table fill in
+	 */
+
 	private Object[][] getData(List<Medicine> medicines) {
 		Object[][] array = new Object[medicines.size()][columnsHeader.length];
 

@@ -5,6 +5,7 @@ import java.util.List;
 
 import org.hibernate.Criteria;
 import org.hibernate.Query;
+import org.hibernate.criterion.Conjunction;
 import org.hibernate.criterion.Disjunction;
 import org.hibernate.criterion.MatchMode;
 import org.hibernate.criterion.Order;
@@ -41,12 +42,14 @@ public class MedicineRepositoryImpl extends AHibernateRepository<Medicine, Long>
 	}
 
 	public void update(Medicine medicine) {
+		if (medicine.getPharmacyMedicines() != null) {
 
-		for (PharmacyMedicine pharmacyMedicine : medicine.getPharmacyMedicines())
-			getSession().update(pharmacyMedicine);
+			for (PharmacyMedicine pharmacyMedicine : medicine.getPharmacyMedicines()) {
+				getSession().update(pharmacyMedicine);
+			}
+		}
 
 		updateEntity(medicine);
-
 	}
 
 	public boolean delete(Long key) {
@@ -120,14 +123,103 @@ public class MedicineRepositoryImpl extends AHibernateRepository<Medicine, Long>
 	}
 
 	public int count() {
-		
+
 		String hql = "SELECT COUNT(*) FROM Medicine";
-		Query query = createQuery(hql);		
-		// Used to specify that the query results will be a projection (scalar in nature).
-		//Criteria criteria = createEntityCriteria();
-		//return (Long)criteria.setProjection(Projections.rowCount()).uniqueResult();
-		return ((Long)query.iterate().next()).intValue();
-	
+		Query query = createQuery(hql);
+		// Used to specify that the query results will be a projection (scalar
+		// in nature).
+		// Criteria criteria = createEntityCriteria();
+		// return
+		// (Long)criteria.setProjection(Projections.rowCount()).uniqueResult();
+		return ((Long) query.iterate().next()).intValue();
+
+	}
+
+	/*
+	 * queries for general medicines
+	 */
+
+	@SuppressWarnings("unchecked")
+	public List<Medicine> findByQuery(String query, boolean or) {
+		Criteria criteria = prepareQueryStatement(query, or);
+		return (List<Medicine>) criteria.list();
+	}
+
+	@SuppressWarnings("unchecked")
+	public List<Medicine> findByQuery(String query, int offset, int limit, boolean or) {
+
+		Criteria criteria = prepareQueryStatement(query, or).setFirstResult(offset).setMaxResults(limit);
+		return (List<Medicine>) criteria.list();
+	}
+
+	public int count(String query, boolean or) {
+		return ((Number) prepareQueryStatement(query, or).setProjection(Projections.rowCount()).uniqueResult())
+				.intValue();
+	}
+
+	/*
+	 * PREPARE QUERY STATEMENT
+	 */
+
+	/*
+	 * query == "Mezum"
+	 */
+	private Criteria prepareQueryStatement(String query, boolean or) {
+
+		// check if query filter exists
+		if (query == null) {
+			query = "";
+		}
+
+		String[] searchValues = query.split(" ");
+
+		/*
+		 * execute basic getAll request with pagination and ordering
+		 */
+
+		Criteria criteria = createEntityCriteria();
+		criteria.addOrder(Order.asc("name"));
+
+		// add restrictions
+
+		List<Disjunction> restrictions = new ArrayList<Disjunction>();
+
+		for (String sValue : searchValues) {
+			if (!StringUtils.isEmptyOrWhitespaceOnly(sValue)) {
+				Disjunction disj = Restrictions.disjunction();
+				disj.add(Restrictions.ilike("name", sValue, MatchMode.ANYWHERE));
+				disj.add(Restrictions.ilike("producer", sValue, MatchMode.ANYWHERE));
+
+				restrictions.add(disj);
+			}
+		}
+
+		/*
+		 * if any restriction exists
+		 */
+
+		if (or && restrictions.size() > 0) {
+
+			Disjunction disjunction = Restrictions.disjunction();
+
+			for (Disjunction disj : restrictions) {
+				disjunction.add(disj);
+
+			}
+
+			criteria.add(disjunction);
+		} else if (restrictions.size() > 0) {
+
+			Conjunction conjunction = Restrictions.conjunction();
+
+			for (Disjunction disj : restrictions) {
+				conjunction.add(disj);
+			}
+			criteria.add(conjunction);
+
+		}
+
+		return criteria;
 	}
 
 }
