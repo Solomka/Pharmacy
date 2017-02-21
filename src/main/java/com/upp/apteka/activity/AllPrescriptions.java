@@ -51,7 +51,7 @@ public class AllPrescriptions implements Activity {
 
 	private JTable prescriptionsTable;
 
-	private Object[] columnsHeader = new String[] { "Номер", "Дата", "Пацієнт", "Ліки", "Лікар" };
+	private Object[] columnsHeader = new String[] { "Номер", "Дата", "Пацієнт", "Ліки", "Лікар", "Статус" };
 
 	private JTextField queryField;
 
@@ -153,7 +153,7 @@ public class AllPrescriptions implements Activity {
 					params.put("sold", true);
 				else if (availableButton.isSelected())
 					params.put("sold", false);
-				
+
 				mapper.changeActivity("allPrescriptions", params);
 			}
 		});
@@ -404,6 +404,11 @@ public class AllPrescriptions implements Activity {
 			array[i][3] = prescriptions.get(i).getPrescriptionMedicines().size();
 			array[i][4] = prescriptions.get(i).getDoctor().getSurname() + " "
 					+ prescriptions.get(i).getDoctor().getName();
+
+			if (prescriptions.get(i).getSold())
+				array[i][5] = "Продано";
+			else
+				array[i][5] = "Доступно";
 		}
 
 		return array;
