@@ -191,7 +191,7 @@ public class AllDeliveriesActivity implements Activity {
 		deliveriesTable = new JTable(getData(deliveries), columnsHeader);
 		deliveriesTable.setSelectionMode(ListSelectionModel.SINGLE_SELECTION);
 		deliveriesTable.setFont(font);
-		deliveriesTable.setRowHeight(ROW_HEIGHT);		
+		deliveriesTable.setRowHeight(ROW_HEIGHT);
 		deliveriesTable.setBorder(BorderFactory.createLineBorder(Color.GRAY));
 		deliveriesTable.getTableHeader().setBorder(BorderFactory.createLineBorder(Color.GRAY));
 
@@ -277,13 +277,19 @@ public class AllDeliveriesActivity implements Activity {
 				int selectedRow = deliveriesTable.getSelectedRow();
 
 				if (selectedRow != -1) {
-					Long id = deliveries.get(selectedRow).getId();
+					try {
+						Long id = deliveries.get(selectedRow).getId();
 
-					boolean success = deliveryService.deleteDelivery(id);
+						boolean success = deliveryService.deleteDelivery(id);
 
-					if (success)
-						mapper.changeActivity("allDeliveries", params);
-					else {
+						if (success)
+							mapper.changeActivity("allDeliveries", params);
+						else {
+							JOptionPane.showMessageDialog(jFrame,
+									new String[] { "Не можна видалити поставку, бо товари уже було придбано." },
+									"Помилка", JOptionPane.ERROR_MESSAGE);
+						}
+					} catch (Exception ex) {
 						JOptionPane.showMessageDialog(jFrame,
 								new String[] { "Не можна видалити поставку, бо товари уже було придбано." }, "Помилка",
 								JOptionPane.ERROR_MESSAGE);
