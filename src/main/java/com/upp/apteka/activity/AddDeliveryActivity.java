@@ -174,8 +174,23 @@ public class AddDeliveryActivity implements Activity {
 		medicinePanel.setPreferredSize(new Dimension(0, MIN_MEDICINE_PANEL_HEIGHT));
 		medicinePanel.add(medicineLabel);
 		medicinePanel.add(searchMedicine);
+		
+		/*
+		 * Ty tupe dno. Love you =)
+		 * hovnocode
+		 */
+		JPanel emptyPanel = new JPanel();
+		emptyPanel.setLayout(new GridLayout(0, 1, 0, 5));
+		emptyPanel.setBorder(BorderFactory.createEmptyBorder(0, 20, 0, 20));
+
+		JPanel emptyPanel2 = new JPanel();
+		emptyPanel2.setLayout(new GridLayout(0, 1, 0, 5));
+		emptyPanel2.setBorder(BorderFactory.createEmptyBorder(0, 20, 0, 20));
+
 
 		fieldsPanel.add(datePanel);
+		fieldsPanel.add(emptyPanel);
+		fieldsPanel.add(emptyPanel2);
 
 		listPanel.add(medicinePanel, BorderLayout.NORTH);
 		listPanel.add(pane, BorderLayout.CENTER);
