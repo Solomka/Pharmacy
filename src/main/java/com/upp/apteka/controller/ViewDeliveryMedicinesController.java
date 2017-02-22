@@ -31,7 +31,7 @@ public class ViewDeliveryMedicinesController implements SwingController {
 
 		Long deliveryId = (Long) params.get("id");
 
-		List<DeliveryMedicine> medicines = deliveryService.getDeliveryMedicines(deliveryId, page, DELMEDS_PER_PAGE);
+		List<DeliveryMedicine> medicines = deliveryService.getDeliveryMedicines(deliveryId, (page - 1) * DELMEDS_PER_PAGE, DELMEDS_PER_PAGE);
 		
 		System.out.println("Controller meds: " + medicines.size());
 		Delivery delivery = deliveryService.getDelivery(deliveryId);
