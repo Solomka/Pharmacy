@@ -61,10 +61,16 @@ public class DeliveryServiceImpl implements DeliveryService {
 
 	public Long addDelivery(Date date, List<ChooseMedicineDto> dtos) {
 
+		/*
+		 * create new delivery
+		 */
 		Delivery delivery = new Delivery();
 		delivery.setDate(date);
 		delivery.setPharmacy(pharmacy);
 
+		/*
+		 * delivery medicines
+		 */
 		List<DeliveryMedicine> set = new ArrayList<DeliveryMedicine>();
 
 		for (ChooseMedicineDto cmd : dtos) {
@@ -73,6 +79,8 @@ public class DeliveryServiceImpl implements DeliveryService {
 			pm.setMedicine(medicineService.read(cmd.getMedicineId()));
 			pm.setDelivery(delivery);
 			pm.setBoxQuantity(cmd.getQuantity());
+
+			// delivery.addToDeliveryMedicine(pm);
 
 			set.add(pm);
 		}

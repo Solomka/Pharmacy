@@ -89,7 +89,7 @@ public class AddDeliveryActivity implements Activity {
 		parentPanel.setLayout(new GridLayout(0, 1, 10, 10));
 
 		JPanel mainFieldsPanel = new JPanel();
-		Border fieldsBorder = BorderFactory.createTitledBorder("Дані про дату");
+		Border fieldsBorder = BorderFactory.createTitledBorder("Дані про дату (MM/dd/yyyy)");
 		mainFieldsPanel.setLayout(new GridLayout(0, 1));
 		mainFieldsPanel.setBorder(fieldsBorder);
 		//mainFieldsPanel.setMaximumSize(new Dimension(175, 175));
