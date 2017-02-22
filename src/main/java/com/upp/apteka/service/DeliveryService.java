@@ -5,6 +5,7 @@ import java.util.List;
 
 import com.upp.apteka.bo.Delivery;
 import com.upp.apteka.bo.DeliveryMedicine;
+import com.upp.apteka.dto.ChooseMedicineDto;
 
 public interface DeliveryService {
 
@@ -16,7 +17,9 @@ public interface DeliveryService {
 	
 	Delivery getDelivery(Long id);
 	
+	//add new Delivery
 	Long addDelivery(Delivery delivery);
+	Long addDelivery(Date date, List<ChooseMedicineDto> dtos);
 	
 	void updateDelivery(Delivery delivery);
 	
