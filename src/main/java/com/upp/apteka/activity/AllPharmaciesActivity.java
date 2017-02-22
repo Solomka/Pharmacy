@@ -251,7 +251,6 @@ public class AllPharmaciesActivity implements Activity {
 						Long id = pharmacies.get(selectedRow).getId();
 
 						boolean success = pharmacyService.deletePharmacy(id);
-
 						if (success) {
 							mapper.changeActivity("allPharmacies", params);
 

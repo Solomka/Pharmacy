@@ -189,7 +189,7 @@ public class AddPrescriptionActivity implements Activity {
 		controlPanel.add(quantityPanel, BorderLayout.WEST);
 		controlPanel.add(buttonsPanel, BorderLayout.EAST);
 
-		JLabel dateLabel = new JLabel("Введіть дату:");
+		JLabel dateLabel = new JLabel("Введіть дату (MM/dd/yyyy):");
 		JLabel doctorLabel = new JLabel("Виберіть лікаря:");
 		JLabel patientLabel = new JLabel("Виберіть пацієнта:");
 		JLabel medicineLabel = new JLabel("Виберіть ліки:");

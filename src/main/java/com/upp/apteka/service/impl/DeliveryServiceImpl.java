@@ -3,6 +3,7 @@ package com.upp.apteka.service.impl;
 import java.math.BigDecimal;
 import java.math.MathContext;
 import java.sql.Date;
+import java.util.ArrayList;
 import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -15,8 +16,11 @@ import com.upp.apteka.bo.DeliveryMedicine;
 import com.upp.apteka.bo.Medicine;
 import com.upp.apteka.bo.Pharmacy;
 import com.upp.apteka.bo.PharmacyMedicine;
+import com.upp.apteka.dto.ChooseMedicineDto;
 import com.upp.apteka.repository.DeliveryRepository;
+import com.upp.apteka.repository.MedicineRepository;
 import com.upp.apteka.service.DeliveryService;
+import com.upp.apteka.service.MedicineService;
 import com.upp.apteka.service.PharmacyService;
 
 @Service("deliveryService")
@@ -28,6 +32,13 @@ public class DeliveryServiceImpl implements DeliveryService {
 
 	@Autowired
 	PharmacyService pharmacyService;
+
+	@Autowired
+	private MedicineService medicineService;
+
+	// current deliveries pharmacy
+	@Autowired
+	Pharmacy pharmacy;
 
 	public List<Delivery> getAllDeliveries(int offset) {
 
@@ -47,6 +58,37 @@ public class DeliveryServiceImpl implements DeliveryService {
 	public Delivery getDelivery(Long id) {
 
 		return deliveryRepository.read(id);
+	}
+
+	public Long addDelivery(Date date, List<ChooseMedicineDto> dtos) {
+
+		/*
+		 * create new delivery
+		 */
+		Delivery delivery = new Delivery();
+		delivery.setDate(date);
+		delivery.setPharmacy(pharmacy);
+
+		/*
+		 * delivery medicines
+		 */
+		List<DeliveryMedicine> set = new ArrayList<DeliveryMedicine>();
+
+		for (ChooseMedicineDto cmd : dtos) {
+			DeliveryMedicine pm = new DeliveryMedicine();
+
+			pm.setMedicine(medicineService.getMedicine(cmd.getMedicineId()));
+			pm.setDelivery(delivery);
+			pm.setBoxQuantity(cmd.getQuantity());
+
+			// delivery.addToDeliveryMedicine(pm);
+
+			set.add(pm);
+		}
+
+		delivery.setDeliveryMedicines(set);
+
+		return addDelivery(delivery);
 	}
 
 	public Long addDelivery(Delivery delivery) {

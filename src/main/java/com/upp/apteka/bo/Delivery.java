@@ -95,7 +95,8 @@ public class Delivery implements Serializable {
 		return deliveryMedicines;
 	}
 
-	protected void setDeliveryMedicines(List<DeliveryMedicine> deliveryMedicines) {
+	//protected
+	public void setDeliveryMedicines(List<DeliveryMedicine> deliveryMedicines) {
 		this.deliveryMedicines = deliveryMedicines;
 	}
 

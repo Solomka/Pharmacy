@@ -8,6 +8,7 @@ import org.springframework.context.ApplicationContext;
 import org.springframework.stereotype.Component;
 
 import com.upp.apteka.activity.Activity;
+import com.upp.apteka.service.DeliveryService;
 
 @Component("addDelivery")
 public class AddDeliveryController implements SwingController {
@@ -15,9 +16,21 @@ public class AddDeliveryController implements SwingController {
 	@Autowired
 	ApplicationContext appContext;
 
+	@Autowired
+	DeliveryService deliveryService;
+
 	public void switchToActivity(Map<String, Object> params) {
 		Activity addDeliveryActivity = (Activity) appContext.getBean("addDeliveryActivity");
-		addDeliveryActivity.showActivity(new HashMap<String, Object>());
+		Long deliveryId = (Long) params.get("id");
+
+		//for editing, but not in my case, aahaahha =)
+		if (deliveryId != null) {
+			Map<String, Object> newParams = new HashMap<String, Object>();
+			newParams.put("delivery", deliveryService.getDelivery(deliveryId));
+			addDeliveryActivity.showActivity(newParams);
+		} else {
+			addDeliveryActivity.showActivity(params);
+		}
 	}
 
 }
