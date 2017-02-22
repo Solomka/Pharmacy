@@ -257,6 +257,7 @@ public class AllDeliveriesActivity implements Activity {
 
 					Map<String, Object> params = new HashMap<String, Object>();
 					params.put("id", id);
+					params.put("current", 1);
 
 					mapper.changeActivity("viewDeliveryMedicines", params);
 				} else {
