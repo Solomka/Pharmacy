@@ -19,5 +19,10 @@ public interface DeliveryRepository extends IRepository<Delivery, Long> {
 	boolean checkIfDeliveryMedicineSold(Long deliveryId);
 
 	List<DeliveryMedicine> getDeliveryMedicines(Long deliveryId, int offset, int limit);
+	
+
+	List<Delivery> findByQuery(String query, Date start, Date finish, int offset, int limit, boolean or);
+
+	int count(String query, Date start, Date finish, boolean or);
 
 }

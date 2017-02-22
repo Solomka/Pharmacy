@@ -30,5 +30,9 @@ public interface DeliveryService {
 	List<Delivery> getPharmacyMedicineDeliveriesByPeriod(Date from, Date to, Long pharmacyId, Long medicineId, int offset);
 	
 	List<DeliveryMedicine> getDeliveryMedicines(Long deliveryId, int offset);
+	
+	List<Delivery> findByQuery(String query, Date start, Date finish, int offset, int limit, boolean or);
+
+	int count(String query, Date start, Date finish, boolean or);
 
 }

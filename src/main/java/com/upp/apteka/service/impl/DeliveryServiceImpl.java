@@ -183,5 +183,15 @@ public class DeliveryServiceImpl implements DeliveryService {
 		}
 		return false;
 	}
+	
+	public List<Delivery> findByQuery(String query, Date start, Date finish, int offset, int limit, boolean or){
+		
+		return deliveryRepository.findByQuery(query, start, finish, offset, limit, or);		
+	}
+
+	public int count(String query, Date start, Date finish, boolean or){
+		
+		return deliveryRepository.count(query, start, finish, or);		
+	}
 
 }
