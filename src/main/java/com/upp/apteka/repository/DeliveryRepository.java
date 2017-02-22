@@ -20,4 +20,10 @@ public interface DeliveryRepository extends IRepository<Delivery, Long> {
 
 	List<DeliveryMedicine> getDeliveryMedicines(Long deliveryId, int offset, int limit);
 
+	List<Delivery> findByQuery(String query, Date start, Date finish, int offset, int limit, boolean or);
+
+	int countDM(Long deliveryId);
+
+	int count(String query, Date start, Date finish, boolean or);
+
 }

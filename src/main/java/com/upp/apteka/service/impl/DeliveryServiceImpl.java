@@ -39,6 +39,11 @@ public class DeliveryServiceImpl implements DeliveryService {
 		return deliveryRepository.findPharmacyDeliveries(pharmacyId, offset, Constants.LIMIT);
 	}
 
+	public int countDM(Long deliveryId) {
+
+		return deliveryRepository.countDM(deliveryId);
+	}
+
 	public Delivery getDelivery(Long id) {
 
 		return deliveryRepository.read(id);
@@ -53,7 +58,7 @@ public class DeliveryServiceImpl implements DeliveryService {
 		List<DeliveryMedicine> delMeds = delivery.getDeliveryMedicines();
 
 		// get delivery pharmacy
-		Pharmacy pharmacy = pharmacyService.getPharmacy(delivery.getPharmacy().getId());		
+		Pharmacy pharmacy = pharmacyService.getPharmacy(delivery.getPharmacy().getId());
 
 		// get all PharmacyMedicines by pharmacyId
 		List<PharmacyMedicine> pharmMeds = pharmacy.getPharmacyMedicines();
@@ -82,7 +87,7 @@ public class DeliveryServiceImpl implements DeliveryService {
 		}
 
 		pharmacyService.updatePharmacy(pharmacy);
-		
+
 		return delId;
 
 	}
@@ -93,22 +98,23 @@ public class DeliveryServiceImpl implements DeliveryService {
 	}
 
 	public boolean deleteDelivery(Long id) {
-		
-		if(deliveryRepository.checkIfDeliveryMedicineSold(id)){
+
+		if (deliveryRepository.checkIfDeliveryMedicineSold(id)) {
 			return false;
-		}else{
-			//update pharmacy medicines quntity
+		} else {
+			// update pharmacy medicines quntity
 			Delivery delivery = deliveryRepository.read(id);
-			
+
 			// get delivery pharmacy
-			//Pharmacy pharmacy = pharmacyService.getPharmacy(delivery.getPharmacy().getId());
+			// Pharmacy pharmacy =
+			// pharmacyService.getPharmacy(delivery.getPharmacy().getId());
 			Pharmacy pharmacy = delivery.getPharmacy();
 
 			// get all PharmacyMedicines by pharmacyId
 			List<PharmacyMedicine> pharmMeds = pharmacy.getPharmacyMedicines();
 
 			List<DeliveryMedicine> delMeds = delivery.getDeliveryMedicines();
-			
+
 			for (DeliveryMedicine delMed : delMeds) {
 				if (pharmacyMedicineCheck(pharmMeds, delMed)) {
 
@@ -118,8 +124,8 @@ public class DeliveryServiceImpl implements DeliveryService {
 						}
 					}
 
-				} 
-				}	
+				}
+			}
 			pharmacyService.updatePharmacy(pharmacy);
 			return deliveryRepository.delete(id);
 		}
@@ -136,14 +142,14 @@ public class DeliveryServiceImpl implements DeliveryService {
 		return deliveryRepository.findPharmacyMedicineDeliveriesByPeriod(from, to, pharmacyId, medicineId, offset,
 				Constants.LIMIT);
 	}
-	
-	public List<DeliveryMedicine> getDeliveryMedicines(Long deliveryId, int offset){
-		return deliveryRepository.getDeliveryMedicines(deliveryId, offset, Constants.LIMIT);
+
+	public List<DeliveryMedicine> getDeliveryMedicines(Long deliveryId, int offset, int limit) {
+		return deliveryRepository.getDeliveryMedicines(deliveryId, offset, limit);
 	}
-	
-	public boolean checkIfDeliveryMedicineSold(Long deliveryId){
-		
-		return false;
+
+	public boolean checkIfDeliveryMedicineSold(Long deliveryId) {
+
+		return deliveryRepository.checkIfDeliveryMedicineSold(deliveryId);
 	}
 
 	private int generatePMPackQuantity(DeliveryMedicine delMed) {
@@ -184,4 +190,13 @@ public class DeliveryServiceImpl implements DeliveryService {
 		return false;
 	}
 
+	public List<Delivery> findByQuery(String query, Date start, Date finish, int offset, int limit, boolean or) {
+
+		return deliveryRepository.findByQuery(query, start, finish, offset, limit, or);
+	}
+
+	public int count(String query, Date start, Date finish, boolean or) {
+
+		return deliveryRepository.count(query, start, finish, or);
+	}
 }
