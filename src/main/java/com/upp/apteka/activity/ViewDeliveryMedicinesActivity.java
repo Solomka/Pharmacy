@@ -91,7 +91,7 @@ public class ViewDeliveryMedicinesActivity implements Activity {
 		searchPanel.setBorder(BorderFactory.createEmptyBorder(20, 20, 20, 20));
 				
 		JTextField deliveryInfo = new JTextField();
-		deliveryInfo.setText("Delivery: № " +  delivery.getId().toString() + " (" + delivery.getDate() + ")");
+		deliveryInfo.setText("Поставка: № " +  delivery.getId().toString() + " (" + delivery.getDate() + ")");
 		deliveryInfo.setEditable(false);
 		searchPanel.add(deliveryInfo, BorderLayout.CENTER);		
 
