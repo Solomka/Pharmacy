@@ -68,7 +68,7 @@ public class AllMedicinesActivity implements Activity {
 	private MedicineService medicineService;
 
 	@SuppressWarnings("unchecked")
-	//@Override
+	// @Override
 	public void showActivity(final Map<String, Object> params) {
 
 		// add main panel
@@ -83,7 +83,7 @@ public class AllMedicinesActivity implements Activity {
 		lastPage = (Integer) params.get("last");
 
 		currentPage = (Integer) params.get("current");
-		
+
 		/*
 		 * find by any query panel
 		 */
@@ -241,16 +241,22 @@ public class AllMedicinesActivity implements Activity {
 				int selectedRow = medicinesTable.getSelectedRow();
 
 				if (selectedRow != -1) {
-					Long id = medicines.get(selectedRow).getId();
+					try {
+						Long id = medicines.get(selectedRow).getId();
 
-					boolean success = medicineService.deleteMedicine(id);
+						boolean success = medicineService.deleteMedicine(id);
 
-					if (success) {
-						mapper.changeActivity("allMedicines", params);
+						if (success) {
+							mapper.changeActivity("allMedicines", params);
 
-						JOptionPane.showMessageDialog(jFrame, "Ліки успішно видалені!", "Успішна операція",
-								JOptionPane.INFORMATION_MESSAGE);
-					} else {
+							JOptionPane.showMessageDialog(jFrame, "Ліки успішно видалені!", "Успішна операція",
+									JOptionPane.INFORMATION_MESSAGE);
+						} else {
+							JOptionPane.showMessageDialog(jFrame,
+									new String[] { "Ліки є у багатьох аптеках. Так що ні-ні." }, "Помилка",
+									JOptionPane.ERROR_MESSAGE);
+						}
+					} catch (Exception ex) {
 						JOptionPane.showMessageDialog(jFrame,
 								new String[] { "Ліки є у багатьох аптеках. Так що ні-ні." }, "Помилка",
 								JOptionPane.ERROR_MESSAGE);

@@ -99,6 +99,9 @@ public class DeliveryRepositoryImpl extends AHibernateRepository<Delivery, Long>
 		return (List<Delivery>) query.setFirstResult(offset).setMaxResults(limit).list();
 	}
 	
+	/*
+	 * check if at least one medicine was sold after this medicine's the most recent delivery
+	 */
 	 public boolean checkIfDeliveryMedicineSold(Long deliveryId){
 		 
 		 String hql = " SELECT p"

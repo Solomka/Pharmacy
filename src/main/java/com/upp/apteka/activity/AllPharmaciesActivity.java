@@ -68,7 +68,7 @@ public class AllPharmaciesActivity implements Activity {
 	private PharmacyService pharmacyService;
 
 	@SuppressWarnings("unchecked")
-	//@Override
+	// @Override
 	public void showActivity(final Map<String, Object> params) {
 
 		// add main panel
@@ -80,9 +80,9 @@ public class AllPharmaciesActivity implements Activity {
 
 		// get data from params
 		pharmacies = (List<Pharmacy>) params.get("pharmacies");
-		lastPage = (Integer) params.get("last");		
+		lastPage = (Integer) params.get("last");
 		currentPage = (Integer) params.get("current");
-		
+
 		/*
 		 * find by any query panel
 		 */
@@ -170,7 +170,7 @@ public class AllPharmaciesActivity implements Activity {
 
 				params.put("current", currentPage + 1);
 				params.put("query", query);
-				
+
 				mapper.changeActivity("allPharmacies", params);
 			}
 		});
@@ -192,7 +192,7 @@ public class AllPharmaciesActivity implements Activity {
 
 				params.put("current", currentPage - 1);
 				params.put("query", query);
-				
+
 				mapper.changeActivity("allPharmacies", params);
 			}
 		});
@@ -247,19 +247,26 @@ public class AllPharmaciesActivity implements Activity {
 				int selectedRow = pharmaciesTable.getSelectedRow();
 
 				if (selectedRow != -1) {
-					Long id = pharmacies.get(selectedRow).getId();
+					try {
+						Long id = pharmacies.get(selectedRow).getId();
 
-					boolean success = pharmacyService.deletePharmacy(id);
+						boolean success = pharmacyService.deletePharmacy(id);
 
-					if (success) {
-						mapper.changeActivity("allPharmacies", params);
+						if (success) {
+							mapper.changeActivity("allPharmacies", params);
 
-						JOptionPane.showMessageDialog(jFrame, "Аптеку успішно видалено!", "Успішна операція",
-								JOptionPane.INFORMATION_MESSAGE);
-					} else {
+							JOptionPane.showMessageDialog(jFrame, "Аптеку успішно видалено!", "Успішна операція",
+									JOptionPane.INFORMATION_MESSAGE);
+						} else {
+							JOptionPane.showMessageDialog(jFrame,
+									new String[] { "Аптека не може бути видалена. Можливі втрати даних" }, "Помилка",
+									JOptionPane.ERROR_MESSAGE);
+						}
+					} catch (Exception ex) {
 						JOptionPane.showMessageDialog(jFrame,
 								new String[] { "Аптека не може бути видалена. Можливі втрати даних" }, "Помилка",
 								JOptionPane.ERROR_MESSAGE);
+
 					}
 				} else {
 					JOptionPane.showMessageDialog(jFrame, new String[] { "Виберіть спочатку аптеку!" }, "Помилка",
