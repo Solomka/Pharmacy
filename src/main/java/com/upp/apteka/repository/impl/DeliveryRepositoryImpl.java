@@ -128,6 +128,16 @@ public class DeliveryRepositoryImpl extends AHibernateRepository<Delivery, Long>
 		Query query = createQuery(hql).setParameter("deliveryId", deliveryId);
 		return  (List<DeliveryMedicine>) query.setFirstResult(offset).setMaxResults(limit).list();
 	 }
+	 
+	 public int countDM(Long deliveryId) {
+			
+		 String hql ="SELECT dM"
+					+ " FROM DeliveryMedicine AS dM"
+					+ " WHERE dM.deliveryMedicineID.delivery.id = :deliveryId order by dM.deliveryMedicineID.medicine.name asc";
+			
+		Query query = createQuery(hql).setParameter("deliveryId", deliveryId);
+		return  (int) query.list().size();
+		}
 
 	@SuppressWarnings("unchecked")
 	public List<Delivery> findByQuery(String query, Date start, Date finish, int offset, int limit, boolean or) {
@@ -201,6 +211,6 @@ public class DeliveryRepositoryImpl extends AHibernateRepository<Delivery, Long>
 
 		criteria.add(conjunction);
 		return criteria;
-	}
+	}	
 
 }
