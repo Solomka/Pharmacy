@@ -282,9 +282,11 @@ public class AllDeliveriesActivity implements Activity {
 
 						boolean success = deliveryService.deleteDelivery(id);
 
-						if (success)
+						if (success) {
 							mapper.changeActivity("allDeliveries", params);
-						else {
+							JOptionPane.showMessageDialog(jFrame, new String[] { "Поставка успішно видалена." },
+									"Успішна операція", JOptionPane.INFORMATION_MESSAGE);
+						} else {
 							JOptionPane.showMessageDialog(jFrame,
 									new String[] { "Не можна видалити поставку, бо товари уже було придбано." },
 									"Помилка", JOptionPane.ERROR_MESSAGE);

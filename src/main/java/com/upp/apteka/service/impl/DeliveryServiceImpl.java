@@ -20,6 +20,7 @@ import com.upp.apteka.dto.ChooseMedicineDto;
 import com.upp.apteka.repository.DeliveryRepository;
 import com.upp.apteka.repository.MedicineRepository;
 import com.upp.apteka.service.DeliveryService;
+import com.upp.apteka.service.MedicineService;
 import com.upp.apteka.service.PharmacyService;
 
 @Service("deliveryService")
@@ -33,7 +34,7 @@ public class DeliveryServiceImpl implements DeliveryService {
 	PharmacyService pharmacyService;
 
 	@Autowired
-	private MedicineRepository medicineService;
+	private MedicineService medicineService;
 
 	// current deliveries pharmacy
 	@Autowired
@@ -76,7 +77,7 @@ public class DeliveryServiceImpl implements DeliveryService {
 		for (ChooseMedicineDto cmd : dtos) {
 			DeliveryMedicine pm = new DeliveryMedicine();
 
-			pm.setMedicine(medicineService.read(cmd.getMedicineId()));
+			pm.setMedicine(medicineService.getMedicine(cmd.getMedicineId()));
 			pm.setDelivery(delivery);
 			pm.setBoxQuantity(cmd.getQuantity());
 
