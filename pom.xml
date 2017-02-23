@@ -11,12 +11,8 @@
 	<url>http://maven.apache.org</url>
 
 	<!-- JBoss repository for Hibernate -->
-	<!-- <repositories>
-		<repository>
-			<id>JBoss repository</id>
-			<url>http://repository.jboss.org/nexus/content/groups/public/</url>
-		</repository>
-	</repositories> -->
+	<!-- <repositories> <repository> <id>JBoss repository</id> <url>http://repository.jboss.org/nexus/content/groups/public/</url> 
+		</repository> </repositories> -->
 
 	<!-- Spring library version -->
 	<properties>
@@ -94,17 +90,10 @@
 			<type>jar</type>
 			<scope>compile</scope>
 		</dependency>
-		<!-- 
-		<dependency>
-			<groupId>org.springframework.data</groupId>
-			<artifactId>spring-data-jpa</artifactId>
-			<version>1.10.4.RELEASE</version>
-		</dependency>
-		<dependency>
-			<groupId>org.springframework</groupId>
-			<artifactId>spring-aspects</artifactId>
-			<version>3.1.2.RELEASE</version>
-		</dependency> -->
+		<!-- <dependency> <groupId>org.springframework.data</groupId> <artifactId>spring-data-jpa</artifactId> 
+			<version>1.10.4.RELEASE</version> </dependency> <dependency> <groupId>org.springframework</groupId> 
+			<artifactId>spring-aspects</artifactId> <version>3.1.2.RELEASE</version> 
+			</dependency> -->
 
 
 		<!-- Hibernate -->
@@ -115,12 +104,8 @@
 		</dependency>
 
 		<!-- https://mvnrepository.com/artifact/javax.validation/validation-api -->
-		<!--  
-		<dependency>
-			<groupId>javax.validation</groupId>
-			<artifactId>validation-api</artifactId>
-			<version>1.1.0.Final</version>
-		</dependency>-->
+		<!-- <dependency> <groupId>javax.validation</groupId> <artifactId>validation-api</artifactId> 
+			<version>1.1.0.Final</version> </dependency> -->
 
 		<dependency>
 			<groupId>org.hibernate</groupId>
@@ -165,7 +150,7 @@
 			<version>${junit.version}</version>
 			<scope>test</scope>
 		</dependency>
-		
+
 		<dependency>
 			<groupId>javax.el</groupId>
 			<artifactId>javax.el-api</artifactId>
@@ -181,16 +166,16 @@
 			<artifactId>aspectjweaver</artifactId>
 			<version>${aspectj.version}</version>
 		</dependency>
-		
+
 		<!-- https://mvnrepository.com/artifact/net.sourceforge.jdatepicker/jdatepicker -->
 		<dependency>
-    		<groupId>net.sourceforge.jdatepicker</groupId>
-    		<artifactId>jdatepicker</artifactId>
-    		<version>1.3.2</version>
+			<groupId>net.sourceforge.jdatepicker</groupId>
+			<artifactId>jdatepicker</artifactId>
+			<version>1.3.2</version>
 		</dependency>
-		
+
 	</dependencies>
-	
+
 	<build>
 		<finalName>apteka</finalName>
 		<plugins>
@@ -222,16 +207,16 @@
 				<groupId>org.apache.maven.plugins</groupId>
 				<artifactId>maven-jar-plugin</artifactId>
 				<configuration>
-				  <excludes>
-					<exclude>**/log4j.properties</exclude>
-				  </excludes>
-				  <archive>
-				    <manifest>
-					<addClasspath>true</addClasspath>
-					<mainClass>com.upp.apteka.App</mainClass>
-					<classpathPrefix>dependency-jars/</classpathPrefix>
-				    </manifest>
-				  </archive>
+					<excludes>
+						<exclude>**/log4j.properties</exclude>
+					</excludes>
+					<archive>
+						<manifest>
+							<addClasspath>true</addClasspath>
+							<mainClass>com.upp.apteka.App</mainClass>
+							<classpathPrefix>dependency-jars/</classpathPrefix>
+						</manifest>
+					</archive>
 				</configuration>
 			</plugin>
 			<!-- Copy project dependency -->
@@ -240,22 +225,41 @@
 				<artifactId>maven-dependency-plugin</artifactId>
 				<version>2.5.1</version>
 				<executions>
-				  <execution>
-					<id>copy-dependencies</id>
-					<phase>package</phase>
-					<goals>
-						<goal>copy-dependencies</goal>
-					</goals>
-					<configuration>
-					  <!-- exclude junit, we need runtime dependency only -->
-					  <includeScope>runtime</includeScope>
-					  <outputDirectory>${project.build.directory}/dependency-jars/</outputDirectory>
-					</configuration>
-				  </execution>
+					<execution>
+						<id>copy-dependencies</id>
+						<phase>package</phase>
+						<goals>
+							<goal>copy-dependencies</goal>
+						</goals>
+						<configuration>
+							<!-- exclude junit, we need runtime dependency only -->
+							<includeScope>runtime</includeScope>
+							<outputDirectory>${project.build.directory}/dependency-jars/</outputDirectory>
+						</configuration>
+					</execution>
 				</executions>
+			</plugin>
+			<!-- An uber-jar extract the content of the dependencies and put them 
+				with the classes/resources of the project itself, in one big JAR create a 
+				Jar together with its dependency Jars into a single executable Jar file, 
+				so called fat Jar or uber Jar. -->
+			<plugin>
+				<groupId>org.apache.maven.plugins</groupId>
+				<artifactId>maven-shade-plugin</artifactId>
+				<executions>
+					<execution>
+						<phase>package</phase>
+						<goals>
+							<goal>shade</goal>
+						</goals>
+					</execution>
+				</executions>
+				<configuration>
+					<finalName>uber-${artifactId}-${version}</finalName>
+				</configuration>
 			</plugin>
 
 		</plugins>
 	</build>
-	
+
 </project>
