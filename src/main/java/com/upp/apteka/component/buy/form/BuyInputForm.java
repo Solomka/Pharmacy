@@ -51,9 +51,9 @@ public class BuyInputForm extends JPanel {
 		if (price.intValue() != -1)
 			priceLabel = new JLabel(price + " грн");
 		else
-			priceLabel = new JLabel("NaN");
+			priceLabel = new JLabel("Таких ліків немає у мережі аптек");
 
-		priceLabel.setPreferredSize(new Dimension(100, HEIGHT));
+		priceLabel.setPreferredSize(new Dimension(200, HEIGHT));
 
 		add(medicineLabel);
 
