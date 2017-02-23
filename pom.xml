@@ -239,6 +239,10 @@
 					</execution>
 				</executions>
 			</plugin>
+			<!-- An uber-jar extract the content of the dependencies and put them 
+				with the classes/resources of the project itself, in one big JAR create a 
+				Jar together with its dependency Jars into a single executable Jar file, 
+				so called fat Jar or uber Jar. -->
 			<plugin>
 				<groupId>org.apache.maven.plugins</groupId>
 				<artifactId>maven-shade-plugin</artifactId>
