@@ -283,9 +283,9 @@ public class AllDeliveriesActivity implements Activity {
 						boolean success = deliveryService.deleteDelivery(id);
 
 						if (success) {
-							mapper.changeActivity("allDeliveries", params);
-							JOptionPane.showMessageDialog(jFrame, new String[] { "Поставка успішно видалена." },
+							JOptionPane.showMessageDialog(jFrame, new String[] { "Поставку успішно видалено." },
 									"Успішна операція", JOptionPane.INFORMATION_MESSAGE);
+							mapper.changeActivity("allDeliveries", params);
 						} else {
 							JOptionPane.showMessageDialog(jFrame,
 									new String[] { "Не можна видалити поставку, бо товари уже було придбано." },
@@ -297,7 +297,7 @@ public class AllDeliveriesActivity implements Activity {
 								JOptionPane.ERROR_MESSAGE);
 					}
 				} else {
-					JOptionPane.showMessageDialog(jFrame, new String[] { "Виберіть спочатку покупку!" }, "Помилка",
+					JOptionPane.showMessageDialog(jFrame, new String[] { "Виберіть спочатку поставку!" }, "Помилка",
 							JOptionPane.ERROR_MESSAGE);
 				}
 			}

@@ -345,8 +345,11 @@ public class AllPrescriptions implements Activity {
 
 					boolean success = prescriptionService.delete(id);
 
-					if (success)
+					if (success){
+						JOptionPane.showMessageDialog(jFrame, "Рецент успішно видалено!", "Успішна операція",
+								JOptionPane.INFORMATION_MESSAGE);
 						mapper.changeActivity("allPrescriptions", params);
+					}
 					else {
 						JOptionPane.showMessageDialog(jFrame, new String[] { "Є покупки, альо. Спробуйте пізніше." },
 								"Помилка", JOptionPane.ERROR_MESSAGE);

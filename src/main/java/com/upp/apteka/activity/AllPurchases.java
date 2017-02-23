@@ -67,12 +67,12 @@ public class AllPurchases implements Activity {
 
 	private int lastPage;
 	private int currentPage;
-	
+
 	private Date startDate;
 	private Date endDate;
 
 	private String query;
-	
+
 	private UtilDateModel endModel;
 	private UtilDateModel startModel;
 
@@ -80,7 +80,7 @@ public class AllPurchases implements Activity {
 	private PurchaseService purchaseService;
 
 	@SuppressWarnings("unchecked")
-	//@Override
+	// @Override
 	public void showActivity(final Map<String, Object> params) {
 
 		JPanel mainPanel = new JPanel();
@@ -106,13 +106,13 @@ public class AllPurchases implements Activity {
 		JButton queryButton = new JButton("Шукати");
 		queryButton.setPreferredSize(new Dimension(BUTTON_WIDTH, BUTTON_HEIGHT));
 		queryField.setPreferredSize(new Dimension(BUTTON_WIDTH, BUTTON_HEIGHT - 5));
-		
+
 		startModel = new UtilDateModel();
 		endModel = new UtilDateModel();
 
 		queryButton.addActionListener(new ActionListener() {
 
-			//@Override
+			// @Override
 			public void actionPerformed(ActionEvent e) {
 				params.put("query", queryField.getText());
 				params.put("startDate", startModel.getValue());
@@ -123,7 +123,7 @@ public class AllPurchases implements Activity {
 
 		query = (String) params.get("query");
 		queryField.setText(query);
-		
+
 		fieldWrapper.setLayout(new GridLayout(0, 1));
 		fieldWrapper.setBorder(BorderFactory.createEmptyBorder(1, 1, 1, 1));
 		fieldWrapper.add(queryField);
@@ -144,8 +144,8 @@ public class AllPurchases implements Activity {
 		searchPanel.add(contPanel, BorderLayout.WEST);
 		searchPanel.add(fieldWrapper, BorderLayout.CENTER);
 		searchPanel.add(queryButton, BorderLayout.EAST);
-		
-		if(startDate != null && endDate != null){
+
+		if (startDate != null && endDate != null) {
 			Calendar cal = Calendar.getInstance();
 			cal.setTime(endDate);
 			int month = cal.get(Calendar.MONTH);
@@ -153,7 +153,7 @@ public class AllPurchases implements Activity {
 			int year = cal.get(Calendar.YEAR);
 			endModel.setDate(year, month, day);
 			endModel.setSelected(true);
-			
+
 			cal.setTime(startDate);
 			month = cal.get(Calendar.MONTH);
 			day = cal.get(Calendar.DAY_OF_MONTH);
@@ -167,25 +167,25 @@ public class AllPurchases implements Activity {
 
 		JDatePanelImpl endDatePanel = new JDatePanelImpl(endModel);
 		JDatePickerImpl endDatePicker = new JDatePickerImpl(endDatePanel);
-		
+
 		JPanel datePanel = new JPanel();
 		datePanel.setLayout(new FlowLayout());
-		
+
 		JLabel startLabel = new JLabel("Початок: ");
 		startLabel.setFont(font);
 		datePanel.add(startLabel);
 		datePanel.add(startDatePicker);
-		
+
 		JLabel endLabel = new JLabel("Кінець: ");
 		endLabel.setFont(font);
 		datePanel.add(endLabel);
 		datePanel.add(endDatePicker);
-		
+
 		JPanel topPanel = new JPanel();
 		topPanel.setLayout(new BorderLayout());
 		topPanel.add(datePanel, BorderLayout.NORTH);
 		topPanel.add(searchPanel, BorderLayout.SOUTH);
-		
+
 		jFrame.add(topPanel, BorderLayout.NORTH);
 
 		purchasesTable = new JTable(getData(purchases), columnsHeader);
@@ -194,7 +194,7 @@ public class AllPurchases implements Activity {
 		purchasesTable.setRowHeight(ROW_HEIGHT);
 		purchasesTable.setBorder(BorderFactory.createLineBorder(Color.GRAY));
 		purchasesTable.getTableHeader().setBorder(BorderFactory.createLineBorder(Color.GRAY));
-		
+
 		purchasesTable.getColumnModel().getColumn(0).setMaxWidth(50);
 		purchasesTable.getColumnModel().getColumn(0).setPreferredWidth(50);
 		purchasesTable.getColumnModel().getColumn(1).setMaxWidth(85);
@@ -212,7 +212,7 @@ public class AllPurchases implements Activity {
 
 		nextButton.addActionListener(new ActionListener() {
 
-			//@Override
+			// @Override
 			public void actionPerformed(ActionEvent e) {
 				params.put("current", currentPage + 1);
 				mapper.changeActivity("allPurchases", params);
@@ -227,7 +227,7 @@ public class AllPurchases implements Activity {
 
 		prevButton.addActionListener(new ActionListener() {
 
-			//@Override
+			// @Override
 			public void actionPerformed(ActionEvent e) {
 				params.put("current", currentPage - 1);
 				mapper.changeActivity("allPurchases", params);
@@ -249,7 +249,7 @@ public class AllPurchases implements Activity {
 
 		editButton.addActionListener(new ActionListener() {
 
-			//@Override
+			// @Override
 			public void actionPerformed(ActionEvent e) {
 				int selectedRow = purchasesTable.getSelectedRow();
 
@@ -266,12 +266,12 @@ public class AllPurchases implements Activity {
 				}
 			}
 		});
-		
+
 		JButton viewButton = new JButton("Деталі");
 		viewButton.setPreferredSize(new Dimension(PAGINATION_BUTTON_WIDTH, PAGINATION_BUTTON_HEIGHT));
 		viewButton.addActionListener(new ActionListener() {
 
-			//@Override
+			// @Override
 			public void actionPerformed(ActionEvent e) {
 				int selectedRow = purchasesTable.getSelectedRow();
 
@@ -294,18 +294,20 @@ public class AllPurchases implements Activity {
 
 		removeButton.addActionListener(new ActionListener() {
 
-			//@Override
+			// @Override
 			public void actionPerformed(ActionEvent e) {
 				int selectedRow = purchasesTable.getSelectedRow();
 
 				if (selectedRow != -1) {
 					Long id = purchases.get(selectedRow).getId();
 
-					boolean success =  purchaseService.delete(id);
+					boolean success = purchaseService.delete(id);
 
-					if (success)
+					if (success) {
+						JOptionPane.showMessageDialog(jFrame, "Покупку успішно видалено!", "Успішна операція",
+								JOptionPane.INFORMATION_MESSAGE);
 						mapper.changeActivity("allPurchases", params);
-					else {
+					} else {
 						JOptionPane.showMessageDialog(jFrame, new String[] { "Щось пішло не так. Спробуйте пізніше." },
 								"Помилка", JOptionPane.ERROR_MESSAGE);
 					}
@@ -319,25 +321,25 @@ public class AllPurchases implements Activity {
 		JButton goButton = new JButton("Перейти");
 		goButton.setPreferredSize(new Dimension(PAGINATION_BUTTON_WIDTH, PAGINATION_BUTTON_HEIGHT));
 		goButton.addActionListener(new ActionListener() {
-			
-			//@Override
+
+			// @Override
 			public void actionPerformed(ActionEvent e) {
-				try{
+				try {
 					int page = Integer.valueOf(goTo.getText());
-					
-					if(page > lastPage)
+
+					if (page > lastPage)
 						page = lastPage;
-					
-					if(page < 0)
+
+					if (page < 0)
 						page = 0;
-					
+
 					params.put("current", page);
 					mapper.changeActivity("allPurchases", params);
-				}catch(Exception ex){
+				} catch (Exception ex) {
 					JOptionPane.showMessageDialog(jFrame, new String[] { "Числа нормальні треба вводити!" }, "Помилка",
 							JOptionPane.ERROR_MESSAGE);
 				}
-				
+
 			}
 		});
 
@@ -359,9 +361,11 @@ public class AllPurchases implements Activity {
 		for (int i = 0; i < purchases.size(); i++) {
 			array[i][0] = purchases.get(i).getId();
 			array[i][1] = purchases.get(i).getDate();
-			array[i][2] = purchases.get(i).getPrescription().getPatient().getSurname() + " " + purchases.get(i).getPrescription().getPatient().getName();
+			array[i][2] = purchases.get(i).getPrescription().getPatient().getSurname() + " "
+					+ purchases.get(i).getPrescription().getPatient().getName();
 			array[i][3] = purchases.get(i).getPharmacy().getName();
-			array[i][4] = purchases.get(i).getPrescription().getDate() + " " + purchases.get(i).getPrescription().getDoctor().getSurname();
+			array[i][4] = purchases.get(i).getPrescription().getDate() + " "
+					+ purchases.get(i).getPrescription().getDoctor().getSurname();
 		}
 
 		return array;
