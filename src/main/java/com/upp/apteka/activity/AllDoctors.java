@@ -228,9 +228,11 @@ public class AllDoctors implements Activity {
 
 					boolean success = doctorService.delete(id);
 
-					if (success)
+					if (success) {
+						JOptionPane.showMessageDialog(jFrame, new String[] { "Лікаря успішно видалено." },
+								"Успішна операція", JOptionPane.INFORMATION_MESSAGE);
 						mapper.changeActivity("allDoctors", params);
-					else {
+					} else {
 						JOptionPane.showMessageDialog(jFrame,
 								new String[] { "Він взагалі-то рецепти виписував. Так що ні-ні." }, "Помилка",
 								JOptionPane.ERROR_MESSAGE);

@@ -252,10 +252,9 @@ public class AllPharmaciesActivity implements Activity {
 
 						boolean success = pharmacyService.deletePharmacy(id);
 						if (success) {
-							mapper.changeActivity("allPharmacies", params);
-
 							JOptionPane.showMessageDialog(jFrame, "Аптеку успішно видалено!", "Успішна операція",
 									JOptionPane.INFORMATION_MESSAGE);
+							mapper.changeActivity("allPharmacies", params);
 						} else {
 							JOptionPane.showMessageDialog(jFrame,
 									new String[] { "Аптека не може бути видалена. Можливі втрати даних" }, "Помилка",

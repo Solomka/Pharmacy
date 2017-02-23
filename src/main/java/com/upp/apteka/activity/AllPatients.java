@@ -25,7 +25,6 @@ import javax.swing.ListSelectionModel;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Scope;
-import org.springframework.format.number.money.CurrencyUnitFormatter;
 import org.springframework.stereotype.Component;
 
 import com.upp.apteka.bo.Patient;
@@ -69,17 +68,17 @@ public class AllPatients implements Activity {
 	private PatientService patientService;
 
 	@SuppressWarnings("unchecked")
-	//@Override
+	// @Override
 	public void showActivity(final Map<String, Object> params) {
 
-		//add main panel
+		// add main panel
 		JPanel mainPanel = new JPanel();
 		mainPanel.setBorder(BorderFactory.createEmptyBorder(0, 20, 0, 20));
 
 		jFrame.setContentPane(mainPanel);
 		jFrame.setLayout(new BorderLayout());
-		
-		//get data from params
+
+		// get data from params
 		patients = (List<Patient>) params.get("patients");
 		lastPage = (Integer) params.get("last");
 		currentPage = (Integer) params.get("current");
@@ -87,13 +86,13 @@ public class AllPatients implements Activity {
 		/*
 		 * find by any query panel
 		 */
-		
+
 		JPanel searchPanel = new JPanel();
 		searchPanel.setLayout(new BorderLayout());
 		searchPanel.setBorder(BorderFactory.createEmptyBorder(20, 20, 20, 20));
 
 		JPanel fieldWrapper = new JPanel();
-		queryField = new JTextField();		
+		queryField = new JTextField();
 
 		JButton queryButton = new JButton("Шукати");
 		queryButton.setPreferredSize(new Dimension(BUTTON_WIDTH, BUTTON_HEIGHT));
@@ -104,7 +103,7 @@ public class AllPatients implements Activity {
 		 */
 		queryButton.addActionListener(new ActionListener() {
 
-			//@Override
+			// @Override
 			public void actionPerformed(ActionEvent e) {
 				Map<String, Object> params = new HashMap<String, Object>();
 
@@ -116,8 +115,8 @@ public class AllPatients implements Activity {
 		});
 
 		query = (String) params.get("query");
-		queryField.setText(query);		
-		
+		queryField.setText(query);
+
 		fieldWrapper.setLayout(new GridLayout(0, 1));
 		fieldWrapper.setBorder(BorderFactory.createEmptyBorder(1, 1, 1, 1));
 		fieldWrapper.add(queryField);
@@ -140,7 +139,7 @@ public class AllPatients implements Activity {
 		searchPanel.add(queryButton, BorderLayout.EAST);
 
 		jFrame.add(searchPanel, BorderLayout.NORTH);
-		
+
 		/*
 		 * work with table
 		 */
@@ -163,11 +162,11 @@ public class AllPatients implements Activity {
 		nextButton.setPreferredSize(new Dimension(PAGINATION_BUTTON_WIDTH, PAGINATION_BUTTON_HEIGHT));
 
 		/*
-		 *next button listener
+		 * next button listener
 		 */
 		nextButton.addActionListener(new ActionListener() {
 
-			//@Override
+			// @Override
 			public void actionPerformed(ActionEvent e) {
 				Map<String, Object> params = new HashMap<String, Object>();
 
@@ -192,8 +191,8 @@ public class AllPatients implements Activity {
 			/*
 			 * prevButton listenter
 			 */
-			
-			//@Override
+
+			// @Override
 			public void actionPerformed(ActionEvent e) {
 				Map<String, Object> params = new HashMap<String, Object>();
 
@@ -223,8 +222,8 @@ public class AllPatients implements Activity {
 		 * edit button listener
 		 */
 		editButton.addActionListener(new ActionListener() {
-			
-			//@Override
+
+			// @Override
 			public void actionPerformed(ActionEvent e) {
 				int selectedRow = patientsTable.getSelectedRow();
 
@@ -250,7 +249,7 @@ public class AllPatients implements Activity {
 		 */
 		removeButton.addActionListener(new ActionListener() {
 
-			//@Override
+			// @Override
 			public void actionPerformed(ActionEvent e) {
 				int selectedRow = patientsTable.getSelectedRow();
 
@@ -259,9 +258,11 @@ public class AllPatients implements Activity {
 
 					boolean success = patientService.delete(id);
 
-					if (success)
+					if (success) {
+						JOptionPane.showMessageDialog(jFrame, "Пацієнта успішно видалено!", "Успішна операція",
+								JOptionPane.INFORMATION_MESSAGE);
 						mapper.changeActivity("allPatients", params);
-					else {
+					} else {
 						JOptionPane.showMessageDialog(jFrame, new String[] { "Пацієнт купував багато. Так що ні-ні." },
 								"Помилка", JOptionPane.ERROR_MESSAGE);
 					}
@@ -274,33 +275,33 @@ public class AllPatients implements Activity {
 
 		JButton goButton = new JButton("Перейти");
 		goButton.setPreferredSize(new Dimension(PAGINATION_BUTTON_WIDTH, PAGINATION_BUTTON_HEIGHT));
-		
+
 		/*
 		 * goButton listener
 		 */
 		goButton.addActionListener(new ActionListener() {
-			
-			//@Override
+
+			// @Override
 			public void actionPerformed(ActionEvent e) {
-				try{
+				try {
 					int page = Integer.valueOf(goTo.getText());
-					
-					if(page > lastPage)
+
+					if (page > lastPage)
 						page = lastPage;
-					
-					if(page < 0)
+
+					if (page < 0)
 						page = 0;
-					
+
 					params.put("current", page);
 					mapper.changeActivity("allPatients", params);
-				}catch(Exception ex){
+				} catch (Exception ex) {
 					JOptionPane.showMessageDialog(jFrame, new String[] { "Числа нормальні треба вводити!" }, "Помилка",
 							JOptionPane.ERROR_MESSAGE);
 				}
-				
+
 			}
 		});
-		
+
 		paginationPanel.setLayout(new FlowLayout());
 		paginationPanel.add(nextButton, BorderLayout.WEST);
 		paginationPanel.add(goPanel, BorderLayout.WEST);
@@ -315,7 +316,7 @@ public class AllPatients implements Activity {
 	/*
 	 * table fill in
 	 */
-	
+
 	private Object[][] getData(List<Patient> patients) {
 		Object[][] array = new Object[patients.size()][columnsHeader.length];
 

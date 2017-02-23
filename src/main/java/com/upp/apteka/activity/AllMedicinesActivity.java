@@ -247,10 +247,9 @@ public class AllMedicinesActivity implements Activity {
 						boolean success = medicineService.deleteMedicine(id);
 
 						if (success) {
-							mapper.changeActivity("allMedicines", params);
-
 							JOptionPane.showMessageDialog(jFrame, "Ліки успішно видалені!", "Успішна операція",
 									JOptionPane.INFORMATION_MESSAGE);
+							mapper.changeActivity("allMedicines", params);
 						} else {
 							JOptionPane.showMessageDialog(jFrame,
 									new String[] { "Ліки є у багатьох аптеках. Так що ні-ні." }, "Помилка",
