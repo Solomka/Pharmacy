@@ -146,7 +146,7 @@ public class AddDeliveryActivity implements Activity {
 		/**
 		 * Блок кількості
 		 */
-		JLabel quantityLabel = new JLabel("Кількість: ");
+		JLabel quantityLabel = new JLabel("Кількість коробок: ");
 
 		NumberFormatter nf = new NumberFormatter();
 		nf.setMinimum(0);
@@ -293,7 +293,7 @@ public class AddDeliveryActivity implements Activity {
 
 						mapper.changeActivity("addDelivery", new HashMap<String, Object>());
 
-						JOptionPane.showMessageDialog(jFrame, "Успішно додано рецепт!", "Успішна операція",
+						JOptionPane.showMessageDialog(jFrame, "Успішно додано поставку!", "Успішна операція",
 								JOptionPane.INFORMATION_MESSAGE);
 
 					} catch (ParseException parseException) {

@@ -215,7 +215,10 @@ public class DeliveryServiceImpl implements DeliveryService {
 
 		BigDecimal pricePerPackWithVAT = pricePerPackWithExtra.add(pricePerPackWithExtra).multiply(vat,
 				MathContext.DECIMAL64);
-
+		
+		if(pricePerPackWithVAT.compareTo(BigDecimal.ZERO) == 0){
+			pricePerPackWithVAT = BigDecimal.ONE;
+		}
 		return pricePerPackWithVAT;
 	}
 
