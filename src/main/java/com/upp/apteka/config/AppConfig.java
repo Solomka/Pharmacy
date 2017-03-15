@@ -72,7 +72,7 @@ public class AppConfig {
 
 		JFrame dispatcherFrame = new JFrame();
 
-		dispatcherFrame.setTitle("Аптека");
+		dispatcherFrame.setTitle("Аптека: " + pharmacyId().getName() + " (" + pharmacyId().getAddress() + ")");
 		dispatcherFrame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 		dispatcherFrame.setMinimumSize(new Dimension(800, 700));
 		// dispatcherFrame.setResizable(false);
