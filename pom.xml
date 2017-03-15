@@ -27,6 +27,7 @@
 		<aspectj.version>1.6.11</aspectj.version>
 		<junit.version>3.8.1</junit.version>
 		<javax.el.version>2.2.4</javax.el.version>
+		<jfreechart.version>1.0.13</jfreechart.version>
 	</properties>
 
 	<dependencies>
@@ -166,6 +167,11 @@
 			<artifactId>aspectjweaver</artifactId>
 			<version>${aspectj.version}</version>
 		</dependency>
+		<dependency>
+			<groupId>jfree</groupId>
+			<artifactId>jfreechart</artifactId>
+			<version>${jfreechart.version}</version>
+		</dependency>
 
 		<!-- https://mvnrepository.com/artifact/net.sourceforge.jdatepicker/jdatepicker -->
 		<dependency>
@@ -201,90 +207,52 @@
 					<target>${jdk.version}</target>
 				</configuration>
 			</plugin>
-			
-			<!-- Maven Shade Plugin -->
-			<plugin>
-                <groupId>org.apache.maven.plugins</groupId>
-                <artifactId>maven-shade-plugin</artifactId>
-                <version>2.3</version>
-                <executions>
-                    <!-- Run shade goal on package phase -->
-                    <execution>
-                        <phase>package</phase>
-                        <goals>
-                            <goal>shade</goal>
-                        </goals>
-                        <configuration>
-                            <transformers>
-                                <!-- add Main-Class to manifest file -->
-                                <transformer
-                                    implementation="org.apache.maven.plugins.shade.resource.ManifestResourceTransformer">
-                                    <mainClass>com.upp.apteka.App</mainClass>
-                                </transformer>
-                            </transformers>
-                        </configuration>
-                    </execution>
-                </executions>
-            </plugin>
 
-			<!-- Make this jar executable -->
-			<!--  
-			<plugin>
-				<groupId>org.apache.maven.plugins</groupId>
-				<artifactId>maven-jar-plugin</artifactId>
-				<configuration>
-					<excludes>
-						<exclude>**/log4j.properties</exclude>
-					</excludes>
-					<archive>
-						<manifest>
-							<addClasspath>true</addClasspath>
-							<mainClass>com.upp.apteka.App</mainClass>
-							<classpathPrefix>dependency-jars/</classpathPrefix>
-						</manifest>
-					</archive>
-				</configuration>
-			</plugin> -->
-			<!-- Copy project dependency -->
-			<!-- 
-			<plugin>
-				<groupId>org.apache.maven.plugins</groupId>
-				<artifactId>maven-dependency-plugin</artifactId>
-				<version>2.5.1</version>
-				<executions>
-					<execution>
-						<id>copy-dependencies</id>
-						<phase>package</phase>
-						<goals>
-							<goal>copy-dependencies</goal>
-						</goals>
-						<configuration>							
-							<includeScope>runtime</includeScope>
-							<outputDirectory>${project.build.directory}/dependency-jars/</outputDirectory>
-						</configuration>
-					</execution>
-				</executions>
-			</plugin>  -->
-			<!-- An uber-jar extract the content of the dependencies and put them 
-				with the classes/resources of the project itself, in one big JAR create a 
-				Jar together with its dependency Jars into a single executable Jar file, 
-				so called fat Jar or uber Jar. -->
-			<!--  
+			<!-- Maven Shade Plugin -->
 			<plugin>
 				<groupId>org.apache.maven.plugins</groupId>
 				<artifactId>maven-shade-plugin</artifactId>
+				<version>2.3</version>
 				<executions>
+					<!-- Run shade goal on package phase -->
 					<execution>
 						<phase>package</phase>
 						<goals>
 							<goal>shade</goal>
 						</goals>
+						<configuration>
+							<transformers>
+								<!-- add Main-Class to manifest file -->
+								<transformer
+									implementation="org.apache.maven.plugins.shade.resource.ManifestResourceTransformer">
+									<mainClass>com.upp.apteka.App</mainClass>
+								</transformer>
+							</transformers>
+						</configuration>
 					</execution>
 				</executions>
-				<configuration>
-					<finalName>uber-${artifactId}-${version}</finalName>
-				</configuration>
-			</plugin>-->
+			</plugin>
+
+			<!-- Make this jar executable -->
+			<!-- <plugin> <groupId>org.apache.maven.plugins</groupId> <artifactId>maven-jar-plugin</artifactId> 
+				<configuration> <excludes> <exclude>**/log4j.properties</exclude> </excludes> 
+				<archive> <manifest> <addClasspath>true</addClasspath> <mainClass>com.upp.apteka.App</mainClass> 
+				<classpathPrefix>dependency-jars/</classpathPrefix> </manifest> </archive> 
+				</configuration> </plugin> -->
+			<!-- Copy project dependency -->
+			<!-- <plugin> <groupId>org.apache.maven.plugins</groupId> <artifactId>maven-dependency-plugin</artifactId> 
+				<version>2.5.1</version> <executions> <execution> <id>copy-dependencies</id> 
+				<phase>package</phase> <goals> <goal>copy-dependencies</goal> </goals> <configuration> 
+				<includeScope>runtime</includeScope> <outputDirectory>${project.build.directory}/dependency-jars/</outputDirectory> 
+				</configuration> </execution> </executions> </plugin> -->
+			<!-- An uber-jar extract the content of the dependencies and put them 
+				with the classes/resources of the project itself, in one big JAR create a 
+				Jar together with its dependency Jars into a single executable Jar file, 
+				so called fat Jar or uber Jar. -->
+			<!-- <plugin> <groupId>org.apache.maven.plugins</groupId> <artifactId>maven-shade-plugin</artifactId> 
+				<executions> <execution> <phase>package</phase> <goals> <goal>shade</goal> 
+				</goals> </execution> </executions> <configuration> <finalName>uber-${artifactId}-${version}</finalName> 
+				</configuration> </plugin> -->
 
 		</plugins>
 	</build>
