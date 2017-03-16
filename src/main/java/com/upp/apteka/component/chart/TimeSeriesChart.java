@@ -1,7 +1,6 @@
 package com.upp.apteka.component.chart;
 
 import java.awt.BorderLayout;
-import java.awt.Dimension;
 import java.awt.GridLayout;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
@@ -13,6 +12,7 @@ import java.util.List;
 import javax.swing.JButton;
 import javax.swing.JComboBox;
 import javax.swing.JFrame;
+import javax.swing.JOptionPane;
 import javax.swing.JPanel;
 
 import org.jfree.chart.ChartFactory;
@@ -25,19 +25,21 @@ import org.jfree.data.time.RegularTimePeriod;
 import org.jfree.data.time.TimeSeries;
 import org.jfree.data.time.TimeSeriesCollection;
 import org.jfree.data.time.TimeSeriesDataItem;
+import org.springframework.beans.factory.annotation.Autowired;
 
 import com.upp.apteka.dto.ChartData;
+import com.upp.apteka.dto.SeriesParam;
 import com.upp.apteka.service.chart.TimeSeriesDataSetGenerator;
 
 import net.sourceforge.jdatepicker.impl.JDatePanelImpl;
 import net.sourceforge.jdatepicker.impl.JDatePickerImpl;
 import net.sourceforge.jdatepicker.impl.UtilDateModel;
 
-public class TimeSeriesChart extends JPanel {
+public class TimeSeriesChart<T> extends JPanel {
 
 	private static final long serialVersionUID = -6725377472499598727L;
 
-	private TimeSeriesDataSetGenerator dataGenerator;
+	private TimeSeriesDataSetGenerator<T> dataGenerator;
 	private UtilDateModel startModel;
 	private UtilDateModel endModel;
 
@@ -46,7 +48,10 @@ public class TimeSeriesChart extends JPanel {
 	private JPanel chartPanel;
 	private String title;
 
-	public TimeSeriesChart(TimeSeriesDataSetGenerator dataGenerator, String title) {
+	@Autowired
+	private JFrame jFrame;
+
+	public TimeSeriesChart(TimeSeriesDataSetGenerator<T> dataGenerator, String title) {
 		this.dataGenerator = dataGenerator;
 		this.title = title;
 
@@ -80,15 +85,20 @@ public class TimeSeriesChart extends JPanel {
 
 			@Override
 			public void actionPerformed(ActionEvent e) {
-				JFreeChart chart = buildChart();
-				showChart(chart);
+
+				try {
+					JFreeChart chart = buildChart();
+					showChart(chart);
+				} catch (IllegalArgumentException exception) {
+					JOptionPane.showMessageDialog(jFrame, "Помилка", exception.getMessage(),
+							JOptionPane.INFORMATION_MESSAGE);
+				}
 			}
 		});
 	}
 
 	private JComboBox<String> buildComboBox() {
 		comboBox = new JComboBox<>();
-		comboBox.addItem("Година");
 		comboBox.addItem("День");
 		comboBox.addItem("Місяць");
 
@@ -100,20 +110,29 @@ public class TimeSeriesChart extends JPanel {
 		Date start = startModel.getValue();
 		Date end = endModel.getValue();
 
+		if (start == null || end == null || comboBox.getSelectedItem() == null)
+			throw new IllegalArgumentException("Потрібно заповнити всі поля");
+
 		if (end.before(start))
 			throw new IllegalArgumentException("Некоректні дати!");
 
 		String value = (String) comboBox.getSelectedItem();
-		List<ChartData> chartData = generateData(start, end, getCalendarType((String) comboBox.getSelectedItem()));
-
-		@SuppressWarnings("deprecation")
-		TimeSeries series = new TimeSeries(title, getAppropriateClass((String) comboBox.getSelectedItem()));
-
-		for (ChartData data : chartData)
-			series.add(new TimeSeriesDataItem(getPeriod(value, data.getDate()), data.getCount()));
 
 		TimeSeriesCollection dataset = new TimeSeriesCollection();
-		dataset.addSeries(series);
+
+		for (SeriesParam<T> sParam : dataGenerator.getTimeSeriesParam()) {
+			List<ChartData> chartData = generateData(start, end, getCalendarType((String) comboBox.getSelectedItem()),
+					sParam);
+			
+			@SuppressWarnings("deprecation")
+			TimeSeries series = new TimeSeries(sParam.getTitle(),
+					getAppropriateClass((String) comboBox.getSelectedItem()));
+
+			for (ChartData data : chartData)
+				series.add(new TimeSeriesDataItem(getPeriod(value, data.getDate()), data.getCount()));
+
+			dataset.addSeries(series);
+		}
 
 		JFreeChart timechart = ChartFactory.createTimeSeriesChart(title, // Title
 				"Час", // X-axis Label
@@ -168,7 +187,7 @@ public class TimeSeriesChart extends JPanel {
 		return -1;
 	}
 
-	private List<ChartData> generateData(Date start, Date end, int type) {
+	private List<ChartData> generateData(Date start, Date end, int type, SeriesParam<T> param) {
 
 		List<ChartData> data = new ArrayList<>();
 
@@ -178,9 +197,9 @@ public class TimeSeriesChart extends JPanel {
 
 		Date tempDate = calendar.getTime();
 
-		while (tempDate.before(end)) {
+		while (start.before(end)) {
 
-			data.add(dataGenerator.generateData(start, tempDate));
+			data.add(dataGenerator.generateData(start, tempDate, param));
 			start = tempDate;
 
 			calendar.add(type, 1);
@@ -197,17 +216,6 @@ public class TimeSeriesChart extends JPanel {
 		this.chartPanel.add(chartPanel);
 		this.chartPanel.revalidate();
 		this.chartPanel.repaint();
-	}
-
-	public static void main(String[] args) {
-
-		JFrame frame = new JFrame();
-
-		frame.add(new TimeSeriesChart(null, "Тест"));
-		frame.pack();
-		frame.repaint();
-		frame.setSize(new Dimension(800, 600));
-		frame.setVisible(true);
 	}
 
 }

@@ -158,4 +158,11 @@ public class PharmacyRepositoryImpl extends AHibernateRepository<Pharmacy, Long>
 
 		return criteria;
 	}
+
+	@SuppressWarnings("unchecked")
+	@Override
+	public List<Pharmacy> getAll() {
+		return (List<Pharmacy>) createEntityCriteria()
+				.addOrder(Order.asc("name")).list();
+	}
 }

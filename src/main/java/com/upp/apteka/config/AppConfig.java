@@ -290,6 +290,16 @@ public class AppConfig {
 			}
 		});
 		
+		JMenuItem pharmacyLossChart = new JMenuItem("Графік втрат кожної аптеки");
+		pharmacyLossChart.addActionListener(new ActionListener() {
+
+			public void actionPerformed(ActionEvent e) {
+				mapper.changeActivity("pharmacyLossChart", null);
+
+			}
+		});
+		
+		chartMenu.add(pharmacyLossChart);
 		chartMenu.add(lossChart);
 
 		// JMenu for viewing

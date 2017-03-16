@@ -12,20 +12,20 @@ import org.springframework.stereotype.Component;
 import com.upp.apteka.component.chart.TimeSeriesChart;
 import com.upp.apteka.service.chart.TimeSeriesDataSetGenerator;
 
-@Component("lossChartActivity")
+@Component("pharmacyLossChartActivity")
 @Scope("prototype")
-public class LossChartActivity implements Activity {
+public class PharmacyLossChartActivity implements Activity {
 
 	@Autowired
 	private JFrame jFrame;
 
 	@Autowired
-	@Qualifier("lossTimeSeries")
-	private TimeSeriesDataSetGenerator<String> timeSeriesDataSetGenerator;
+	@Qualifier("pharmacyLossTimeSeries")
+	private TimeSeriesDataSetGenerator<Long> timeSeriesDataSetGenerator;
 
 	@Override
 	public void showActivity(Map<String, Object> params) {
-		jFrame.add(new TimeSeriesChart<String>(timeSeriesDataSetGenerator, "Втрати аптек"));
+		jFrame.add(new TimeSeriesChart<Long>(timeSeriesDataSetGenerator, "Втрати аптек"));
 
 	}
 

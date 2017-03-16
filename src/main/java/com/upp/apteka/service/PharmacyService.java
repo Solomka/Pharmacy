@@ -9,6 +9,8 @@ import com.upp.apteka.validator.ValidationError;
 import javassist.NotFoundException;
 
 public interface PharmacyService {
+	
+	List<Pharmacy> getAll();
 
 	List<Pharmacy> getAllPharmacies(int offset);
 
