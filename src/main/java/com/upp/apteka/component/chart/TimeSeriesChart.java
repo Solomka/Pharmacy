@@ -18,9 +18,6 @@ import javax.swing.JPanel;
 import org.jfree.chart.ChartFactory;
 import org.jfree.chart.ChartPanel;
 import org.jfree.chart.JFreeChart;
-import org.jfree.data.time.Day;
-import org.jfree.data.time.Hour;
-import org.jfree.data.time.Month;
 import org.jfree.data.time.RegularTimePeriod;
 import org.jfree.data.time.TimeSeries;
 import org.jfree.data.time.TimeSeriesCollection;
@@ -29,7 +26,9 @@ import org.springframework.beans.factory.annotation.Autowired;
 
 import com.upp.apteka.dto.ChartData;
 import com.upp.apteka.dto.SeriesParam;
+import com.upp.apteka.service.chart.TimePickerService;
 import com.upp.apteka.service.chart.TimeSeriesDataSetGenerator;
+import com.upp.apteka.service.chart.impl.TimePickerServiceImpl;
 
 import net.sourceforge.jdatepicker.impl.JDatePanelImpl;
 import net.sourceforge.jdatepicker.impl.JDatePickerImpl;
@@ -43,17 +42,24 @@ public class TimeSeriesChart<T> extends JPanel {
 	private UtilDateModel startModel;
 	private UtilDateModel endModel;
 
-	private JComboBox<String> comboBox;
+	private JComboBox<TimeComboBoxItem> comboBox;
 
 	private JPanel chartPanel;
 	private String title;
 
+	private List<ChartTime<?>> chartTimes;
+
 	@Autowired
 	private JFrame jFrame;
 
-	public TimeSeriesChart(TimeSeriesDataSetGenerator<T> dataGenerator, String title) {
+	private TimePickerService timePickerService;
+
+	public TimeSeriesChart(TimeSeriesDataSetGenerator<T> dataGenerator, String title, List<TimeEnum> timeParams) {
 		this.dataGenerator = dataGenerator;
 		this.title = title;
+
+		timePickerService = new TimePickerServiceImpl();
+		this.chartTimes = timePickerService.getChartTimes(timeParams);
 
 		chartPanel = new JPanel();
 
@@ -90,17 +96,18 @@ public class TimeSeriesChart<T> extends JPanel {
 					JFreeChart chart = buildChart();
 					showChart(chart);
 				} catch (IllegalArgumentException exception) {
-					JOptionPane.showMessageDialog(jFrame, "Помилка", exception.getMessage(),
+					JOptionPane.showMessageDialog(jFrame, exception.getMessage(), "Помилка",
 							JOptionPane.INFORMATION_MESSAGE);
 				}
 			}
 		});
 	}
 
-	private JComboBox<String> buildComboBox() {
+	private JComboBox<TimeComboBoxItem> buildComboBox() {
 		comboBox = new JComboBox<>();
-		comboBox.addItem("День");
-		comboBox.addItem("Місяць");
+
+		for (ChartTime<?> chartTime : chartTimes)
+			comboBox.addItem(new TimeComboBoxItem(chartTime.getId(), chartTime.getName()));
 
 		return comboBox;
 	}
@@ -116,20 +123,23 @@ public class TimeSeriesChart<T> extends JPanel {
 		if (end.before(start))
 			throw new IllegalArgumentException("Некоректні дати!");
 
-		String value = (String) comboBox.getSelectedItem();
+		TimeComboBoxItem value = (TimeComboBoxItem) comboBox.getSelectedItem();
+
+		if (!isValid(value, start, end))
+			throw new IllegalArgumentException("Вибрано занадто великий проміжок для даного типу графіку!");
 
 		TimeSeriesCollection dataset = new TimeSeriesCollection();
 
 		for (SeriesParam<T> sParam : dataGenerator.getTimeSeriesParam()) {
-			List<ChartData> chartData = generateData(start, end, getCalendarType((String) comboBox.getSelectedItem()),
-					sParam);
-			
+			List<ChartData> chartData = generateData(start, end,
+					getCalendarType(((TimeComboBoxItem) comboBox.getSelectedItem()).getTimeEnum()), sParam);
+
 			@SuppressWarnings("deprecation")
 			TimeSeries series = new TimeSeries(sParam.getTitle(),
-					getAppropriateClass((String) comboBox.getSelectedItem()));
+					getAppropriateClass(((TimeComboBoxItem) comboBox.getSelectedItem()).getTimeEnum()));
 
 			for (ChartData data : chartData)
-				series.add(new TimeSeriesDataItem(getPeriod(value, data.getDate()), data.getCount()));
+				series.add(new TimeSeriesDataItem(getPeriod(value.getTimeEnum(), data.getDate()), data.getCount()));
 
 			dataset.addSeries(series);
 		}
@@ -145,45 +155,31 @@ public class TimeSeriesChart<T> extends JPanel {
 		return timechart;
 	}
 
-	private RegularTimePeriod getPeriod(String value, Date date) {
-		if (value.equals("Година"))
-			return getHour(date);
-		else if (value.equals("День"))
-			return getDay(date);
-		else if (value.equals("Місяць"))
-			return getMonth(date);
+	private Boolean isValid(TimeComboBoxItem value, Date start, Date end) {
+		for (ChartTime<?> chartTime : chartTimes)
+			if (value.getTimeEnum() == chartTime.getId())
+				return chartTime.validRange(start, end);
 		return null;
 	}
 
-	private RegularTimePeriod getDay(Date date) {
-		return new Day(date);
-	}
-
-	private RegularTimePeriod getMonth(Date date) {
-		return new Month(date);
-	}
-
-	private RegularTimePeriod getHour(Date date) {
-		return new Hour(date);
-	}
-
-	private Class<?> getAppropriateClass(String value) {
-		if (value.equals("Година"))
-			return Hour.class;
-		else if (value.equals("День"))
-			return Day.class;
-		else if (value.equals("Місяць"))
-			return Month.class;
+	private RegularTimePeriod getPeriod(TimeEnum id, Date date) {
+		for (ChartTime<?> chartTime : chartTimes)
+			if (chartTime.getId() == id)
+				return chartTime.getPeriod(date);
 		return null;
 	}
 
-	private int getCalendarType(String value) {
-		if (value.equals("Година"))
-			return Calendar.HOUR;
-		else if (value.equals("День"))
-			return Calendar.DAY_OF_MONTH;
-		else if (value.equals("Місяць"))
-			return Calendar.MONTH;
+	private Class<?> getAppropriateClass(TimeEnum id) {
+		for (ChartTime<?> chartTime : chartTimes)
+			if (chartTime.getId() == id)
+				return chartTime.getJfreeChartClass();
+		return null;
+	}
+
+	private int getCalendarType(TimeEnum id) {
+		for (ChartTime<?> chartTime : chartTimes)
+			if (chartTime.getId() == id)
+				return chartTime.getCalendarId();
 		return -1;
 	}
 
