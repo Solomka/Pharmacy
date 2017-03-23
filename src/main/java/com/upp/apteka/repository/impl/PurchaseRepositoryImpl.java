@@ -1,7 +1,7 @@
 package com.upp.apteka.repository.impl;
 
 import java.util.ArrayList;
-import java.sql.Date;
+import java.util.Date;
 import java.util.List;
 
 import org.hibernate.Criteria;
@@ -130,9 +130,14 @@ public class PurchaseRepositoryImpl extends AHibernateRepository<Purchase, Long>
 	}
 
 	//@Override
-	public int count(String query, java.sql.Date start, java.sql.Date finish, boolean or, Long number) {
+	public int count(String query, Date start, Date finish, boolean or, Long number) {
 		Criteria criteria = createSearchCriteria(query, start, finish, or, number);
 		return ((Number) criteria.setProjection(Projections.rowCount()).uniqueResult()).intValue();
 	}
 
+	@SuppressWarnings("unchecked")
+	@Override
+	public List<Purchase> getAll() {
+		return (List<Purchase>) createEntityCriteria().list();
+	}
 }

@@ -1,6 +1,6 @@
 package com.upp.apteka.bo;
 
-import java.sql.Date;
+import java.util.Date;
 import java.util.List;
 
 import javax.persistence.CascadeType;
@@ -24,7 +24,7 @@ public class Purchase {
 	@Column(name = "id", updatable = false, nullable = false)
 	private Long id;
 
-	@Column(name = "date", updatable = false, nullable = false)
+	@Column(name = "date", nullable = false)
 	private Date date;
 
 	@ManyToOne
