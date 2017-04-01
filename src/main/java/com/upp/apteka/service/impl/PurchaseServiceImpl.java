@@ -1,6 +1,6 @@
 package com.upp.apteka.service.impl;
 
-import java.sql.Date;
+import java.util.Date;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -200,6 +200,7 @@ public class PurchaseServiceImpl implements PurchaseService {
 	//@Override
 	public Long create(Patient patient, Pharmacy pharmacy, Prescription prescription,
 			List<PurchaseMedicineDto> purchaseMedicinesDto) {
+		
 		Purchase purchase = new Purchase();
 		purchase.setDate(new Date(System.currentTimeMillis()));
 		purchase.setPharmacy(pharmacy);
@@ -271,6 +272,11 @@ public class PurchaseServiceImpl implements PurchaseService {
 	//@Override
 	public int count(String query, Date start, Date finish, boolean or, Long number) {
 		return purchaseRepository.count(query, start, finish, or, number);
+	}
+
+	@Override
+	public List<Purchase> getAll() {
+		return purchaseRepository.getAll();
 	}
 
 

@@ -1,6 +1,6 @@
 package com.upp.apteka.service;
 
-import java.sql.Date;
+import java.util.Date;
 import java.util.List;
 
 import com.upp.apteka.bo.Patient;
@@ -12,6 +12,8 @@ import com.upp.apteka.dto.PurchaseMedicineDto;
 public interface PurchaseService {
 
 	List<Purchase> getAll(int offset, int limit);
+	
+	List<Purchase> getAll();
 
 	List<Purchase> findByQuery(String query, Date start, Date finish, boolean or, Long number);
 

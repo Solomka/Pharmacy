@@ -279,6 +279,28 @@ public class AppConfig {
 
 			}
 		});
+		
+		JMenu chartMenu = new JMenu("Звіти");
+		JMenuItem lossChart = new JMenuItem("Графік втрат");
+		lossChart.addActionListener(new ActionListener() {
+
+			public void actionPerformed(ActionEvent e) {
+				mapper.changeActivity("lossChart", null);
+
+			}
+		});
+		
+		JMenuItem pharmacyLossChart = new JMenuItem("Графік втрат кожної аптеки");
+		pharmacyLossChart.addActionListener(new ActionListener() {
+
+			public void actionPerformed(ActionEvent e) {
+				mapper.changeActivity("pharmacyLossChart", null);
+
+			}
+		});
+		
+		chartMenu.add(pharmacyLossChart);
+		chartMenu.add(lossChart);
 
 		// JMenu for viewing
 		viewMenu.add(allPharmacies);
@@ -301,6 +323,7 @@ public class AppConfig {
 
 		menuBar.add(addMenu);
 		menuBar.add(viewMenu);
+		menuBar.add(chartMenu);
 
 		dispatcherFrame.setJMenuBar(menuBar);
 

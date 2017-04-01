@@ -114,4 +114,9 @@ public class PharmacyServiceImpl implements PharmacyService {
 		return pharmacyRepository.count(query, or);
 	}
 
+	@Override
+	public List<Pharmacy> getAll() {
+		return pharmacyRepository.getAll();
+	}
+
 }

@@ -8,7 +8,8 @@ import java.awt.Font;
 import java.awt.GridLayout;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
-import java.sql.Date;
+import java.util.Date;
+import java.text.SimpleDateFormat;
 import java.util.Calendar;
 import java.util.HashMap;
 import java.util.List;
@@ -82,7 +83,7 @@ public class AllPurchases implements Activity {
 	@SuppressWarnings("unchecked")
 	// @Override
 	public void showActivity(final Map<String, Object> params) {
-
+		
 		JPanel mainPanel = new JPanel();
 		mainPanel.setBorder(BorderFactory.createEmptyBorder(0, 20, 0, 20));
 
@@ -197,8 +198,8 @@ public class AllPurchases implements Activity {
 
 		purchasesTable.getColumnModel().getColumn(0).setMaxWidth(50);
 		purchasesTable.getColumnModel().getColumn(0).setPreferredWidth(50);
-		purchasesTable.getColumnModel().getColumn(1).setMaxWidth(85);
-		purchasesTable.getColumnModel().getColumn(1).setPreferredWidth(85);
+		purchasesTable.getColumnModel().getColumn(1).setMaxWidth(155);
+		purchasesTable.getColumnModel().getColumn(1).setPreferredWidth(155);
 
 		JScrollPane scrollPane = new JScrollPane(purchasesTable);
 		scrollPane.setBorder(BorderFactory.createLineBorder(jFrame.getBackground()));
@@ -360,7 +361,7 @@ public class AllPurchases implements Activity {
 
 		for (int i = 0; i < purchases.size(); i++) {
 			array[i][0] = purchases.get(i).getId();
-			array[i][1] = purchases.get(i).getDate();
+			array[i][1] = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss").format(purchases.get(i).getDate());
 			array[i][2] = purchases.get(i).getPrescription().getPatient().getSurname() + " "
 					+ purchases.get(i).getPrescription().getPatient().getName();
 			array[i][3] = purchases.get(i).getPharmacy().getName();
