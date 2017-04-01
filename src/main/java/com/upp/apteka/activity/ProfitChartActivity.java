@@ -15,15 +15,15 @@ import com.upp.apteka.component.chart.TimeEnum;
 import com.upp.apteka.component.chart.TimeSeriesChart;
 import com.upp.apteka.service.chart.TimeSeriesDataSetGenerator;
 
-@Component("lossChartActivity")
+@Component("profitChartActivity")
 @Scope("prototype")
-public class LossChartActivity implements Activity {
+public class ProfitChartActivity implements Activity {
 
 	@Autowired
 	private JFrame jFrame;
 
 	@Autowired
-	@Qualifier("lossTimeSeries")
+	@Qualifier("profitTimeSeries")
 	private TimeSeriesDataSetGenerator<String> timeSeriesDataSetGenerator;
 
 	@Override
@@ -34,7 +34,7 @@ public class LossChartActivity implements Activity {
 		timeEnums.add(TimeEnum.WEEK);
 		timeEnums.add(TimeEnum.MONTH);
 
-		jFrame.add(new TimeSeriesChart<String>(timeSeriesDataSetGenerator, "Втрати мережі аптек", timeEnums));
+		jFrame.add(new TimeSeriesChart<String>(timeSeriesDataSetGenerator, "Прибутки мережі аптек", timeEnums));
 
 	}
 

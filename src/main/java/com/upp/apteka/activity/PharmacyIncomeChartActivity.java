@@ -15,26 +15,25 @@ import com.upp.apteka.component.chart.TimeEnum;
 import com.upp.apteka.component.chart.TimeSeriesChart;
 import com.upp.apteka.service.chart.TimeSeriesDataSetGenerator;
 
-@Component("lossChartActivity")
+@Component("pharmacyIncomeChartActivity")
 @Scope("prototype")
-public class LossChartActivity implements Activity {
+public class PharmacyIncomeChartActivity implements Activity {
 
 	@Autowired
 	private JFrame jFrame;
 
 	@Autowired
-	@Qualifier("lossTimeSeries")
-	private TimeSeriesDataSetGenerator<String> timeSeriesDataSetGenerator;
+	@Qualifier("pharmcyIncomeTimeSeries")
+	private TimeSeriesDataSetGenerator<Long> timeSeriesDataSetGenerator;
 
 	@Override
 	public void showActivity(Map<String, Object> params) {
-
-		List<TimeEnum> timeEnums = new ArrayList<TimeEnum>();
+		List<TimeEnum> timeEnums = new ArrayList<>();
 		timeEnums.add(TimeEnum.DAY);
 		timeEnums.add(TimeEnum.WEEK);
 		timeEnums.add(TimeEnum.MONTH);
 
-		jFrame.add(new TimeSeriesChart<String>(timeSeriesDataSetGenerator, "Втрати мережі аптек", timeEnums));
+		jFrame.add(new TimeSeriesChart<Long>(timeSeriesDataSetGenerator, "Доходи кожної аптеки мережі", timeEnums));
 
 	}
 

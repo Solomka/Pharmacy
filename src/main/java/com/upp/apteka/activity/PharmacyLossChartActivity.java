@@ -28,13 +28,13 @@ public class PharmacyLossChartActivity implements Activity {
 
 	@Override
 	public void showActivity(Map<String, Object> params) {
-		
+
 		List<TimeEnum> timeEnums = new ArrayList<TimeEnum>();
 		timeEnums.add(TimeEnum.DAY);
 		timeEnums.add(TimeEnum.WEEK);
 		timeEnums.add(TimeEnum.MONTH);
-		
-		jFrame.add(new TimeSeriesChart<Long>(timeSeriesDataSetGenerator, "Втрати аптек", timeEnums));
+
+		jFrame.add(new TimeSeriesChart<Long>(timeSeriesDataSetGenerator, "Втрати кожної аптеки мережі", timeEnums));
 
 	}
 

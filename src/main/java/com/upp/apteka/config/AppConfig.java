@@ -89,7 +89,8 @@ public class AppConfig {
 		infoPanel.setLayout(new BorderLayout());
 		infoPanel.setBorder(BorderFactory.createEmptyBorder(20, 20, 20, 20));
 
-		JLabel infoLabel = new JLabel("Вітаємо у AIC аптеки \n " + pharmacyId().getName() + " (" + pharmacyId().getAddress() + ")");
+		JLabel infoLabel = new JLabel(
+				"Вітаємо у AIC аптеки \n " + pharmacyId().getName() + " (" + pharmacyId().getAddress() + ")");
 		infoLabel.setFont(new Font("Times New Roman", Font.PLAIN, 18));
 		infoLabel.setHorizontalAlignment(JLabel.CENTER);
 
@@ -160,7 +161,7 @@ public class AppConfig {
 
 			}
 		});
-		
+
 		JMenuItem addDelivery = new JMenuItem("Додати поставку");
 		addDelivery.addActionListener(new ActionListener() {
 
@@ -169,8 +170,6 @@ public class AppConfig {
 
 			}
 		});
-
-		
 
 		// JManu for viewing
 
@@ -267,7 +266,7 @@ public class AppConfig {
 
 			}
 		});
-		
+
 		JMenuItem allDeliveries = new JMenuItem("Переглянути поставки");
 		allDeliveries.addActionListener(new ActionListener() {
 
@@ -279,8 +278,12 @@ public class AppConfig {
 
 			}
 		});
-		
+
+		/*
+		 * Reports
+		 */
 		JMenu chartMenu = new JMenu("Звіти");
+
 		JMenuItem lossChart = new JMenuItem("Графік втрат");
 		lossChart.addActionListener(new ActionListener() {
 
@@ -289,7 +292,7 @@ public class AppConfig {
 
 			}
 		});
-		
+
 		JMenuItem pharmacyLossChart = new JMenuItem("Графік втрат кожної аптеки");
 		pharmacyLossChart.addActionListener(new ActionListener() {
 
@@ -298,9 +301,54 @@ public class AppConfig {
 
 			}
 		});
-		
+
+		JMenuItem incomeChart = new JMenuItem("Графік доходів");
+		incomeChart.addActionListener(new ActionListener() {
+
+			@Override
+			public void actionPerformed(ActionEvent e) {
+				mapper.changeActivity("incomeChart", null);
+
+			}
+		});
+
+		JMenuItem pharmacyIncomeChart = new JMenuItem("Графік доходів кожної аптеки");
+		pharmacyIncomeChart.addActionListener(new ActionListener() {
+
+			@Override
+			public void actionPerformed(ActionEvent e) {
+				mapper.changeActivity("pharmacyIncomeChart", null);
+
+			}
+		});
+
+		JMenuItem profitChart = new JMenuItem("Графік прибутків");
+		profitChart.addActionListener(new ActionListener() {
+
+			@Override
+			public void actionPerformed(ActionEvent e) {
+				mapper.changeActivity("profitChart", null);
+
+			}
+		});
+
+		JMenuItem pharmacyProfitChart = new JMenuItem("Графік прибутків кожної аптеки");
+		pharmacyProfitChart.addActionListener(new ActionListener() {
+
+			@Override
+			public void actionPerformed(ActionEvent e) {
+				mapper.changeActivity("pharmacyProfitChart", null);
+
+			}
+		});
+
+		// JMenu for reports
 		chartMenu.add(pharmacyLossChart);
 		chartMenu.add(lossChart);
+		chartMenu.add(incomeChart);
+		chartMenu.add(pharmacyIncomeChart);
+		chartMenu.add(profitChart);
+		chartMenu.add(pharmacyProfitChart);
 
 		// JMenu for viewing
 		viewMenu.add(allPharmacies);
