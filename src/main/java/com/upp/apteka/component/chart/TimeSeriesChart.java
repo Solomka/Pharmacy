@@ -34,6 +34,13 @@ import net.sourceforge.jdatepicker.impl.JDatePanelImpl;
 import net.sourceforge.jdatepicker.impl.JDatePickerImpl;
 import net.sourceforge.jdatepicker.impl.UtilDateModel;
 
+/**
+ * Graphics generator
+ * 
+ * @author Oleg
+ *
+ * @param <T>
+ */
 public class TimeSeriesChart<T> extends JPanel {
 
 	private static final long serialVersionUID = -6725377472499598727L;
