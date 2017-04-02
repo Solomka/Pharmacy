@@ -161,11 +161,10 @@ public class MedicineTimeSeriesChart<T> extends JPanel {
 			System.out.println("SELECTED");
 		}
 
-		ChartMedicineDto<T> medicine = new ChartMedicineDto(item.getId(), item.getValue());
+		ChartMedicineDto medicine = new ChartMedicineDto(item.getId(), item.getValue());
 
-		List<SeriesParam<T>> seriesParams = dataGenerator.getTimeSeriesParam();
-		seriesParams.add(new SeriesParam<T>(medicine.getName(), medicine.getId()));
-
+		List<SeriesParam<T>> seriesParams = dataGenerator.addDataToSeriesParams(medicine);
+		
 		TimeSeriesCollection dataset = new TimeSeriesCollection();
 
 		for (SeriesParam<T> sParam : seriesParams) {

@@ -11,6 +11,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import com.upp.apteka.dto.ChartData;
+import com.upp.apteka.dto.ChartMedicineDto;
 import com.upp.apteka.dto.SeriesParam;
 import com.upp.apteka.service.chart.TimeSeriesDataSetGenerator;
 
@@ -20,6 +21,8 @@ public class SoldMedicineNumTimeSeriesDataSetGenerator implements TimeSeriesData
 
 	@Autowired
 	private SessionFactory sessionFactory;
+	
+	private List<SeriesParam<Long>> params;
 
 	private String sql = "SELECT sum(pack_quantity)"
 			+ " FROM purchase INNER JOIN purch_medicine ON purchase.id = purch_medicine.id_purchase"
@@ -47,6 +50,14 @@ public class SoldMedicineNumTimeSeriesDataSetGenerator implements TimeSeriesData
 	@Override
 	public List<SeriesParam<Long>> getTimeSeriesParam() {
 		List<SeriesParam<Long>> params = new ArrayList<SeriesParam<Long>>();
+		return params;
+	}
+	
+	@Override
+	public List<SeriesParam<Long>> addDataToSeriesParams(ChartMedicineDto medicine){
+		List<SeriesParam<Long>> params = getTimeSeriesParam();		
+		params.add(new SeriesParam<Long>(medicine.getName(), medicine.getId()));	
+		
 		return params;
 	}
 

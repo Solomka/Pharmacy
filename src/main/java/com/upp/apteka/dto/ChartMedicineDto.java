@@ -1,25 +1,25 @@
 package com.upp.apteka.dto;
 
-public class ChartMedicineDto<T> {
+public class ChartMedicineDto {
 
-	private T id;
+	private Long id;
 	private String name;
 
 	public ChartMedicineDto() {
 
 	}
 
-	public ChartMedicineDto(T id, String name) {
+	public ChartMedicineDto(Long id, String name) {
 
 		this.id = id;
 		this.name = name;
 	}
 
-	public T getId() {
+	public Long getId() {
 		return id;
 	}
 
-	public void setId(T id) {
+	public void setId(Long id) {
 		this.id = id;
 	}
 
