@@ -19,15 +19,15 @@ import com.upp.apteka.component.combobox.searchable.SearchableItem;
 import com.upp.apteka.service.chart.TimeSeriesDataSetGenerator;
 import com.upp.apteka.service.searchable.SearchableMedicineService;
 
-@Component("soldMedicineNumChartActivity")
+@Component("pharmacySoldMedicineNumChartActivity")
 @Scope("prototype")
-public class SoldMedicineNumChartActivity implements Activity {
+public class PharmacySoldMedicineNumChartActivity implements Activity {
 
 	@Autowired
 	JFrame jFrame;
 
 	@Autowired
-	@Qualifier("soldMedicineNumTimeSeries")
+	@Qualifier("pharmacySoldMedicineNumTimeSeries")
 	private TimeSeriesDataSetGenerator<Long> timeSeriesDataSetGenerator;
 
 	@Autowired
@@ -45,8 +45,8 @@ public class SoldMedicineNumChartActivity implements Activity {
 
 		searchMedicine = new SearchableComboBox(searchableMedicineService);
 
-		jFrame.add(new MedicineTimeSeriesChart<Long>(timeSeriesDataSetGenerator, "К-сть проданих одиниць ліків у мережі аптек",
-				timeEnums, searchMedicine));
+		jFrame.add(new MedicineTimeSeriesChart<Long>(timeSeriesDataSetGenerator,
+				"К-сть проданих одиниць ліків у кожній аптеці мережі", timeEnums, searchMedicine));
 
 	}
 

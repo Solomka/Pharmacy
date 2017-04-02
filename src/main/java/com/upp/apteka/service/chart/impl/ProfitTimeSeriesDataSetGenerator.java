@@ -28,7 +28,7 @@ public class ProfitTimeSeriesDataSetGenerator implements TimeSeriesDataSetGenera
 
 		Double generalProfit = incomeTimeSeries.generateData(startDate, finishDate, timeSeriesParam).getCount()
 				- lossTimeSeries.generateData(startDate, finishDate, timeSeriesParam).getCount();
-
+		System.out.println("Ptofit: " + generalProfit);
 		ChartData chartData = new ChartData();
 		chartData.setCount(generalProfit);
 		chartData.setDate(startDate);
