@@ -341,6 +341,26 @@ public class AppConfig {
 
 			}
 		});
+		
+		JMenuItem soldMedicineNum = new JMenuItem("Графік к-сті проданих одиниць ліків");
+		soldMedicineNum.addActionListener(new ActionListener() {
+			
+			@Override
+			public void actionPerformed(ActionEvent e) {
+				mapper.changeActivity("soldMedicineNumChart", null);
+				
+			}
+		});
+		
+		JMenuItem pharmacySoldMedicineNum = new JMenuItem("Графік к-сті проданих одиниць ліків у кожній аптеці");
+		pharmacySoldMedicineNum.addActionListener(new ActionListener() {
+			
+			@Override
+			public void actionPerformed(ActionEvent e) {
+				mapper.changeActivity("pharmacySoldMedicineNumChart", null);
+				
+			}
+		});
 
 		// JMenu for reports
 		chartMenu.add(pharmacyLossChart);
@@ -349,6 +369,8 @@ public class AppConfig {
 		chartMenu.add(pharmacyIncomeChart);
 		chartMenu.add(profitChart);
 		chartMenu.add(pharmacyProfitChart);
+		chartMenu.add(soldMedicineNum);
+		chartMenu.add(pharmacySoldMedicineNum);
 
 		// JMenu for viewing
 		viewMenu.add(allPharmacies);

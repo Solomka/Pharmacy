@@ -19,13 +19,18 @@ public class SearchableComboBox extends JComboBox<SearchableItem> {
 	private static final int DELAY = 3000;
 
 	private SearchableService searchableService;
-	
+
 	@Autowired
 	private JFrame jFrame;
 
 	public SearchableComboBox(SearchableService searchableService) {
 
 		this.searchableService = searchableService;
+
+		if (searchableService != null) {
+		} else {
+			System.out.println("NULL");
+		}
 		this.setEditable(true);
 
 		this.getEditor().getEditorComponent().addKeyListener(new KeyListener() {
@@ -67,6 +72,7 @@ public class SearchableComboBox extends JComboBox<SearchableItem> {
 							SearchableComboBox.this.removeAllItems();
 
 							try {
+
 								List<SearchableItem> items = SearchableComboBox.this.searchableService
 										.getSearchableItems(currentValue);
 
@@ -79,8 +85,10 @@ public class SearchableComboBox extends JComboBox<SearchableItem> {
 											.getEditor().getEditorComponent()).setText(null);
 								}
 							} catch (Exception e) {
-								JOptionPane.showMessageDialog(jFrame, new String[] { "Сервіс тимчасово недоступний. Спробуйте, будь ласка, пізніше." }, "Помилка",
-										JOptionPane.ERROR_MESSAGE);
+								JOptionPane.showMessageDialog(jFrame,
+										new String[] {
+												"Сервіс тимчасово недоступний. Спробуйте, будь ласка, пізніше." },
+										"Помилка", JOptionPane.ERROR_MESSAGE);
 							}
 						}
 					}
