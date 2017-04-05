@@ -12,7 +12,7 @@ import com.upp.apteka.component.combobox.searchable.SearchableService;
 import com.upp.apteka.repository.MedicineRepository;
 import com.upp.apteka.service.converter.SearchableMedicine;
 
-@Service
+@Service("searchableMedicineService")
 public class SearchableMedicineService implements SearchableService {
 
 	@Autowired
@@ -23,6 +23,7 @@ public class SearchableMedicineService implements SearchableService {
 
 	// @Override
 	public List<SearchableItem> getSearchableItems(String query) {
+		System.out.println("QUERYYYYYYYYYYYYYYYYYYYYYYYYYYYYYYYYYYYYYYYYYYYYYYYYYYYYYY " + query);
 		List<Medicine> medicines = medicineService.findByNameOrProducer(query);
 
 		List<SearchableItem> items = new ArrayList<SearchableItem>();
