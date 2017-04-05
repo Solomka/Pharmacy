@@ -1,11 +1,11 @@
 -- phpMyAdmin SQL Dump
--- version 4.5.2
--- http://www.phpmyadmin.net
+-- version 4.6.4
+-- https://www.phpmyadmin.net/
 --
--- Host: 127.0.0.1
--- Generation Time: Feb 23, 2017 at 10:27 PM
--- Server version: 5.7.9
--- PHP Version: 5.6.16
+-- Хост: 127.0.0.1
+-- Час створення: Квт 05 2017 р., 08:14
+-- Версія сервера: 5.7.14
+-- Версія PHP: 5.6.25
 
 SET SQL_MODE = "NO_AUTO_VALUE_ON_ZERO";
 SET time_zone = "+00:00";
@@ -17,7 +17,7 @@ SET time_zone = "+00:00";
 /*!40101 SET NAMES utf8 */;
 
 --
--- Database: `projman10`
+-- База даних: `projman10`
 --
 CREATE DATABASE IF NOT EXISTS `projman10` DEFAULT CHARACTER SET latin1 COLLATE latin1_swedish_ci;
 USE `projman10`;
@@ -25,20 +25,17 @@ USE `projman10`;
 -- --------------------------------------------------------
 
 --
--- Table structure for table `delivery`
+-- Структура таблиці `delivery`
 --
 
-DROP TABLE IF EXISTS `delivery`;
-CREATE TABLE IF NOT EXISTS `delivery` (
-  `id` int(11) NOT NULL AUTO_INCREMENT,
+CREATE TABLE `delivery` (
+  `id` int(11) NOT NULL,
   `date` date NOT NULL,
-  `id_pharmacy` int(11) NOT NULL,
-  PRIMARY KEY (`id`),
-  KEY `id_pharmacy` (`id_pharmacy`)
-) ENGINE=InnoDB AUTO_INCREMENT=132 DEFAULT CHARSET=utf8;
+  `id_pharmacy` int(11) NOT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 
 --
--- Dumping data for table `delivery`
+-- Дамп даних таблиці `delivery`
 --
 
 INSERT INTO `delivery` (`id`, `date`, `id_pharmacy`) VALUES
@@ -94,20 +91,17 @@ INSERT INTO `delivery` (`id`, `date`, `id_pharmacy`) VALUES
 -- --------------------------------------------------------
 
 --
--- Table structure for table `delivery_medicine`
+-- Структура таблиці `delivery_medicine`
 --
 
-DROP TABLE IF EXISTS `delivery_medicine`;
-CREATE TABLE IF NOT EXISTS `delivery_medicine` (
+CREATE TABLE `delivery_medicine` (
   `id_delivery` int(11) NOT NULL,
   `id_medicine` int(11) NOT NULL,
-  `box_quantity` int(11) NOT NULL,
-  PRIMARY KEY (`id_delivery`,`id_medicine`),
-  KEY `id_medicine` (`id_medicine`)
+  `box_quantity` int(11) NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 
 --
--- Dumping data for table `delivery_medicine`
+-- Дамп даних таблиці `delivery_medicine`
 --
 
 INSERT INTO `delivery_medicine` (`id_delivery`, `id_medicine`, `box_quantity`) VALUES
@@ -221,47 +215,44 @@ INSERT INTO `delivery_medicine` (`id_delivery`, `id_medicine`, `box_quantity`) V
 -- --------------------------------------------------------
 
 --
--- Table structure for table `doctor`
+-- Структура таблиці `doctor`
 --
 
-DROP TABLE IF EXISTS `doctor`;
-CREATE TABLE IF NOT EXISTS `doctor` (
-  `id` int(11) NOT NULL AUTO_INCREMENT,
+CREATE TABLE `doctor` (
+  `id` int(11) NOT NULL,
   `surname` varchar(50) NOT NULL,
   `name` varchar(50) NOT NULL,
   `occupation` varchar(50) NOT NULL,
-  `standing` int(11) NOT NULL,
-  PRIMARY KEY (`id`)
-) ENGINE=InnoDB AUTO_INCREMENT=9 DEFAULT CHARSET=utf8;
+  `standing` int(11) NOT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 
 --
--- Dumping data for table `doctor`
+-- Дамп даних таблиці `doctor`
 --
 
 INSERT INTO `doctor` (`id`, `surname`, `name`, `occupation`, `standing`) VALUES
 (1, 'Курочкін', 'Андрій', 'Хірург', 2015),
 (6, 'Іваненко', 'Сергій', 'Офтальмолог', 2011),
 (7, 'Червоненко', 'Дарина', 'Стоматолог', 2000),
-(8, 'Земленко', 'Ольга', 'Педіатр', 2003);
+(8, 'Земленко', 'Ольга', 'Педіатр', 2003),
+(9, 'Tsoy', 'Victor', 'fdsfs', 2000);
 
 -- --------------------------------------------------------
 
 --
--- Table structure for table `medicine`
+-- Структура таблиці `medicine`
 --
 
-DROP TABLE IF EXISTS `medicine`;
-CREATE TABLE IF NOT EXISTS `medicine` (
-  `id` int(11) NOT NULL AUTO_INCREMENT,
+CREATE TABLE `medicine` (
+  `id` int(11) NOT NULL,
   `name` varchar(255) NOT NULL,
   `producer` varchar(255) NOT NULL,
   `box_price` decimal(13,2) NOT NULL,
-  `quantity_per_box` int(11) NOT NULL,
-  PRIMARY KEY (`id`)
-) ENGINE=InnoDB AUTO_INCREMENT=106 DEFAULT CHARSET=utf8;
+  `quantity_per_box` int(11) NOT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 
 --
--- Dumping data for table `medicine`
+-- Дамп даних таблиці `medicine`
 --
 
 INSERT INTO `medicine` (`id`, `name`, `producer`, `box_price`, `quantity_per_box`) VALUES
@@ -349,21 +340,18 @@ INSERT INTO `medicine` (`id`, `name`, `producer`, `box_price`, `quantity_per_box
 -- --------------------------------------------------------
 
 --
--- Table structure for table `patient`
+-- Структура таблиці `patient`
 --
 
-DROP TABLE IF EXISTS `patient`;
-CREATE TABLE IF NOT EXISTS `patient` (
-  `id` int(11) NOT NULL AUTO_INCREMENT,
+CREATE TABLE `patient` (
+  `id` int(11) NOT NULL,
   `surname` varchar(50) NOT NULL,
   `name` varchar(50) NOT NULL,
-  `phone` varchar(16) NOT NULL,
-  PRIMARY KEY (`id`),
-  UNIQUE KEY `phone` (`phone`)
-) ENGINE=InnoDB AUTO_INCREMENT=21 DEFAULT CHARSET=utf8;
+  `phone` varchar(16) NOT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 
 --
--- Dumping data for table `patient`
+-- Дамп даних таблиці `patient`
 --
 
 INSERT INTO `patient` (`id`, `surname`, `name`, `phone`) VALUES
@@ -388,20 +376,18 @@ INSERT INTO `patient` (`id`, `surname`, `name`, `phone`) VALUES
 -- --------------------------------------------------------
 
 --
--- Table structure for table `pharmacy`
+-- Структура таблиці `pharmacy`
 --
 
-DROP TABLE IF EXISTS `pharmacy`;
-CREATE TABLE IF NOT EXISTS `pharmacy` (
-  `id` int(11) NOT NULL AUTO_INCREMENT,
+CREATE TABLE `pharmacy` (
+  `id` int(11) NOT NULL,
   `name` varchar(50) NOT NULL,
   `address` varchar(255) NOT NULL,
-  `extra` double NOT NULL,
-  PRIMARY KEY (`id`)
-) ENGINE=InnoDB AUTO_INCREMENT=13 DEFAULT CHARSET=utf8;
+  `extra` double NOT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 
 --
--- Dumping data for table `pharmacy`
+-- Дамп даних таблиці `pharmacy`
 --
 
 INSERT INTO `pharmacy` (`id`, `name`, `address`, `extra`) VALUES
@@ -413,133 +399,126 @@ INSERT INTO `pharmacy` (`id`, `name`, `address`, `extra`) VALUES
 -- --------------------------------------------------------
 
 --
--- Table structure for table `pharmacy_medicine`
+-- Структура таблиці `pharmacy_medicine`
 --
 
-DROP TABLE IF EXISTS `pharmacy_medicine`;
-CREATE TABLE IF NOT EXISTS `pharmacy_medicine` (
+CREATE TABLE `pharmacy_medicine` (
   `id_pharmacy` int(11) NOT NULL,
   `id_medicine` int(11) NOT NULL,
   `pack_price` decimal(13,2) NOT NULL,
-  `pack_quantity` int(11) NOT NULL,
-  PRIMARY KEY (`id_pharmacy`,`id_medicine`),
-  KEY `id_medicine` (`id_medicine`)
+  `pack_quantity` int(11) NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 
 --
--- Dumping data for table `pharmacy_medicine`
+-- Дамп даних таблиці `pharmacy_medicine`
 --
 
 INSERT INTO `pharmacy_medicine` (`id_pharmacy`, `id_medicine`, `pack_price`, `pack_quantity`) VALUES
-(8, 3, '4.07', 60),
-(8, 4, '1.73', 30),
-(8, 5, '10.40', 20),
-(8, 6, '5.49', 40),
-(8, 8, '1.26', 20),
-(8, 9, '3.83', 50),
-(8, 40, '8.28', 10),
-(8, 43, '1.92', 80),
-(8, 45, '4.14', 10),
-(8, 48, '5.55', 90),
-(8, 50, '7.89', 60),
-(8, 53, '1.41', 10),
-(8, 54, '4.91', 100),
-(8, 58, '2.55', 90),
-(8, 69, '3.69', 40),
-(8, 70, '4.64', 20),
-(8, 71, '3.53', 20),
-(8, 81, '3.09', 30),
-(8, 89, '3.90', 30),
-(8, 95, '1.52', 60),
-(8, 98, '1.95', 30),
-(8, 99, '2.46', 10),
-(9, 3, '0.59', 5990),
-(9, 4, '1.73', 30),
-(9, 5, '10.40', 20),
-(9, 6, '0.95', 50),
-(9, 8, '1.57', 50),
-(9, 14, '4.75', 100),
-(9, 19, '5.15', 60),
-(9, 22, '5.70', 70),
-(9, 28, '1.18', 20),
-(9, 33, '3.30', 60),
-(9, 36, '7.37', 60),
-(9, 42, '9.80', 80),
-(9, 52, '8.51', 50),
-(9, 54, '0.27', 20),
-(9, 56, '0.22', 70),
-(9, 58, '1.56', 70),
-(9, 64, '8.93', 50),
-(9, 69, '9.76', 60),
-(9, 70, '8.23', 30),
-(9, 73, '3.22', 10),
-(9, 74, '7.96', 80),
-(9, 76, '3.86', 100),
-(9, 82, '8.18', 60),
-(9, 85, '8.22', 20),
-(9, 87, '3.31', 70),
-(9, 90, '2.24', 20),
-(9, 95, '9.46', 100),
-(9, 99, '6.28', 40),
-(10, 7, '2.36', 20),
-(10, 9, '0.58', 50),
-(10, 10, '6.60', 10),
-(10, 11, '4.70', 80),
-(10, 14, '5.01', 70),
-(10, 35, '1.82', 30),
-(10, 36, '2.51', 10),
+(8, 3, '3.83', 60),
+(8, 4, '3.83', 30),
+(8, 5, '23.00', 20),
+(8, 6, '23.96', 40),
+(8, 8, '4.79', 20),
+(8, 9, '28.75', 50),
+(8, 40, '1.44', 10),
+(8, 43, '3.83', 80),
+(8, 45, '8.63', 10),
+(8, 48, '43.13', 90),
+(8, 50, '3.83', 60),
+(8, 53, '43.13', 10),
+(8, 54, '19.17', 100),
+(8, 58, '23.96', 90),
+(8, 69, '2.88', 40),
+(8, 70, '28.75', 20),
+(8, 71, '11.98', 20),
+(8, 81, '4.79', 30),
+(8, 89, '4.79', 30),
+(8, 95, '23.96', 60),
+(8, 98, '19.17', 30),
+(8, 99, '57.50', 10),
+(9, 3, '4.33', 5990),
+(9, 4, '4.33', 22),
+(9, 5, '26.00', 20),
+(9, 6, '27.08', 50),
+(9, 8, '5.42', 50),
+(9, 14, '5.42', 100),
+(9, 19, '6.77', 60),
+(9, 22, '3.25', 70),
+(9, 28, '16.25', 20),
+(9, 33, '4.33', 60),
+(9, 36, '65.00', 60),
+(9, 42, '13.00', 80),
+(9, 52, '5.42', 50),
+(9, 54, '21.67', 20),
+(9, 56, '32.50', 70),
+(9, 58, '27.08', 70),
+(9, 64, '16.25', 50),
+(9, 69, '3.25', 60),
+(9, 70, '32.50', 30),
+(9, 73, '40.63', 10),
+(9, 74, '13.00', 80),
+(9, 76, '65.00', 100),
+(9, 82, '97.50', 60),
+(9, 85, '5.42', 20),
+(9, 87, '40.63', 70),
+(9, 90, '32.50', 20),
+(9, 95, '27.08', 100),
+(9, 99, '65.00', 40),
+(10, 7, '15.00', 20),
+(10, 9, '30.00', 50),
+(10, 10, '9.00', 10),
+(10, 11, '6.25', 80),
+(10, 14, '5.00', 70),
+(10, 35, '6.25', 30),
+(10, 36, '60.00', 10),
 (10, 39, '4.00', 40),
-(10, 42, '1.90', 10),
-(10, 45, '0.37', 70),
-(10, 46, '2.55', 10),
-(10, 47, '4.02', 20),
-(10, 52, '2.79', 30),
-(10, 62, '1.56', 70),
-(10, 70, '1.02', 50),
-(10, 71, '8.44', 90),
-(10, 73, '5.44', 30),
-(10, 81, '6.26', 60),
-(10, 86, '3.71', 50),
-(10, 94, '1.88', 40),
-(10, 95, '2.85', 40),
-(10, 98, '1.14', 70),
-(12, 3, '2.75', 50),
-(12, 6, '3.38', 40),
-(12, 14, '3.46', 60),
-(12, 15, '9.58', 80),
-(12, 16, '2.09', 20),
-(12, 37, '1.72', 40),
-(12, 39, '0.93', 100),
-(12, 40, '0.23', 50),
-(12, 42, '2.48', 10),
-(12, 44, '8.90', 20),
-(12, 50, '4.58', 10),
-(12, 51, '0.88', 100),
-(12, 69, '4.16', 70),
-(12, 72, '5.94', 70),
-(12, 82, '0.42', 40),
-(12, 89, '4.79', 50),
-(12, 96, '5.44', 80);
+(10, 42, '12.00', 10),
+(10, 45, '9.00', 70),
+(10, 46, '1.50', 10),
+(10, 47, '30.00', 20),
+(10, 52, '5.00', 30),
+(10, 62, '37.50', 70),
+(10, 70, '30.00', 50),
+(10, 71, '12.50', 90),
+(10, 73, '37.50', 30),
+(10, 81, '5.00', 60),
+(10, 86, '15.00', 50),
+(10, 94, '10.00', 40),
+(10, 95, '25.00', 40),
+(10, 98, '20.00', 70),
+(12, 3, '4.00', 50),
+(12, 6, '25.00', 40),
+(12, 14, '5.00', 60),
+(12, 15, '3.00', 80),
+(12, 16, '1.20', 20),
+(12, 37, '10.00', 40),
+(12, 39, '4.00', 100),
+(12, 40, '1.50', 50),
+(12, 42, '12.00', 10),
+(12, 44, '6.25', 20),
+(12, 50, '4.00', 10),
+(12, 51, '20.00', 100),
+(12, 69, '3.00', 70),
+(12, 72, '60.00', 70),
+(12, 82, '90.00', 40),
+(12, 89, '5.00', 50),
+(12, 96, '18.75', 80);
 
 -- --------------------------------------------------------
 
 --
--- Table structure for table `prescription`
+-- Структура таблиці `prescription`
 --
 
-DROP TABLE IF EXISTS `prescription`;
-CREATE TABLE IF NOT EXISTS `prescription` (
-  `id` int(11) NOT NULL AUTO_INCREMENT,
+CREATE TABLE `prescription` (
+  `id` int(11) NOT NULL,
   `date` date NOT NULL,
   `id_doctor` int(11) NOT NULL,
-  `id_patient` int(11) NOT NULL,
-  PRIMARY KEY (`id`),
-  KEY `id_doctor` (`id_doctor`),
-  KEY `id_patient` (`id_patient`)
-) ENGINE=InnoDB AUTO_INCREMENT=101 DEFAULT CHARSET=utf8;
+  `id_patient` int(11) NOT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 
 --
--- Dumping data for table `prescription`
+-- Дамп даних таблиці `prescription`
 --
 
 INSERT INTO `prescription` (`id`, `date`, `id_doctor`, `id_patient`) VALUES
@@ -594,26 +573,24 @@ INSERT INTO `prescription` (`id`, `date`, `id_doctor`, `id_patient`) VALUES
 (94, '2016-11-07', 7, 2),
 (97, '2016-12-08', 8, 1),
 (98, '2016-11-02', 7, 2),
-(99, '2016-11-14', 1, 19);
+(99, '2016-11-14', 1, 19),
+(100, '2013-10-02', 1, 1);
 
 -- --------------------------------------------------------
 
 --
--- Table structure for table `prescr_medicine`
+-- Структура таблиці `prescr_medicine`
 --
 
-DROP TABLE IF EXISTS `prescr_medicine`;
-CREATE TABLE IF NOT EXISTS `prescr_medicine` (
+CREATE TABLE `prescr_medicine` (
   `id_prescr` int(11) NOT NULL,
   `id_medicine` int(11) NOT NULL,
   `pack_quantity` int(11) NOT NULL,
-  `pack_bought` int(11) DEFAULT NULL,
-  PRIMARY KEY (`id_prescr`,`id_medicine`),
-  KEY `id_medicine` (`id_medicine`)
+  `pack_bought` int(11) DEFAULT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 
 --
--- Dumping data for table `prescr_medicine`
+-- Дамп даних таблиці `prescr_medicine`
 --
 
 INSERT INTO `prescr_medicine` (`id_prescr`, `id_medicine`, `pack_quantity`, `pack_bought`) VALUES
@@ -711,110 +688,106 @@ INSERT INTO `prescr_medicine` (`id_prescr`, `id_medicine`, `pack_quantity`, `pac
 (98, 85, 6, 5),
 (99, 13, 4, 2),
 (99, 44, 2, 1),
-(99, 98, 1, 1);
+(99, 98, 1, 1),
+(100, 4, 22, 8);
 
 -- --------------------------------------------------------
 
 --
--- Table structure for table `purchase`
+-- Структура таблиці `purchase`
 --
 
-DROP TABLE IF EXISTS `purchase`;
-CREATE TABLE IF NOT EXISTS `purchase` (
-  `id` int(11) NOT NULL AUTO_INCREMENT,
-  `date` date NOT NULL,
+CREATE TABLE `purchase` (
+  `id` int(11) NOT NULL,
+  `date` datetime NOT NULL,
   `id_prescr` int(11) NOT NULL,
-  `id_pharmacy` int(11) NOT NULL,
-  PRIMARY KEY (`id`),
-  KEY `id_prescr` (`id_prescr`),
-  KEY `id_pharmacy` (`id_pharmacy`)
-) ENGINE=InnoDB AUTO_INCREMENT=101 DEFAULT CHARSET=utf8;
-
---
--- Dumping data for table `purchase`
---
-
-INSERT INTO `purchase` (`id`, `date`, `id_prescr`, `id_pharmacy`) VALUES
-(4, '2017-01-20', 97, 12),
-(5, '2017-01-29', 91, 9),
-(8, '2017-02-08', 98, 10),
-(10, '2017-01-18', 92, 8),
-(14, '2017-02-11', 79, 9),
-(15, '2017-02-14', 91, 8),
-(16, '2017-01-28', 46, 8),
-(17, '2017-01-06', 50, 12),
-(19, '2017-01-17', 36, 9),
-(20, '2017-01-24', 73, 10),
-(21, '2017-02-03', 24, 10),
-(22, '2017-01-30', 12, 10),
-(23, '2017-01-24', 2, 8),
-(24, '2017-01-25', 94, 10),
-(29, '2017-02-14', 90, 9),
-(33, '2017-02-05', 90, 12),
-(34, '2017-01-16', 22, 12),
-(36, '2017-01-23', 76, 12),
-(38, '2017-02-01', 17, 10),
-(39, '2017-01-04', 56, 12),
-(40, '2017-01-21', 82, 10),
-(44, '2017-01-05', 89, 12),
-(45, '2017-01-20', 12, 10),
-(46, '2017-01-25', 30, 12),
-(48, '2017-02-14', 87, 10),
-(53, '2017-01-23', 18, 10),
-(56, '2017-01-07', 29, 10),
-(57, '2017-02-08', 53, 10),
-(59, '2017-01-06', 3, 9),
-(60, '2017-01-20', 61, 8),
-(62, '2017-01-27', 99, 8),
-(63, '2017-02-01', 98, 9),
-(64, '2017-01-06', 71, 8),
-(65, '2017-01-25', 93, 10),
-(66, '2017-01-27', 48, 10),
-(67, '2017-02-09', 68, 10),
-(69, '2017-02-12', 58, 10),
-(71, '2017-01-28', 25, 9),
-(72, '2017-01-04', 34, 10),
-(73, '2017-02-13', 36, 9),
-(75, '2017-01-24', 81, 10),
-(76, '2017-01-15', 32, 9),
-(77, '2017-01-27', 20, 12),
-(79, '2017-01-12', 45, 12),
-(80, '2017-02-11', 39, 12),
-(81, '2017-01-08', 85, 12),
-(82, '2017-02-11', 76, 8),
-(83, '2017-02-02', 41, 9),
-(84, '2017-01-05', 15, 8),
-(86, '2017-02-07', 76, 9),
-(87, '2017-01-23', 5, 12),
-(88, '2017-02-06', 9, 9),
-(89, '2017-01-09', 76, 12),
-(90, '2017-01-18', 81, 10),
-(91, '2017-02-06', 4, 10),
-(92, '2017-01-09', 77, 10),
-(93, '2017-01-17', 74, 10),
-(94, '2017-01-19', 69, 9),
-(95, '2017-02-09', 78, 8),
-(98, '2017-02-12', 7, 10),
-(99, '2017-01-06', 10, 8),
-(100, '2017-01-29', 4, 12);
-
--- --------------------------------------------------------
-
---
--- Table structure for table `purch_medicine`
---
-
-DROP TABLE IF EXISTS `purch_medicine`;
-CREATE TABLE IF NOT EXISTS `purch_medicine` (
-  `id_purchase` int(11) NOT NULL,
-  `id_medicine` int(11) NOT NULL,
-  `pack_quantity` int(11) NOT NULL,
-  PRIMARY KEY (`id_purchase`,`id_medicine`),
-  KEY `id_medicine` (`id_medicine`)
+  `id_pharmacy` int(11) NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 
 --
--- Dumping data for table `purch_medicine`
+-- Дамп даних таблиці `purchase`
+--
+
+INSERT INTO `purchase` (`id`, `date`, `id_prescr`, `id_pharmacy`) VALUES
+(4, '2017-01-20 10:36:05', 97, 12),
+(5, '2017-01-29 00:57:04', 91, 9),
+(8, '2017-02-08 14:21:40', 98, 10),
+(10, '2017-01-18 17:44:34', 92, 8),
+(14, '2017-02-11 09:39:28', 79, 9),
+(15, '2017-02-14 14:02:53', 91, 8),
+(16, '2017-01-28 18:07:42', 46, 8),
+(17, '2017-01-06 16:49:23', 50, 12),
+(19, '2017-01-17 17:15:22', 36, 9),
+(20, '2017-01-24 15:22:00', 73, 10),
+(21, '2017-02-03 08:37:40', 24, 10),
+(22, '2017-01-30 22:11:46', 12, 10),
+(23, '2017-01-24 20:25:06', 2, 8),
+(24, '2017-01-25 18:55:24', 94, 10),
+(29, '2017-02-14 22:27:22', 90, 9),
+(33, '2017-02-05 04:18:00', 90, 12),
+(34, '2017-01-16 21:33:22', 22, 12),
+(36, '2017-01-23 15:22:31', 76, 12),
+(38, '2017-02-01 16:10:50', 17, 10),
+(39, '2017-01-04 14:53:00', 56, 12),
+(40, '2017-01-21 15:07:06', 82, 10),
+(44, '2017-01-05 16:12:07', 89, 12),
+(45, '2017-01-20 09:25:13', 12, 10),
+(46, '2017-01-25 05:26:05', 30, 12),
+(48, '2017-02-14 08:25:38', 87, 10),
+(53, '2017-01-23 02:48:51', 18, 10),
+(56, '2017-01-07 02:45:44', 29, 10),
+(57, '2017-02-08 10:56:23', 53, 10),
+(59, '2017-01-06 18:20:44', 3, 9),
+(60, '2017-01-20 19:05:35', 61, 8),
+(62, '2017-01-27 06:52:00', 99, 8),
+(63, '2017-02-01 22:18:13', 98, 9),
+(64, '2017-01-06 21:30:28', 71, 8),
+(65, '2017-01-25 21:09:37', 93, 10),
+(66, '2017-01-27 00:40:12', 48, 10),
+(67, '2017-02-09 12:24:24', 68, 10),
+(69, '2017-02-12 15:11:45', 58, 10),
+(71, '2017-01-28 07:55:51', 25, 9),
+(72, '2017-01-04 16:03:37', 34, 10),
+(73, '2017-02-13 11:51:00', 36, 9),
+(75, '2017-01-24 16:13:10', 81, 10),
+(76, '2017-01-15 12:28:48', 32, 9),
+(77, '2017-01-27 11:03:29', 20, 12),
+(79, '2017-01-12 01:32:35', 45, 12),
+(80, '2017-02-11 17:07:08', 39, 12),
+(81, '2017-01-08 05:56:26', 85, 12),
+(82, '2017-02-11 04:21:13', 76, 8),
+(83, '2017-02-02 02:50:12', 41, 9),
+(84, '2017-01-05 19:02:13', 15, 8),
+(86, '2017-02-07 23:47:40', 76, 9),
+(87, '2017-01-23 16:44:32', 5, 12),
+(88, '2017-02-06 19:10:10', 9, 9),
+(89, '2017-01-09 16:51:38', 76, 12),
+(90, '2017-01-18 07:22:13', 81, 10),
+(91, '2017-02-06 18:42:04', 4, 10),
+(92, '2017-01-09 20:17:22', 77, 10),
+(93, '2017-01-17 19:55:12', 74, 10),
+(94, '2017-01-19 03:43:37', 69, 9),
+(95, '2017-02-09 06:51:37', 78, 8),
+(98, '2017-02-12 17:42:47', 7, 10),
+(99, '2017-01-06 02:58:56', 10, 8),
+(100, '2017-01-29 08:40:03', 4, 12),
+(101, '2017-03-23 10:17:10', 100, 9),
+(102, '2017-03-23 10:20:31', 100, 9);
+
+-- --------------------------------------------------------
+
+--
+-- Структура таблиці `purch_medicine`
+--
+
+CREATE TABLE `purch_medicine` (
+  `id_purchase` int(11) NOT NULL,
+  `id_medicine` int(11) NOT NULL,
+  `pack_quantity` int(11) NOT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=utf8;
+
+--
+-- Дамп даних таблиці `purch_medicine`
 --
 
 INSERT INTO `purch_medicine` (`id_purchase`, `id_medicine`, `pack_quantity`) VALUES
@@ -933,48 +906,168 @@ INSERT INTO `purch_medicine` (`id_purchase`, `id_medicine`, `pack_quantity`) VAL
 (99, 28, 1),
 (99, 49, 3),
 (99, 64, 3),
-(100, 50, 2);
+(100, 50, 2),
+(102, 4, 8);
 
 --
--- Constraints for dumped tables
+-- Індекси збережених таблиць
 --
 
 --
--- Constraints for table `delivery`
+-- Індекси таблиці `delivery`
+--
+ALTER TABLE `delivery`
+  ADD PRIMARY KEY (`id`),
+  ADD KEY `id_pharmacy` (`id_pharmacy`);
+
+--
+-- Індекси таблиці `delivery_medicine`
+--
+ALTER TABLE `delivery_medicine`
+  ADD PRIMARY KEY (`id_delivery`,`id_medicine`),
+  ADD KEY `id_medicine` (`id_medicine`);
+
+--
+-- Індекси таблиці `doctor`
+--
+ALTER TABLE `doctor`
+  ADD PRIMARY KEY (`id`);
+
+--
+-- Індекси таблиці `medicine`
+--
+ALTER TABLE `medicine`
+  ADD PRIMARY KEY (`id`);
+
+--
+-- Індекси таблиці `patient`
+--
+ALTER TABLE `patient`
+  ADD PRIMARY KEY (`id`),
+  ADD UNIQUE KEY `phone` (`phone`);
+
+--
+-- Індекси таблиці `pharmacy`
+--
+ALTER TABLE `pharmacy`
+  ADD PRIMARY KEY (`id`);
+
+--
+-- Індекси таблиці `pharmacy_medicine`
+--
+ALTER TABLE `pharmacy_medicine`
+  ADD PRIMARY KEY (`id_pharmacy`,`id_medicine`),
+  ADD KEY `id_medicine` (`id_medicine`);
+
+--
+-- Індекси таблиці `prescription`
+--
+ALTER TABLE `prescription`
+  ADD PRIMARY KEY (`id`),
+  ADD KEY `id_doctor` (`id_doctor`),
+  ADD KEY `id_patient` (`id_patient`);
+
+--
+-- Індекси таблиці `prescr_medicine`
+--
+ALTER TABLE `prescr_medicine`
+  ADD PRIMARY KEY (`id_prescr`,`id_medicine`),
+  ADD KEY `id_medicine` (`id_medicine`);
+
+--
+-- Індекси таблиці `purchase`
+--
+ALTER TABLE `purchase`
+  ADD PRIMARY KEY (`id`),
+  ADD KEY `id_prescr` (`id_prescr`),
+  ADD KEY `id_pharmacy` (`id_pharmacy`);
+
+--
+-- Індекси таблиці `purch_medicine`
+--
+ALTER TABLE `purch_medicine`
+  ADD PRIMARY KEY (`id_purchase`,`id_medicine`),
+  ADD KEY `id_medicine` (`id_medicine`);
+
+--
+-- AUTO_INCREMENT для збережених таблиць
+--
+
+--
+-- AUTO_INCREMENT для таблиці `delivery`
+--
+ALTER TABLE `delivery`
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=131;
+--
+-- AUTO_INCREMENT для таблиці `doctor`
+--
+ALTER TABLE `doctor`
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=10;
+--
+-- AUTO_INCREMENT для таблиці `medicine`
+--
+ALTER TABLE `medicine`
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=106;
+--
+-- AUTO_INCREMENT для таблиці `patient`
+--
+ALTER TABLE `patient`
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=21;
+--
+-- AUTO_INCREMENT для таблиці `pharmacy`
+--
+ALTER TABLE `pharmacy`
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=13;
+--
+-- AUTO_INCREMENT для таблиці `prescription`
+--
+ALTER TABLE `prescription`
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=101;
+--
+-- AUTO_INCREMENT для таблиці `purchase`
+--
+ALTER TABLE `purchase`
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=103;
+--
+-- Обмеження зовнішнього ключа збережених таблиць
+--
+
+--
+-- Обмеження зовнішнього ключа таблиці `delivery`
 --
 ALTER TABLE `delivery`
   ADD CONSTRAINT `delivery_ibfk_1` FOREIGN KEY (`id_pharmacy`) REFERENCES `pharmacy` (`id`) ON DELETE NO ACTION ON UPDATE CASCADE;
 
 --
--- Constraints for table `delivery_medicine`
+-- Обмеження зовнішнього ключа таблиці `delivery_medicine`
 --
 ALTER TABLE `delivery_medicine`
   ADD CONSTRAINT `delivery_medicine_ibfk_1` FOREIGN KEY (`id_delivery`) REFERENCES `delivery` (`id`) ON DELETE CASCADE ON UPDATE CASCADE,
   ADD CONSTRAINT `delivery_medicine_ibfk_2` FOREIGN KEY (`id_medicine`) REFERENCES `medicine` (`id`) ON DELETE NO ACTION ON UPDATE CASCADE;
 
 --
--- Constraints for table `pharmacy_medicine`
+-- Обмеження зовнішнього ключа таблиці `pharmacy_medicine`
 --
 ALTER TABLE `pharmacy_medicine`
   ADD CONSTRAINT `pharmacy_medicine_ibfk_1` FOREIGN KEY (`id_pharmacy`) REFERENCES `pharmacy` (`id`) ON DELETE NO ACTION ON UPDATE CASCADE,
   ADD CONSTRAINT `pharmacy_medicine_ibfk_2` FOREIGN KEY (`id_medicine`) REFERENCES `medicine` (`id`) ON DELETE NO ACTION ON UPDATE CASCADE;
 
 --
--- Constraints for table `prescription`
+-- Обмеження зовнішнього ключа таблиці `prescription`
 --
 ALTER TABLE `prescription`
   ADD CONSTRAINT `prescription_ibfk_3` FOREIGN KEY (`id_doctor`) REFERENCES `doctor` (`id`) ON DELETE NO ACTION ON UPDATE CASCADE,
   ADD CONSTRAINT `prescription_ibfk_4` FOREIGN KEY (`id_patient`) REFERENCES `patient` (`id`) ON DELETE NO ACTION ON UPDATE CASCADE;
 
 --
--- Constraints for table `prescr_medicine`
+-- Обмеження зовнішнього ключа таблиці `prescr_medicine`
 --
 ALTER TABLE `prescr_medicine`
   ADD CONSTRAINT `prescr_medicine_ibfk_1` FOREIGN KEY (`id_prescr`) REFERENCES `prescription` (`id`) ON DELETE CASCADE ON UPDATE CASCADE,
   ADD CONSTRAINT `prescr_medicine_ibfk_2` FOREIGN KEY (`id_medicine`) REFERENCES `medicine` (`id`) ON DELETE NO ACTION ON UPDATE CASCADE;
 
 --
--- Constraints for table `purchase`
+-- Обмеження зовнішнього ключа таблиці `purchase`
 --
 ALTER TABLE `purchase`
   ADD CONSTRAINT `purchase_ibfk_2` FOREIGN KEY (`id_prescr`) REFERENCES `prescription` (`id`) ON DELETE NO ACTION ON UPDATE CASCADE,

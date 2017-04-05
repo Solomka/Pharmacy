@@ -53,14 +53,14 @@ public class PatientRepositoryImpl extends AHibernateRepository<Patient, Long> i
 	}
 
 	@SuppressWarnings("unchecked")
-	//@Override
+	// @Override
 	public List<Patient> findByQuery(String query, int offset, int limit, boolean or) {
 
 		Criteria criteria = prepare(query, or).setFirstResult(offset).setMaxResults(limit);
 		return criteria.list();
 	}
 
-	//@Override
+	// @Override
 	public boolean containsNumber(String number) {
 		Criteria criteria = createEntityCriteria();
 
@@ -68,11 +68,11 @@ public class PatientRepositoryImpl extends AHibernateRepository<Patient, Long> i
 		return 1 == criteria.list().size();
 	}
 
-	//@Override
+	// @Override
 	public int count(String query, boolean or) {
 		return ((Number) prepare(query, or).setProjection(Projections.rowCount()).uniqueResult()).intValue();
 	}
-	
+
 	/*
 	 * PREPARE QUERY STATEMENT
 	 */
@@ -82,17 +82,17 @@ public class PatientRepositoryImpl extends AHibernateRepository<Patient, Long> i
 			query = "";
 
 		String[] names = query.split(" ");
-		for(int i = 0; i<names.length; ++i){
+		for (int i = 0; i < names.length; ++i) {
 			System.out.println("Prepare name: " + names[i]);
 		}
-		
+
 		/*
 		 * execute basic getAll with pagination request
 		 */
-		
+
 		Criteria criteria = createEntityCriteria();
-		criteria.addOrder(Order.asc("surname"));		
-		
+		criteria.addOrder(Order.asc("surname"));
+
 		List<Disjunction> restrictions = new ArrayList<Disjunction>();
 
 		for (String name : names)
@@ -100,19 +100,21 @@ public class PatientRepositoryImpl extends AHibernateRepository<Patient, Long> i
 				restrictions.add(Restrictions.or(Restrictions.ilike("surname", name, MatchMode.ANYWHERE),
 						Restrictions.ilike("name", name, MatchMode.ANYWHERE),
 						Restrictions.ilike("phone", name, MatchMode.ANYWHERE)));
-		
+
 		System.out.println("disjunctions set size: " + restrictions.size());
 
 		/*
 		 * if any restriction exists
 		 */
 		if (or && restrictions.size() > 0) {
-			
+
 			/*
-			 * Hibernate Disjunction, is used to add multiple condition in SQL query separated by OR clause within brackets. 
-			   To generate following query using Hibernate Criteria we need to use Disjunction.
-			*/
-			
+			 * Hibernate Disjunction, is used to add multiple condition in SQL
+			 * query separated by OR clause within brackets. To generate
+			 * following query using Hibernate Criteria we need to use
+			 * Disjunction.
+			 */
+
 			Disjunction disjunction = Restrictions.disjunction();
 
 			for (Disjunction dis : restrictions)
@@ -120,12 +122,14 @@ public class PatientRepositoryImpl extends AHibernateRepository<Patient, Long> i
 
 			criteria.add(disjunction);
 		} else if (restrictions.size() > 0) {
-			
-			/* 
-			 * Hibernate Conjunction, is used to add multiple condition in SQL query separated by AND clause  within brackets. 
-			 * To generate following query using Hibernate Criteria we need to use Conjunction.
+
+			/*
+			 * Hibernate Conjunction, is used to add multiple condition in SQL
+			 * query separated by AND clause within brackets. To generate
+			 * following query using Hibernate Criteria we need to use
+			 * Conjunction.
 			 */
-			
+
 			Conjunction conjunction = Restrictions.conjunction();
 
 			for (Disjunction dis : restrictions)
