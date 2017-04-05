@@ -128,7 +128,7 @@ public class DoctorDto {
 
 			try {
 				String text = standing.getText().replace(" ", "");
-				this.standing = Integer.parseInt(text);
+				this.standing = Integer.parseInt(text.replaceAll(",", ""));
 				
 			} catch (Exception e) {
 				this.standing = 0;

@@ -43,7 +43,7 @@ public class AllMedicinesActivity implements Activity {
 
 	private JTable medicinesTable;
 
-	private Object[] columnsHeader = new String[] { "Назва", "Виробник", "Ціна коробки", "К-сть в коробці" };
+	private Object[] columnsHeader = new String[] { "Назва", "Виробник", "Ціна коробки", "К-сть в коробці", "Середня ціна" };
 
 	private JTextField queryField;
 
@@ -319,6 +319,7 @@ public class AllMedicinesActivity implements Activity {
 			array[i][1] = medicines.get(i).getProducer();
 			array[i][2] = medicines.get(i).getBoxPrice().toString();
 			array[i][3] = medicines.get(i).getQuantityPerBox();
+			array[i][4] = String.format("%.2f", medicines.get(i).getPrice());
 		}
 
 		return array;

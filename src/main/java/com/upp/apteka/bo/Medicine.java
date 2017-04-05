@@ -18,6 +18,7 @@ import javax.persistence.OneToMany;
 import javax.persistence.Table;
 
 import org.hibernate.annotations.Cascade;
+import org.hibernate.annotations.Formula;
 
 import com.upp.apteka.dto.MedicineDto;
 
@@ -63,6 +64,9 @@ public class Medicine implements Serializable {
 
 	@OneToMany(fetch = FetchType.LAZY, mappedBy = "pk.medicine")
 	private Set<PrescriptionMedicine> prescriptionMedicines;
+
+	@Formula("((select 100+avg(p.extra) from Pharmacy p))*box_price/quantity_per_box/100")
+	private double price;
 
 	public Medicine() {
 
@@ -215,6 +219,14 @@ public class Medicine implements Serializable {
 			return false;
 		}
 		return true;
+	}
+
+	public double getPrice() {
+		return price;
+	}
+
+	public void setPrice(double price) {
+		this.price = price;
 	}
 
 	@Override
