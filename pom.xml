@@ -127,6 +127,7 @@
 			<artifactId>spring-test</artifactId>
 			<version>${spring.version}</version>
 			<scope>test</scope>
+
 		</dependency>
 
 
@@ -136,7 +137,7 @@
 			<groupId>mysql</groupId>
 			<artifactId>mysql-connector-java</artifactId>
 			<version>${mysql.connector.version}</version>
-			<scope>runtime</scope>
+			<scope>compile</scope>
 		</dependency>
 
 
