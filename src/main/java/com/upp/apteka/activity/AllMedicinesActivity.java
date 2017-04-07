@@ -319,7 +319,7 @@ public class AllMedicinesActivity implements Activity {
 			array[i][1] = medicines.get(i).getProducer();
 			array[i][2] = medicines.get(i).getBoxPrice().toString();
 			array[i][3] = medicines.get(i).getQuantityPerBox();
-			array[i][4] = String.format("%.2f", medicines.get(i).getPrice());
+			array[i][4] = "0";
 		}
 
 		return array;

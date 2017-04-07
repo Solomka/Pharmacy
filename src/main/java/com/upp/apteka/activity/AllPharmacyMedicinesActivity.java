@@ -315,7 +315,7 @@ public class AllPharmacyMedicinesActivity implements Activity {
 			array[i][1] = medicines.get(i).getMedicine().getProducer();
 			array[i][2] = String.format("%.2f", medicines.get(i).getPackPrice());
 			array[i][3] = medicines.get(i).getPackQuantity();
-			array[i][4] = String.format("%.2f", medicines.get(i).getMedicine().getPrice());
+			array[i][4] = "0";
 		}
 
 		return array;

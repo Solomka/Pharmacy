@@ -65,9 +65,6 @@ public class Medicine implements Serializable {
 	@OneToMany(fetch = FetchType.LAZY, mappedBy = "pk.medicine")
 	private Set<PrescriptionMedicine> prescriptionMedicines;
 
-	@Formula("((select 100+avg(p.extra) from Pharmacy p))*box_price/quantity_per_box/100")
-	private double price;
-
 	public Medicine() {
 
 	}
@@ -220,15 +217,6 @@ public class Medicine implements Serializable {
 		}
 		return true;
 	}
-
-	public double getPrice() {
-		return price;
-	}
-
-	public void setPrice(double price) {
-		this.price = price;
-	}
-
 	@Override
 	public String toString() {
 		return "Medicine [id=" + id + ", name=" + name + ", producer=" + producer + ", boxPrice=" + boxPrice
